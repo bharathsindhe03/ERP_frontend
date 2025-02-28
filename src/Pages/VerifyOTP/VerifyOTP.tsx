@@ -1,18 +1,19 @@
 import { useState } from "react";
 import handleVerifyOTP from "../../Services/VerifyOTP/VerifyOTP";
+import { useNavigate } from "react-router-dom";
 
 export default function VerifyOTP() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !otp) {
       setError("All fields are required");
       return;
     }
-    await handleVerifyOTP(email, otp);
+    await handleVerifyOTP(email, otp,navigate);
   };
 
   return (

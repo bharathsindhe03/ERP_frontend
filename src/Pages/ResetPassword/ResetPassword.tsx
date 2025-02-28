@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { handleUpdatePassword } from "../../Services/ConfirmPassword/ConfirmPassword";
+import { handleUpdatePassword } from "../../Services/ResetPassword/ResetPassword";
+import { useNavigate } from "react-router-dom";
 
-export default function ConfirmPassword() {
+export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !newPassword) {
       setError("All fields are required");
       return;
     }
-    await handleUpdatePassword(email, newPassword);
+    await handleUpdatePassword(email, newPassword, navigate);
   };
 
   return (

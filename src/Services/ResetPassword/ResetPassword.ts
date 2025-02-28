@@ -3,7 +3,8 @@ import { toast } from "sonner";
 
 export const handleUpdatePassword = async (
   email: string,
-  newPassword: string
+  newPassword: string,
+  navigate: Function
 ) => {
   try {
     const response = await axios.get(
@@ -11,7 +12,12 @@ export const handleUpdatePassword = async (
       { params: { email, newPassword } }
     );
     console.log(response.data);
-    toast.success("Password updated successfully");
+    if (response.status === 200) {
+      toast.success("Password updated successfully");
+      navigate("/");
+    } else {
+      toast.error("Failed to update password");
+    }
   } catch (error) {
     console.error(error);
   }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { handleForgotPassword } from "../../Services/ForgotPassword/handleForgotPassword";
 import { useNavigate } from "react-router-dom";
 
-export default function ForgotPasswordRequestPage() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {

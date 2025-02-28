@@ -1,7 +1,11 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-export const handleLogin = async (username: string, password: string) => {
+export const handleLogin = async (
+  username: string,
+  password: string,
+  navigate: Function
+) => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_SERVER_URL}/auth/login`,
@@ -11,10 +15,13 @@ export const handleLogin = async (username: string, password: string) => {
       }
     );
     console.log(response);
-    if (response.status === 200) {
+    if (response.data[0] === "L") {
       toast.success(response.data);
-    }else{
-      toast.error("Login failed. Please try again.");
+      // localStorage.setItem("email", response.email);
+      // localStorage.setItem("username", response.username);
+      navigate("/page1");
+    } else {
+      toast.error(response.data);
     }
   } catch (error) {
     console.error(error);
