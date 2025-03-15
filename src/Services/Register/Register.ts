@@ -26,5 +26,10 @@ export const handleRegister = async (
     }
   } catch (error: any) {
     console.error(error);
+    if (error.response.status === 400) {
+      toast.error(error.response.data); //existing user - username
+    } else if (error.response.status === 403) {
+      toast.error("User Already Exists"); //existing user - email
+    }
   }
 };

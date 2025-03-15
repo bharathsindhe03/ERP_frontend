@@ -2,15 +2,15 @@ import Navbar from "../../Components/Navbar";
 import Searchbar from "../../Components/Searchbar";
 import Taskbar from "../../Components/Taskbar";
 
-export default function Page3() {
+export default function AdminPage() {
   return (
     <div className="h-screen flex flex-col">
-      <div className="flex flex-col md:flex-row flex-grow">
+      <div className="flex flex-col md:flex-row flex-grow h-full">
         <Taskbar />
-        <div className="w-full">
+        <div className="w-full flex-grow">
           <Navbar />
           <Searchbar />
-          <div className="flex-grow bg-gray-100 p-4">Main Content Area</div>
+          
         </div>
       </div>
     </div>

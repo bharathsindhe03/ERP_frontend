@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { handleLogin } from "../../Services/Login/Login";
+import handleLogIn from "../../Services/Login/handleLogIn";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleLogin(username, password, navigate);
+    await handleLogIn(username, password, navigate);
   };
 
   return (
@@ -29,6 +30,7 @@ export default function Login() {
               className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
             />
           </div>
 
@@ -42,6 +44,7 @@ export default function Login() {
               className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
             <div className="text-right mt-1">
               <Link

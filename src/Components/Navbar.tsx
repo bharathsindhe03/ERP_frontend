@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import handleLogOut from "../Services/Login/handleLogOut";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const userName = localStorage.getItem("user") || "John Doe";
+  const navigator = useNavigate();
+  const userName = localStorage.getItem("username") || "John Doe";
   const userEmail = localStorage.getItem("email") || "johndoe@example.com";
-  const department = localStorage.getItem("department") || "CRM";
+  const department = localStorage.getItem("role") || "CRM";
 
   return (
     <nav className="flex items-center justify-between px-4 sm:px-6 py-4 bg-gray-900 text-white shadow-md">
@@ -47,7 +49,7 @@ export default function Navbar() {
             <button className="block w-full text-left px-4 py-2 hover:bg-gray-200">
               Profile
             </button>
-            <button className="block w-full text-left px-4 py-2 hover:bg-gray-200">
+            <button className="block w-full text-left px-4 py-2 hover:bg-gray-200" onClick={() => handleLogOut(navigator)}>
               Logout
             </button>
           </div>
