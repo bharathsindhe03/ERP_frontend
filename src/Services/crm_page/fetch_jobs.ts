@@ -1,5 +1,5 @@
-import axios from "axios";
 import CRMJob from "../../Interface/CRMJob";
+import api from "../../Utils/create_api";
 
 export default async function handleFetchJob(
   setJobs: (jobs: CRMJob[]) => void,
@@ -10,14 +10,10 @@ export default async function handleFetchJob(
   setError(null);
 
   try {
-    console.log(`${import.meta.env.VITE_BASE_SERVER_URL}/job/get-all-jobs`);
-
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_SERVER_URL}/job/get-all-jobs`,
-    );
+    const response = await api.get("/job/get-all-jobs");
 
     console.log(response);
-    setJobs([]);
+    setJobs(response.data);
   } catch (err) {
     console.error(err);
     setError(err instanceof Error ? err.message : "An error occurred");

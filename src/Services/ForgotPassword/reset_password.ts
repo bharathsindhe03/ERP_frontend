@@ -2,11 +2,11 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export const handleUpdatePassword = async (
-  email: string,
   newPassword: string,
   navigate: Function
 ) => {
   try {
+    const email = localStorage.getItem("email");
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_SERVER_URL}/auth/update-password`,
       { params: { email, newPassword } }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import handleLogOut from "../Services/Login/handleLogOut";
+import handleLogOut from "../Services/Login/log_out";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {

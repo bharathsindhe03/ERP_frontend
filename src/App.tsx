@@ -4,15 +4,15 @@ import "./App.css";
 import { Toaster } from "sonner";
 import Loader from "./Components/Loader";
 
-const Login = lazy(() => import("./Pages/Login/Login"));
-const AdminPage = lazy(() => import("./Pages/AdminPage/AdminPage"));
-const CRMPage = lazy(() => import("./Pages/CRMPage/CRMPage"));
-const BillingPage = lazy(() => import("./Pages/BillingPage/BillingPage"));
-const ResetPassword = lazy(() => import("./Pages/ResetPassword/ResetPassword"));
-const ForgotPassword = lazy(() => import("./Pages/ForgotPassword/ForgotPassword"));
-const Register = lazy(() => import("./Pages/Register/Register"));
-const VerifyOTP = lazy(() => import("./Pages/VerifyOTP/VerifyOTP"));
-const ErrorPage = lazy(() => import("./Pages/ErrorPage/ErrorPage"));
+const Login = lazy(() => import("./Pages/login/Login"));
+const AdminPage = lazy(() => import("./Pages/admin_page/AdminPage"));
+const CRMPage = lazy(() => import("./Pages/crm_page/CRMPage"));
+const BillingPage = lazy(() => import("./Pages/billing_page/BillingPage"));
+const ResetPassword = lazy(() => import("./Pages/forgot_password/ResetPassword"));
+const ForgotPassword = lazy(() => import("./Pages/forgot_password/ForgotPassword"));
+const Register = lazy(() => import("./Pages/register/Register"));
+const VerifyOTP = lazy(() => import("./Pages/forgot_password/VerifyOTP"));
+const ErrorPage = lazy(() => import("./Pages/error_page/ErrorPage"));
 
 export default function App() {
   return (
@@ -21,6 +21,7 @@ export default function App() {
       <Router>
         <Suspense fallback={<Loader />}>
           <Routes>
+            
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/resetpassword" element={<ResetPassword />} />

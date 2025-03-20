@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { handleForgotPassword } from "../../Services/ForgotPassword/handleForgotPassword";
+import { handleForgotPassword } from "../../Services/ForgotPassword/forgot_password";
 import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {

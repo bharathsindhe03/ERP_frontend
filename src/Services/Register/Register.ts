@@ -1,5 +1,5 @@
-import axios from "axios";
 import { toast } from "sonner";
+import api from "../../Utils/create_api";
 
 export const handleRegister = async (
   email: string,
@@ -8,15 +8,13 @@ export const handleRegister = async (
   navigate: Function
 ) => {
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_SERVER_URL}/auth/register`,
-      {
-        userName,
-        email,
-        password,
-        role: "ADMIN",
-      }
-    );
+    const response = await api.post("http://localhost:8080/auth/register", {
+      userName,
+      email,
+      password,
+      role: "ADMIN",
+    });
+
     console.log(response);
     if (response.status === 200) {
       toast.success(response.data);

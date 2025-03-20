@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { handleRegister } from "../../Services/Register/Register";
+import { handleRegister } from "../../Services/Register/register";
 import { Link, useNavigate } from "react-router-dom";
-import { validatePassword } from "../../Utils/validatePassword";
+import { validatePassword } from "../../Utils/validate_password";
 
 export default function Register() {
   const [username, setUsername] = useState("");

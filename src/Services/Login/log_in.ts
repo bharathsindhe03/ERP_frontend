@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "sonner";
+import api from "../../Utils/create_api";
 
 export default async function handleLogIn(
   username: string,
@@ -7,13 +8,14 @@ export default async function handleLogIn(
   navigate: Function
 ) {
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_SERVER_URL}/auth/login`,
-      {
-        username,
-        password,
-      }
-    );
+    // const response = await axios.post(
+    //   `${import.meta.env.VITE_BASE_SERVER_URL}/auth/login`,
+    //   {
+    //     username,
+    //     password,
+    //   }
+    // );
+    const response = await api.post("/auth/login", { username, password });
     console.log(response);
     if (response.status === 200) {
       toast.success("Login Successful");
@@ -32,6 +34,9 @@ export default async function handleLogIn(
   } catch (error: any) {
     console.error(error);
     if (error.response.status === 404) {
+      toast.error(error.response.data);
+    }
+    if (error.response.status === 401) {
       toast.error(error.response.data);
     }
   }

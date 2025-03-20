@@ -19,7 +19,7 @@ export default function Taskbar() {
 
   return (
     <>
-      {/* Hamburger for Mobile */}
+      {/* Hamburger Menu for Mobile */}
       <button
         className="fixed top-4 left-4 z-50 p-2 bg-gray-900 text-white rounded-md md:hidden"
         onClick={() => setShowSidebar(!showSidebar)}
@@ -28,11 +28,11 @@ export default function Taskbar() {
         <FiMenu size={24} />
       </button>
 
-      {/* Sidebar for all screen sizes */}
+      {/* Sidebar (Taskbar) */}
       <div
-        className={`fixed md:relative top-0 left-0 h-full bg-gray-900 text-white p-4 shadow-lg transition-transform duration-300
+        className={`fixed top-0 left-0 h-full bg-gray-900 text-white p-4 shadow-lg transition-all duration-300
           ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
-          w-4/5 md:w-1/5 md:translate-x-0`}
+          w-64 md:w-[20%] md:translate-x-0 md:fixed`}
       >
         {/* Close Button for Mobile */}
         <button
