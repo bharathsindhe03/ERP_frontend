@@ -10,6 +10,9 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CRMJob from "../../Interface/CRMJob";
+import api from "../../Utils/create_api";
+import { toast } from "sonner";
+import { updateJob } from "../../Services/crm_page/update_job";
 
 interface CRMTableProps {
   jobs: CRMJob[];
@@ -44,10 +47,37 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
     });
   };
 
-  const handleSave = () => {
-    console.log("Saving Job:", editedJob);
-    setIsEditing(null);
+  const formatDate = (dateString: string | undefined): string | undefined => {
+    if (!dateString) return undefined;
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   };
+  
+  const handleSave = async () => {
+    if (!editedJob.jobId || !editedJob.slNo) return; // Ensure slNo is present
+  
+    const updatedJob = {
+      slNo: editedJob.slNo, // Include slNo
+      jobId: editedJob.jobId,
+      jobDate: formatDate(editedJob.jobDate), // Format date
+      category: editedJob.category,
+      customerName: editedJob.customerName,
+    };
+  
+    try {
+      await updateJob(updatedJob);
+      setIsEditing(null);
+      setEditedJob({});
+    } catch (error) {
+      console.error("Failed to update job");
+    }
+  };
+  
+  
+
 
   const handleCancel = () => {
     setIsEditing(null);
@@ -65,8 +95,18 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
       ) : error ? (
         <div className="text-red-600 text-center py-4">{error}</div>
       ) : (
-        <Paper sx={{ width: "100%", flexGrow: 1, display: "flex", flexDirection: "column" }}>
-          <div className="overflow-auto" style={{ maxHeight: "65vh", overflowX: "auto" }}>
+        <Paper
+          sx={{
+            width: "100%",
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            className="overflow-auto"
+            style={{ maxHeight: "65vh", overflowX: "auto" }}
+          >
             <TableContainer>
               <Table stickyHeader aria-label="CRM Table">
                 <TableHead>
@@ -115,7 +155,9 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
                           {isEditing === job.jobId ? (
                             <TextField
                               value={editedJob.jobId || ""}
-                              onChange={(e) => handleInputChange("jobId", e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange("jobId", e.target.value)
+                              }
                               size="small"
                             />
                           ) : (
@@ -129,7 +171,9 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
                             <TextField
                               type="date"
                               value={editedJob.jobDate || ""}
-                              onChange={(e) => handleInputChange("jobDate", e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange("jobDate", e.target.value)
+                              }
                               size="small"
                             />
                           ) : (
@@ -142,7 +186,9 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
                           {isEditing === job.jobId ? (
                             <TextField
                               value={editedJob.category || ""}
-                              onChange={(e) => handleInputChange("category", e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange("category", e.target.value)
+                              }
                               size="small"
                             />
                           ) : (
@@ -155,7 +201,12 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
                           {isEditing === job.jobId ? (
                             <TextField
                               value={editedJob.customerName || ""}
-                              onChange={(e) => handleInputChange("customerName", e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  "customerName",
+                                  e.target.value
+                                )
+                              }
                               size="small"
                             />
                           ) : (
@@ -187,15 +238,28 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
                         <TableCell>
                           {isEditing === job.jobId ? (
                             <>
-                              <Button variant="contained" color="success" onClick={handleSave} sx={{ mr: 1 }}>
+                              <Button
+                                variant="contained"
+                                color="success"
+                                onClick={handleSave}
+                                sx={{ mr: 1 }}
+                              >
                                 Save
                               </Button>
-                              <Button variant="contained" color="error" onClick={handleCancel}>
+                              <Button
+                                variant="contained"
+                                color="error"
+                                onClick={handleCancel}
+                              >
                                 Cancel
                               </Button>
                             </>
                           ) : (
-                            <Button variant="contained" color="primary" onClick={() => handleEdit(job)}>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleEdit(job)}
+                            >
                               Edit
                             </Button>
                           )}
