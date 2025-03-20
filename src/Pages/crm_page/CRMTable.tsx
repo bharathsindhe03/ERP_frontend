@@ -40,12 +40,14 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
   const handleEdit = (job: CRMJob) => {
     setIsEditing(job.jobId);
     setEditedJob({
+      slNo: job.slNo, // Ensure slNo is set
       jobId: job.jobId,
       jobDate: job.jobDate,
       category: job.category,
       customerName: job.customerName,
     });
   };
+  
 
   const formatDate = (dateString: string | undefined): string | undefined => {
     if (!dateString) return undefined;
@@ -57,24 +59,30 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
   };
   
   const handleSave = async () => {
-    if (!editedJob.jobId || !editedJob.slNo) return; // Ensure slNo is present
+    if (!editedJob.jobId || editedJob.slNo === undefined) {
+      console.error("Missing required fields:", editedJob);
+      return;
+    }
   
     const updatedJob = {
-      slNo: editedJob.slNo, // Include slNo
+      slNo: editedJob.slNo, // Ensure slNo is passed
       jobId: editedJob.jobId,
       jobDate: formatDate(editedJob.jobDate), // Format date
       category: editedJob.category,
       customerName: editedJob.customerName,
     };
   
+    console.log("Calling updateJob with data:", updatedJob); // Debugging log
+  
     try {
       await updateJob(updatedJob);
       setIsEditing(null);
       setEditedJob({});
     } catch (error) {
-      console.error("Failed to update job");
+      console.error("Failed to update job", error);
     }
   };
+  
   
   
 
