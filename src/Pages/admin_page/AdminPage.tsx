@@ -1,17 +1,20 @@
 import Navbar from "../../Components/Navbar";
-import Searchbar from "../crm_page/CRMSearchbar";
+
 import Taskbar from "../../Components/Taskbar";
 
 export default function AdminPage() {
   return (
-    <div className="h-screen flex flex-col">
-      <div className="flex flex-col md:flex-row flex-grow h-full">
-        <Taskbar />
-        <div className="w-full flex-grow">
-          <Navbar />
-          <Searchbar />
+    <div className="h-screen flex">
+          {/* Fixed Taskbar (Full Left Side) */}
+          <div className="w-1/5 h-full bg-gray-800 text-white fixed">
+            <Taskbar />
+          </div>
+    
+          {/* Content Area (Navbar, Searchbar, and Table) */}
+          <div className="w-4/5 ml-[20%] flex flex-col h-full">
+            <Navbar />
+            
+          </div>
         </div>
-      </div>
-    </div>
   );
 }
