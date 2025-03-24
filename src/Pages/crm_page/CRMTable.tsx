@@ -10,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CRMJob from "../../Interface/CRMJob";
-import api from "../../Utils/create_api";
-import { toast } from "sonner";
 import { updateJob } from "../../Services/crm_page/update_job";
 
 interface CRMTableProps {
@@ -40,14 +38,13 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
   const handleEdit = (job: CRMJob) => {
     setIsEditing(job.jobId);
     setEditedJob({
-      slNo: job.slNo, // Ensure slNo is set
+      slNo: job.slNo,
       jobId: job.jobId,
       jobDate: job.jobDate,
       category: job.category,
       customerName: job.customerName,
     });
   };
-  
 
   const formatDate = (dateString: string | undefined): string | undefined => {
     if (!dateString) return undefined;
@@ -57,23 +54,23 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
-  
+
   const handleSave = async () => {
     if (!editedJob.jobId || editedJob.slNo === undefined) {
       console.error("Missing required fields:", editedJob);
       return;
     }
-  
+
     const updatedJob = {
-      slNo: editedJob.slNo, // Ensure slNo is passed
-      jobId: editedJob.jobId,
-      jobDate: formatDate(editedJob.jobDate), // Format date
+      slNo: editedJob.slNo,
+      jobId: Number(editedJob.jobId),
+      jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
       customerName: editedJob.customerName,
     };
-  
-    console.log("Calling updateJob with data:", updatedJob); // Debugging log
-  
+
+    console.log("Calling updateJob with data:", updatedJob);
+
     try {
       await updateJob(updatedJob);
       setIsEditing(null);
@@ -82,10 +79,6 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
       console.error("Failed to update job", error);
     }
   };
-  
-  
-  
-
 
   const handleCancel = () => {
     setIsEditing(null);
@@ -115,8 +108,8 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
             className="overflow-auto"
             style={{ maxHeight: "65vh", overflowX: "auto" }}
           >
-            <TableContainer>
-              <Table stickyHeader aria-label="CRM Table">
+            <TableContainer sx={{ zIndex: 10 }}>
+              <Table stickyHeader aria-label="CRM Table" sx={{ position: "relative", zIndex: 1 }}>
                 <TableHead>
                   <TableRow>
                     {[

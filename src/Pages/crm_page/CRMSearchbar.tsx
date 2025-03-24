@@ -1,7 +1,6 @@
 import { FaSearch, FaPlus, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import handleCRMAddJob from "../../Services/crm_page/crm_add_jobs";
-import Loader from "../../Components/Loader";
 
 interface SearchbarProps {
   searchQuery: string;
@@ -16,7 +15,7 @@ export default function CRMSearchbar({
   const [customerName, setCustomerName] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [category, setCategory] = useState("");
-  const [sellingPrice, setSellingPrice] = useState(0);
+  const [sellingPrice, setSellingPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -66,7 +65,7 @@ export default function CRMSearchbar({
 
       {/* Add Job Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white text-gray-900 p-6 rounded-md shadow-lg w-96">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Add New Job</h2>
@@ -135,8 +134,11 @@ export default function CRMSearchbar({
                   type="number"
                   className="w-full border p-2 rounded-md"
                   placeholder="Enter Selling Price"
-                  value={sellingPrice}
-                  onChange={(e) => setSellingPrice(Number(e.target.value))}
+                  value={sellingPrice ?? ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSellingPrice(value === "" ? null : Number(value));
+                  }}
                   required
                 />
               </div>
@@ -144,7 +146,7 @@ export default function CRMSearchbar({
                 type="submit"
                 className="bg-blue-600 px-4 py-2 text-white rounded-md hover:bg-blue-500"
               >
-                {loading ? <Loader /> : "Add Job"}
+                {loading ? "Loading..." : "Add Job"}
               </button>
             </form>
           </div>
