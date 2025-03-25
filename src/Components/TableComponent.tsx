@@ -9,8 +9,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import CRMJob from "../../Interface/CRMJob";
-import { updateJob } from "../../Services/crm_page/update_job";
+import CRMJob from "../Interface/CRMJob";
+import { updateJob } from "../Services/crm_page/update_job";
 
 interface CRMTableProps {
   jobs: CRMJob[];
@@ -18,7 +18,11 @@ interface CRMTableProps {
   error: string | null;
 }
 
-export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
+export default function TableComponent({
+  jobs,
+  loading,
+  error,
+}: CRMTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditing, setIsEditing] = useState<number | null>(null);
@@ -109,7 +113,11 @@ export default function CRMTable({ jobs, loading, error }: CRMTableProps) {
             style={{ maxHeight: "65vh", overflowX: "auto" }}
           >
             <TableContainer sx={{ zIndex: 10 }}>
-              <Table stickyHeader aria-label="CRM Table" sx={{ position: "relative", zIndex: 1 }}>
+              <Table
+                stickyHeader
+                aria-label="CRM Table"
+                sx={{ position: "relative", zIndex: 1 }}
+              >
                 <TableHead>
                   <TableRow>
                     {[

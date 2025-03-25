@@ -1,99 +1,111 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { handleRegister } from "../../Services/Register/register";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { validatePassword } from "../../Utils/validate_password";
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  FormLabel,
+  TextField,
+  Typography,
+  Link,
+  Divider,
+} from "@mui/material";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(""); // For live error display
-  const [isPasswordValid, setIsPasswordValid] = useState(false); // Track valid password
+  const [passwordError, setPasswordError] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
 
   const navigate = useNavigate();
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (e: any) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    // Validate password using the imported function
     const { isValid, errorMessage } = validatePassword(newPassword);
     setPasswordError(errorMessage);
     setIsPasswordValid(isValid);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    if (!isPasswordValid) return; // Prevent submission if password is invalid
-
+    if (!isPasswordValid) return;
     await handleRegister(email, username, password, navigate);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900 p-4">
-      <div className="w-full max-w-sm sm:max-w-md p-6 sm:p-8 bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-lg sm:text-2xl font-semibold text-white text-center">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      bgcolor="background.default"
+      p={3}
+    >
+      <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
+        <Typography variant="h4" align="center" gutterBottom>
           Register
-        </h2>
-
-        <form className="mt-6" onSubmit={handleSubmit}>
-          <div>
-            <label className="text-gray-300 text-sm sm:text-base">
-              Username
-            </label>
-            <input
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+        >
+          <FormControl>
+            <FormLabel>Username</FormLabel>
+            <TextField
               type="text"
-              placeholder="username"
-              className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              fullWidth
+              required
             />
-          </div>
-          <div>
-            <label className="text-gray-300 text-sm sm:text-base">Email</label>
-            <input
+          </FormControl>
+          <FormControl>
+            <FormLabel>Email</FormLabel>
+            <TextField
               type="email"
               placeholder="someone@gmail.com"
-              className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              required
             />
-          </div>
-          <div className="mt-4">
-            <label className="text-gray-300 text-sm sm:text-base">
-              Password
-            </label>
-            <input
+          </FormControl>
+          <FormControl>
+            <FormLabel>Password</FormLabel>
+            <TextField
               type="password"
-              placeholder="********"
-              className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter password"
               value={password}
-              onChange={handlePasswordChange} // Live validation
+              onChange={handlePasswordChange}
+              error={!!passwordError}
+              helperText={passwordError}
+              fullWidth
+              required
             />
-            {passwordError && (
-              <p className="text-red-500 text-sm mt-1">{passwordError}</p>
-            )}
-          </div>
-
-          <button
+          </FormControl>
+          <Button
             type="submit"
-            className={`w-full mt-6 py-2 sm:py-3 rounded transition duration-300 ${
-              isPasswordValid
-                ? "bg-blue-600 hover:bg-blue-500 text-white"
-                : "bg-gray-500 cursor-not-allowed"
-            }`}
-            disabled={!isPasswordValid} // Disable button if password is invalid
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={!isPasswordValid}
           >
             Register
-          </button>
-          <p className="text-gray-400 text-sm mt-4 text-center">
-            Already have an account?{" "}
-            <Link to="/" className="text-blue-400 hover:underline">
-              Login
-            </Link>
-          </p>
-        </form>
-      </div>
-    </div>
+          </Button>
+          <Typography align="center">
+            Already have an account? <Link href="/">Login</Link>
+          </Typography>
+        </Box>
+      </Card>
+    </Box>
   );
 }

@@ -1,76 +1,85 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import handleLogIn from "../../Services/Login/log_in";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  FormLabel,
+  TextField,
+  Typography,
+  Link,
+  Divider,
+} from "@mui/material";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     await handleLogIn(username, password, navigate);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900 p-4">
-      <div className="w-full max-w-sm sm:max-w-md p-6 sm:p-8 bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-lg sm:text-2xl font-semibold text-white text-center">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      bgcolor="background.default"
+      p={3}
+    >
+      <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
+        <Typography variant="h4" align="center" gutterBottom>
           Login
-        </h2>
-
-        <form className="mt-6" onSubmit={handleSubmit}>
-          <div>
-            <label className="text-gray-300 text-sm sm:text-base">
-              Username
-            </label>
-            <input
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+        >
+          <FormControl>
+            <FormLabel>Username</FormLabel>
+            <TextField
               type="text"
-              placeholder="username"
-              className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              fullWidth
+              required
               autoComplete="username"
             />
-          </div>
-
-          <div className="mt-4">
-            <label className="text-gray-300 text-sm sm:text-base">
-              Password
-            </label>
-            <input
+          </FormControl>
+          <FormControl>
+            <FormLabel>Password</FormLabel>
+            <TextField
               type="password"
-              placeholder="********"
-              className="w-full p-2 mt-1 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+              required
               autoComplete="current-password"
             />
-            <div className="text-right mt-1">
-              <Link
-                to="/forgotpassword"
-                className="text-blue-400 text-sm hover:underline"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white py-2 sm:py-3 rounded transition duration-300 cursor-pointer"
-          >
-            Login
-          </button>
-
-          <p className="text-gray-400 text-sm mt-4 text-center">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-blue-400 hover:underline">
-              Create Account
+          </FormControl>
+          <Box textAlign="right">
+            <Link href="/forgotpassword" variant="body2">
+              Forgot Password?
             </Link>
-          </p>
-        </form>
-      </div>
-    </div>
+          </Box>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Login
+          </Button>
+          <Typography align="center">
+            Don't have an account? <Link href="/register">Create Account</Link>
+          </Typography>
+        </Box>
+      </Card>
+    </Box>
   );
 }
