@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import "./App.css";
 import { Toaster } from "sonner";
 import Loader from "./Components/Loader";
+import ProtectedRoute from "./Pages/Utils/ProtectedRoute";
 
 const Login = lazy(() => import("./Pages/login/Login"));
 const AdminPage = lazy(() => import("./Pages/admin_page/AdminPage"));
@@ -12,7 +13,8 @@ const ResetPassword = lazy(() => import("./Pages/forgot_password/ResetPassword")
 const ForgotPassword = lazy(() => import("./Pages/forgot_password/ForgotPassword"));
 const Register = lazy(() => import("./Pages/register/Register"));
 const VerifyOTP = lazy(() => import("./Pages/forgot_password/VerifyOTP"));
-const ErrorPage = lazy(() => import("./Pages/error_page/ErrorPage"));
+const ErrorPage = lazy(() => import("./Pages/Utils/ErrorPage"));
+const ForbiddenPage = lazy(() => import("./Pages/Utils/ForbiddenPage"));
 
 export default function App() {
   return (
@@ -21,15 +23,29 @@ export default function App() {
       <Router>
         <Suspense fallback={<Loader />}>
           <Routes>
-            
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/verifyotp" element={<VerifyOTP />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/crm" element={<CRMPage />} />
-            <Route path="/billing" element={<BillingPage />} />
+
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN", "CRM"]} />}>
+              <Route path="/crm" element={<CRMPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN", "BILLING"]} />}>
+              <Route path="/billing" element={<BillingPage />} />
+            </Route>
+
+            {/* Forbidden Page */}
+            <Route path="/forbidden" element={<ForbiddenPage />} />
+
+            {/* Catch-All for 404 Errors */}
             <Route path="/*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

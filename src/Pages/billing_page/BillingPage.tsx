@@ -33,7 +33,7 @@ export default function BillingPage() {
       {/* Main Content */}
       <div
         className={`flex flex-col w-full transition-all duration-300 ${
-          isCollapsed ? "ml-[60px]" : "ml-[250px]"
+          isCollapsed ? "ml-[60px]" : "ml-[200px]"
         }`}
       >
         {/* Navbar (Fixed at the top) */}

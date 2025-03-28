@@ -11,6 +11,11 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CRMJob from "../Interface/CRMJob";
 import { updateJob } from "../Services/crm_page/update_job";
+import { IconButton } from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Popover from "@mui/material/Popover";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
 
 interface CRMTableProps {
   jobs: CRMJob[];
@@ -27,6 +32,30 @@ export default function TableComponent({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditing, setIsEditing] = useState<number | null>(null);
   const [editedJob, setEditedJob] = useState<Partial<CRMJob>>({});
+  const [billingFilter, setBillingFilter] = useState<string>("All");
+
+  // Popover State
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  // Open popover on button click
+  const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Close popover
+  const handleFilterClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Handle filter selection
+  const handleFilterSelect = (status: string) => {
+    setBillingFilter(status);
+    setAnchorEl(null); // Close popover after selection
+  };
+
+  // Filter jobs based on billing status
+  const filteredJobs =
+    billingFilter === "All" ? jobs : jobs.filter((job) => job.billingStatus === billingFilter);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -119,38 +148,37 @@ export default function TableComponent({
                 sx={{ position: "relative", zIndex: 1 }}
               >
                 <TableHead>
-                  <TableRow>
-                    {[
-                      "Sl No",
-                      "Job ID",
-                      "Job Date",
-                      "Category",
-                      "Customer Name",
-                      "Job Particulars",
-                      "Job Reference",
-                      "BOE/SB No",
-                      "BOE/SB Date",
-                      "Arrival Date",
-                      "Tentative Closure Date",
-                      "Closed Date",
-                      "Selling Price",
-                      "Billing Status",
-                      "Invoice No",
-                      "Invoice Date",
-                      "Courier Tracking No",
-                      "Payment Status",
-                      "Remarks",
-                      "Apeksha Invoice No",
-                      "Date of Courier",
-                      "Updated By",
-                      "Updated At",
-                      "Action",
-                    ].map((header, index) => (
-                      <TableCell key={index} sx={{ minWidth: 150 }}>
-                        {header}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                <TableRow>
+                  <TableCell sx={{ minWidth: 150 }}>Sl No</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Job ID</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Job Date</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Category</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Customer Name</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Job Particulars</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Job Reference</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>BOE/SB No</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>BOE/SB Date</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Arrival Date</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Tentative Closure Date</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Closed Date</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Selling Price</TableCell>
+                  <TableCell sx={{ minWidth: 150}}>
+                  Billing Status<IconButton size="small" onClick={handleFilterClick} >
+                    <ArrowDropDownIcon />
+                  </IconButton>
+                  </TableCell>
+
+                  <TableCell sx={{ minWidth: 150 }}>Invoice No</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Invoice Date</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Courier Tracking No</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Payment Status</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Remarks</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Apeksha Invoice No</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Date of Courier</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Updated By</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Updated At</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>Action</TableCell>
+                </TableRow>
                 </TableHead>
                 <TableBody>
                   {jobs
@@ -241,7 +269,17 @@ export default function TableComponent({
                         <TableCell>{job.apekshaInvoiceNo}</TableCell>
                         <TableCell>{job.dateOfCourier}</TableCell>
                         <TableCell>{job.updatedBy}</TableCell>
-                        <TableCell>{job.updatedAt}</TableCell>
+                        <TableCell>
+                        {job.updatedAt ? (
+                          <>
+                            <div>{job.updatedAt.split("T")[0]}</div> {/* Date */}
+                            <div>{job.updatedAt.split("T")[1].split(".")[0]}</div> {/* Time */}
+                          </>
+                        ) : (
+                          "N/A"
+                        )}
+                      </TableCell>
+
 
                         {/* Action Buttons */}
                         <TableCell>
@@ -290,6 +328,22 @@ export default function TableComponent({
           />
         </Paper>
       )}
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleFilterClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <MenuList>
+          <MenuItem onClick={() => handleFilterSelect("All")}>All</MenuItem>
+          <MenuItem onClick={() => handleFilterSelect("Done")}>Done</MenuItem>
+          <MenuItem onClick={() => handleFilterSelect("Job Closed")}>Job Closed</MenuItem>
+          <MenuItem onClick={() => handleFilterSelect("Custom Process")}>Custom Process</MenuItem>
+        </MenuList>
+      </Popover>
     </div>
   );
 }
