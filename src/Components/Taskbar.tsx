@@ -1,3 +1,4 @@
+// Taskbar.tsx
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import logo from "../assets/cropped_logo.png";
 import { IoBarChart, IoBagSharp } from "react-icons/io5";

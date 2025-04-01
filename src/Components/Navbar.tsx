@@ -1,9 +1,10 @@
+// Navbar.tsx
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import handleLogOut from "../Services/Login/log_out";
 import { useNavigate } from "react-router-dom";
 
-export default function Navbar({ isCollapsed }:any) {
+export default function Navbar({ isCollapsed }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const navigator = useNavigate();
   const userName = localStorage.getItem("username") || "John Doe";
@@ -13,7 +14,7 @@ export default function Navbar({ isCollapsed }:any) {
   return (
     <nav
       className={`fixed top-0 right-0 bg-gray-900 text-white w-full shadow-md transition-all duration-300 
-      ${isCollapsed ? "pl-[60px]" : "pl-[250px]"}`}
+      ${isCollapsed ? "pl-[60px]" : "pl-[200px]"}`}
     >
       <div className="flex items-center justify-between px-4 sm:px-6 py-4">
         {/* Left Section */}

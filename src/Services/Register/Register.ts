@@ -8,11 +8,11 @@ export const handleRegister = async (
   navigate: Function
 ) => {
   try {
-    const response = await api.post("http://localhost:8080/auth/register", {
-      userName,
-      email,
-      password,
-      role: "ADMIN",
+  const response = await api.post("/auth/register", {
+      email: email, 
+      username: userName,
+      password: password,
+      role:"ADMIN",
     });
 
     console.log(response);

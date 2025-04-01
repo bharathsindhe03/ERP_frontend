@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { handleRegister } from "../../Services/Register/register";
+import  { useState } from "react";
+import { handleRegister } from "../../Services/Register/Register";
 import { useNavigate } from "react-router-dom";
 import { validatePassword } from "../../Utils/validate_password";
 import {
@@ -10,8 +10,7 @@ import {
   FormLabel,
   TextField,
   Typography,
-  Link,
-  Divider,
+  Link
 } from "@mui/material";
 
 export default function Register() {
