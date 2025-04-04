@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { handleRegister } from "../../Services/Register/Register";
 import { useNavigate } from "react-router-dom";
 import { validatePassword } from "../../Utils/validate_password";
@@ -10,7 +10,7 @@ import {
   FormLabel,
   TextField,
   Typography,
-  Link
+  Link,
 } from "@mui/material";
 
 export default function Register() {
@@ -57,38 +57,32 @@ export default function Register() {
           gap={2}
         >
           <FormControl>
-            <FormLabel>Username</FormLabel>
             <TextField
-              type="text"
-              placeholder="Enter username"
+              id="outlined-basic"
+              label="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              fullWidth
-              required
+              variant="outlined"
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Email</FormLabel>
             <TextField
-              type="email"
-              placeholder="someone@gmail.com"
+              id="outlined-basic"
+              label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              fullWidth
-              required
+              variant="outlined"
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
             <TextField
-              type="password"
-              placeholder="Enter password"
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
               value={password}
               onChange={handlePasswordChange}
               error={!!passwordError}
               helperText={passwordError}
-              fullWidth
-              required
             />
           </FormControl>
           <Button

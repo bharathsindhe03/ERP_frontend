@@ -44,27 +44,21 @@ export default function Login() {
           gap={2}
         >
           <FormControl>
-            <FormLabel>Username</FormLabel>
             <TextField
-              type="text"
-              placeholder="Enter username"
+              id="outlined-basic"
+              label="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              fullWidth
-              required
-              autoComplete="username"
+              variant="outlined"
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
             <TextField
-              type="password"
-              placeholder="Enter password"
+              id="outlined-basic"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              fullWidth
-              required
-              autoComplete="current-password"
+              label="Password"
+              variant="outlined"
             />
           </FormControl>
           <Box textAlign="right">
