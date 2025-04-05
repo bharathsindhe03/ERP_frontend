@@ -1,4 +1,3 @@
-// Navbar.tsx
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import handleLogOut from "../Services/Login/log_out";

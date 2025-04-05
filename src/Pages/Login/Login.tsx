@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import handleLogIn from "../../Services/Login/log_in";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,11 +6,9 @@ import {
   Button,
   Card,
   FormControl,
-  FormLabel,
   TextField,
   Typography,
   Link,
-  Divider,
 } from "@mui/material";
 
 export default function Login() {

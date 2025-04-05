@@ -43,7 +43,13 @@ export default function AdminPage() {
         {/* Content Below Navbar */}
         <div className="flex-grow overflow-auto p-4 bg-white mt-[64px]">
           <div className="overflow-x-auto min-w-[700px]">
-            <CRMTable jobs={jobs} loading={loading} error={error} isCollapsed={isCollapsed} /> {/* Pass isCollapsed */}
+            <CRMTable
+              jobs={jobs}
+              loading={loading}
+              error={error}
+              isCollapsed={isCollapsed}
+            />{" "}
+            {/* Pass isCollapsed */}
           </div>
         </div>
       </div>

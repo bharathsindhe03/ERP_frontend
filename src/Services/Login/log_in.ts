@@ -11,13 +11,8 @@ export default async function handleLogIn(
     console.log(response);
     if (response.status === 200) {
       toast.success("Login Successful");
-      if (response.data.role === "ADMIN") {
-        navigate("/admin");
-      } else if (response.data.role === "CRM") {
-        navigate("/crm");
-      } else if (response.data.role === "BILLING") {
-        navigate("/billing");
-      }
+
+      navigate("/dashboard");
 
       localStorage.setItem("email", response.data.email);
       localStorage.setItem("role", response.data.role);
