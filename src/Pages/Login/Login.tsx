@@ -1,24 +1,22 @@
 import { useState } from "react";
-import handleLogIn from "../../Services/Login/log_in";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Card,
-  FormControl,
-  TextField,
-  Typography,
-  Link,
-} from "@mui/material";
+import { handleForgotPassword } from "../../Services/ForgotPassword/forgot_password";
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import FormControl from "@mui/material/FormControl";
+
+export default function ForgotPassword() {
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleLogIn(username, password, navigate);
+    await handleForgotPassword(email, navigate);
   };
 
   return (
@@ -32,7 +30,15 @@ export default function Login() {
     >
       <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
         <Typography variant="h4" align="center" gutterBottom>
-          Login
+          Forgot Password
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          textAlign="center"
+          mb={3}
+        >
+          Enter your email and we’ll send you a link to reset your password.
         </Typography>
         <Box
           component="form"
@@ -43,32 +49,24 @@ export default function Login() {
         >
           <FormControl>
             <TextField
-              id="outlined-basic"
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              label="Email"
+              type="email"
               variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </FormControl>
-          <FormControl>
-            <TextField
-              id="outlined-basic"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              label="Password"
-              variant="outlined"
-            />
-          </FormControl>
-          <Box textAlign="right">
-            <Link href="/forgotpassword" variant="body2">
-              Forgot Password?
-            </Link>
-          </Box>
+
           <Button type="submit" variant="contained" color="primary" fullWidth>
-            Login
+            Send Reset Link
           </Button>
-          <Typography align="center">
-            Don't have an account? <Link href="/register">Create Account</Link>
+
+          <Typography align="center" variant="body2">
+            Remembered your password?{" "}
+            <Link href="/login" underline="hover">
+              Log in
+            </Link>
           </Typography>
         </Box>
       </Card>

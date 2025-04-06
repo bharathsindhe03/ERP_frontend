@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Taskbar from "../../Components/Taskbar";
-import CRMTable from "../../Components/TableComponent";
-import CRMJob from "../../Interface/CRMJob";
-import handleFetchJob from "../../Services/crm_page/fetch_jobs";
+import TableComponent from "../../Components/TableComponent";
+import TableColumns from "../../Interface/TableColumns";
+import handleFetchJob from "../../Services/Jobs/FetchJobs";
 
 export default function AdminPage() {
-  const [jobs, setJobs] = useState<CRMJob[]>([]);
+  const [jobs, setJobs] = useState<TableColumns[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -43,7 +43,7 @@ export default function AdminPage() {
         {/* Content Below Navbar */}
         <div className="flex-grow overflow-auto p-4 bg-white mt-[64px]">
           <div className="overflow-x-auto min-w-[700px]">
-            <CRMTable
+            <TableComponent
               jobs={jobs}
               loading={loading}
               error={error}

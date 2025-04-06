@@ -1,4 +1,4 @@
-import CRMJob from "../../Interface/CRMJob";
+import CRMJob from "../../Interface/TableColumns";
 import api from "../../Utils/create_api";
 
 export default async function handleFetchJob(

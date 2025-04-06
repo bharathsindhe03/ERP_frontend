@@ -1,4 +1,4 @@
-export default interface CRMJob {
+export default interface TableColumns {
   slNo: number;
   jobId: number;
   jobDate: string;

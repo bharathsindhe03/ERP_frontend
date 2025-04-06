@@ -1,8 +1,10 @@
-import CRMJob from "../Interface/CRMJob";
-import { updateJob } from "../Services/crm_page/update_job";
+import TableColumns from "../Interface/TableColumns";
+import { updateJob } from "../Services/Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
 
-export const formatDate = (dateString: string | undefined): string | undefined => {
+export const formatDate = (
+  dateString: string | undefined
+): string | undefined => {
   if (!dateString) return undefined;
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -12,9 +14,9 @@ export const formatDate = (dateString: string | undefined): string | undefined =
 };
 
 export const handleEdit = (
-  job: CRMJob,
+  job: TableColumns,
   setIsEditing: Dispatch<SetStateAction<number | null>>,
-  setEditedJob: Dispatch<SetStateAction<Partial<CRMJob>>>
+  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
   setIsEditing(job.jobId);
   setEditedJob({
@@ -43,9 +45,9 @@ export const handleEdit = (
 };
 
 export const handleSave = async (
-  editedJob: Partial<CRMJob>,
+  editedJob: Partial<TableColumns>,
   setIsEditing: Dispatch<SetStateAction<number | null>>,
-  setEditedJob: Dispatch<SetStateAction<Partial<CRMJob>>>
+  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
   if (!editedJob.jobId || editedJob.slNo === undefined) {
     console.error("Missing required fields:", editedJob);
@@ -89,15 +91,15 @@ export const handleSave = async (
 
 export const handleCancel = (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
-  setEditedJob: Dispatch<SetStateAction<Partial<CRMJob>>>
+  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
   setIsEditing(null);
   setEditedJob({});
 };
 
 export const handleInputChange = (
-  setEditedJob: Dispatch<SetStateAction<Partial<CRMJob>>>,
-  field: keyof CRMJob,
+  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>,
+  field: keyof TableColumns,
   value: string
 ) => {
   setEditedJob((prev) => ({ ...prev, [field]: value }));
@@ -120,12 +122,22 @@ export const handleSort = {
   ) => {
     if (a === undefined) return direction === "ascending" ? 1 : -1;
     if (b === undefined) return direction === "ascending" ? -1 : 1;
-    return direction === "ascending" ? (a || 0) - (b || 0) : (b || 0) - (a || 0);
+    return direction === "ascending"
+      ? (a || 0) - (b || 0)
+      : (b || 0) - (a || 0);
   },
   handleSort: (
-    sortConfig: { key: keyof CRMJob | null; direction: "ascending" | "descending" | null },
-    setSortConfig: Dispatch<SetStateAction<{ key: keyof CRMJob | null; direction: "ascending" | "descending" | null }>>,
-    key: keyof CRMJob
+    sortConfig: {
+      key: keyof TableColumns | null;
+      direction: "ascending" | "descending" | null;
+    },
+    setSortConfig: Dispatch<
+      SetStateAction<{
+        key: keyof TableColumns | null;
+        direction: "ascending" | "descending" | null;
+      }>
+    >,
+    key: keyof TableColumns
   ) => {
     let direction: "ascending" | "descending" | null = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
@@ -175,7 +187,9 @@ export const handleChangeRowsPerPage = (
   setPage(0);
 };
 
-export const getEditableColumns = (userRole: string | null): (keyof CRMJob)[] => {
+export const getEditableColumns = (
+  userRole: string | null
+): (keyof TableColumns)[] => {
   if (userRole === "ADMIN") {
     return [
       "jobId",

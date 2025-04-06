@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import handleCRMAddJob from "../Services/crm_page/crm_add_jobs";
+import handleCRMAddJob from "../Services/Jobs/AddJobs";
+
 
 export default function AddJob({ setShowModal }: any) {
   const [customerName, setCustomerName] = useState("");
@@ -89,7 +90,9 @@ export default function AddJob({ setShowModal }: any) {
               onChange={(e) => setCategory(e.target.value)}
               required
             >
-              <option value="" disabled>Select Category</option>
+              <option value="" disabled>
+                Select Category
+              </option>
               {categoryOptions.map((option, index) => (
                 <option key={index} value={option}>
                   {option}
@@ -118,7 +121,7 @@ export default function AddJob({ setShowModal }: any) {
             type="submit"
             className="bg-blue-600 px-4 py-2 text-white rounded-md hover:bg-blue-500"
           >
-            {loading ? "Loading..." : "Add Job"}
+            {loading ? "Loading" : "Add Job"}
           </button>
         </form>
       </div>

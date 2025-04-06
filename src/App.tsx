@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "./App.css";
 import { Toaster } from "sonner";
-import Loader from "./Components/Loader";
-import ProtectedRoute from "./Pages/Utils/ProtectedRoute";
+import PageLoader from "./Components/PageLoader";
+
 
 const Login = lazy(() => import("./Pages/Login/Login"));
 const Dashboard = lazy(() => import("./Pages/Dashboard/Dashboard"));
@@ -23,7 +23,7 @@ export default function App() {
     <>
       <Toaster position="top-center" />
       <Router>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />

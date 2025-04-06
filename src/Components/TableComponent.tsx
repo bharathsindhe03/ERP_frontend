@@ -10,7 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import CRMJob from "../Interface/CRMJob";
+import TableColumns from "../Interface/TableColumns";
 import { IconButton } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -33,26 +33,29 @@ import {
   getEditableColumns,
 } from "../Utils/TableComponent";
 
-interface CRMTableProps {
-  jobs: CRMJob[];
+interface TableColumnProps {
+  jobs: TableColumns[];
   loading: boolean;
   error: string | null;
   isCollapsed: boolean; // Add isCollapsed prop
 }
 
-export default function TableComponent({ jobs, loading, error,isCollapsed  }: CRMTableProps) {
+export default function TableComponent({
+  jobs,
+  loading,
+  error,
+  isCollapsed,
+}: TableColumnProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditing, setIsEditing] = useState<number | null>(null);
-  const [editedJob, setEditedJob] = useState<Partial<CRMJob>>({});
+  const [editedJob, setEditedJob] = useState<Partial<TableColumns>>({});
   const [billingFilter, setBillingFilter] = useState<string>("All");
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof CRMJob | null;
+    key: keyof TableColumns | null;
     direction: "ascending" | "descending" | null;
   }>({ key: null, direction: null });
 
-  
-  
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const filteredJobs = useMemo(
@@ -105,8 +108,15 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
             flexDirection: "column",
           }}
         >
-          <div  className="overflow-auto" style={{ maxHeight: "65vh", overflowX: "auto",marginRight: isCollapsed ? '0px' : '150px' }}>
-            <TableContainer sx={{ zIndex: 10 , minWidth:'100%'}}>
+          <div
+            className="overflow-auto"
+            style={{
+              maxHeight: "65vh",
+              overflowX: "auto",
+              marginRight: isCollapsed ? "0px" : "150px",
+            }}
+          >
+            <TableContainer sx={{ zIndex: 10, minWidth: "100%" }}>
               <Table
                 stickyHeader
                 aria-label="CRM Table"
@@ -119,7 +129,13 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                       Job ID
                       <IconButton
                         size="small"
-                        onClick={() => handleSort.handleSort(sortConfig, setSortConfig, "jobId")}
+                        onClick={() =>
+                          handleSort.handleSort(
+                            sortConfig,
+                            setSortConfig,
+                            "jobId"
+                          )
+                        }
                       >
                         {sortConfig.key === "jobId" &&
                         sortConfig.direction === "ascending" ? (
@@ -133,7 +149,13 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                       Job Date
                       <IconButton
                         size="small"
-                        onClick={() => handleSort.handleSort(sortConfig, setSortConfig, "jobDate")}
+                        onClick={() =>
+                          handleSort.handleSort(
+                            sortConfig,
+                            setSortConfig,
+                            "jobDate"
+                          )
+                        }
                       >
                         {sortConfig.key === "jobDate" &&
                         sortConfig.direction === "ascending" ? (
@@ -147,7 +169,13 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                       Category
                       <IconButton
                         size="small"
-                        onClick={() => handleSort.handleSort(sortConfig, setSortConfig, "category")}
+                        onClick={() =>
+                          handleSort.handleSort(
+                            sortConfig,
+                            setSortConfig,
+                            "category"
+                          )
+                        }
                       >
                         {sortConfig.key === "category" &&
                         sortConfig.direction === "ascending" ? (
@@ -161,7 +189,13 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                       Customer Name
                       <IconButton
                         size="small"
-                        onClick={() => handleSort.handleSort(sortConfig, setSortConfig, "customerName")}
+                        onClick={() =>
+                          handleSort.handleSort(
+                            sortConfig,
+                            setSortConfig,
+                            "customerName"
+                          )
+                        }
                       >
                         {sortConfig.key === "customerName" &&
                         sortConfig.direction === "ascending" ? (
@@ -185,7 +219,10 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                     <TableCell sx={{ minWidth: 150 }}>Selling Price</TableCell>
                     <TableCell sx={{ minWidth: 150 }}>
                       Billing Status
-                      <IconButton size="small" onClick={(e) => handleFilterClick(e, setAnchorEl)}>
+                      <IconButton
+                        size="small"
+                        onClick={(e) => handleFilterClick(e, setAnchorEl)}
+                      >
                         <ArrowDropDownIcon />
                       </IconButton>
                     </TableCell>
@@ -219,7 +256,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.jobId || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "jobId", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "jobId",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -234,7 +275,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.jobDate || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "jobDate", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "jobDate",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -248,7 +293,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.category || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "category", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "category",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -262,7 +311,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.customerName || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "customerName", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "customerName",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -276,7 +329,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.jobParticulars || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "jobParticulars", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "jobParticulars",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -290,7 +347,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.jobReference || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "jobReference", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "jobReference",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -304,7 +365,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.boeSbNo || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "boeSbNo", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "boeSbNo",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -319,7 +384,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.boeSbDate || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "boeSbDate", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "boeSbDate",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -334,7 +403,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.arrivalDate || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "arrivalDate", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "arrivalDate",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -349,7 +422,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.tentativeClosureDate || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "tentativeClosureDate", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "tentativeClosureDate",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -364,7 +441,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.closedDate || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "closedDate", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "closedDate",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -378,7 +459,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.sellingPrice || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "sellingPrice", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "sellingPrice",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -392,7 +477,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.billingStatus || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "billingStatus", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "billingStatus",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -406,7 +495,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.invoiceNo || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "invoiceNo", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "invoiceNo",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -421,7 +514,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.invoiceDate || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "invoiceDate", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "invoiceDate",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -435,7 +532,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.courierTrackingNo || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "courierTrackingNo", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "courierTrackingNo",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -449,7 +550,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.paymentStatus || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "paymentStatus", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "paymentStatus",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -463,7 +568,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.remarks || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "remarks", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "remarks",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -477,7 +586,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <TextField
                               value={editedJob.apekshaInvoiceNo || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "apekshaInvoiceNo", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "apekshaInvoiceNo",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -492,7 +605,11 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               type="date"
                               value={editedJob.dateOfCourier || ""}
                               onChange={(e) =>
-                                handleInputChange(setEditedJob, "dateOfCourier", e.target.value)
+                                handleInputChange(
+                                  setEditedJob,
+                                  "dateOfCourier",
+                                  e.target.value
+                                )
                               }
                               size="small"
                             />
@@ -500,14 +617,14 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             job.dateOfCourier
                           )}
                         </TableCell>
-                        <TableCell>
-                          {job.updatedBy}
-                        </TableCell>
+                        <TableCell>{job.updatedBy}</TableCell>
                         <TableCell>
                           {job.updatedAt ? (
                             <>
                               <div>{job.updatedAt.split("T")[0]}</div>
-                              <div>{job.updatedAt.split("T")[1].split(".")[0]}</div>
+                              <div>
+                                {job.updatedAt.split("T")[1].split(".")[0]}
+                              </div>
                             </>
                           ) : (
                             "N/A"
@@ -519,7 +636,13 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               <Button
                                 variant="contained"
                                 color="success"
-                                onClick={() => handleSave(editedJob, setIsEditing, setEditedJob)}
+                                onClick={() =>
+                                  handleSave(
+                                    editedJob,
+                                    setIsEditing,
+                                    setEditedJob
+                                  )
+                                }
                                 sx={{ mr: 1 }}
                               >
                                 Save
@@ -527,7 +650,9 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                               <Button
                                 variant="contained"
                                 color="error"
-                                onClick={() => handleCancel(setIsEditing, setEditedJob)}
+                                onClick={() =>
+                                  handleCancel(setIsEditing, setEditedJob)
+                                }
                               >
                                 Cancel
                               </Button>
@@ -536,7 +661,9 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
                             <Button
                               variant="contained"
                               color="primary"
-                              onClick={() => handleEdit(job, setIsEditing, setEditedJob)}
+                              onClick={() =>
+                                handleEdit(job, setIsEditing, setEditedJob)
+                              }
                             >
                               Edit
                             </Button>
@@ -549,14 +676,18 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
             </TableContainer>
           </div>
           <TablePagination
-            style={{marginRight: isCollapsed ? '40px' : '180px'}}
+            style={{ marginRight: isCollapsed ? "40px" : "180px" }}
             rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={jobs.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={(event, newPage) => handleChangePage(event, newPage, setPage)}
-            onRowsPerPageChange={(event) => handleChangeRowsPerPage(event, setRowsPerPage, setPage)}
+            onPageChange={(event, newPage) =>
+              handleChangePage(event, newPage, setPage)
+            }
+            onRowsPerPageChange={(event) =>
+              handleChangeRowsPerPage(event, setRowsPerPage, setPage)
+            }
           />
         </Paper>
       )}
@@ -570,12 +701,36 @@ export default function TableComponent({ jobs, loading, error,isCollapsed  }: CR
         }}
       >
         <MenuList>
-          <MenuItem onClick={() => handleFilterSelect("All", setBillingFilter, setAnchorEl)}>All</MenuItem>
-          <MenuItem onClick={() => handleFilterSelect("Done", setBillingFilter, setAnchorEl)}>Done</MenuItem>
-          <MenuItem onClick={() => handleFilterSelect("Job Closed", setBillingFilter, setAnchorEl)}>
+          <MenuItem
+            onClick={() =>
+              handleFilterSelect("All", setBillingFilter, setAnchorEl)
+            }
+          >
+            All
+          </MenuItem>
+          <MenuItem
+            onClick={() =>
+              handleFilterSelect("Done", setBillingFilter, setAnchorEl)
+            }
+          >
+            Done
+          </MenuItem>
+          <MenuItem
+            onClick={() =>
+              handleFilterSelect("Job Closed", setBillingFilter, setAnchorEl)
+            }
+          >
             Job Closed
           </MenuItem>
-          <MenuItem onClick={() => handleFilterSelect("Custom Process", setBillingFilter, setAnchorEl)}>
+          <MenuItem
+            onClick={() =>
+              handleFilterSelect(
+                "Custom Process",
+                setBillingFilter,
+                setAnchorEl
+              )
+            }
+          >
             Custom Process
           </MenuItem>
         </MenuList>
