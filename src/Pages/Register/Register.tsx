@@ -67,7 +67,6 @@ export default function Register() {
         >
           <FormControl>
             <TextField
-              id="outlined-basic"
               label="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -76,7 +75,6 @@ export default function Register() {
           </FormControl>
           <FormControl>
             <TextField
-              id="outlined-basic"
               label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -94,7 +92,6 @@ export default function Register() {
           </FormControl>
           <FormControl>
             <TextField
-              id="outlined-adornment-password"
               label="Password"
               variant="outlined"
               value={password}

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-} from "@mui/material";
 import { handleForgotPassword } from "../../Services/ForgotPassword/forgot_password";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import FormControl from "@mui/material/FormControl";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    handleForgotPassword(email, navigate);
+    await handleForgotPassword(email, navigate);
   };
 
   return (
@@ -26,48 +26,49 @@ export default function ForgotPassword() {
       alignItems="center"
       minHeight="100vh"
       bgcolor="background.default"
-      px={2}
+      p={3}
     >
-      <Card sx={{ maxWidth: 400, width: "100%", boxShadow: 6 }}>
-        <CardContent>
-          <Typography
-            variant="h5"
-            component="h2"
-            textAlign="center"
-            gutterBottom
-          >
-            Forgot Password
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            textAlign="center"
-            mb={3}
-          >
-            Enter your email, and we'll send you a link to reset your password.
-          </Typography>
-
-          <form onSubmit={handleSubmit}>
+      <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Forgot Password
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          textAlign="center"
+          mb={3}
+        >
+          Enter your email and we’ll send you a link to reset your password.
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+        >
+          <FormControl>
             <TextField
-              fullWidth
               label="Email"
-              variant="outlined"
               type="email"
+              variant="outlined"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              sx={{ mb: 3 }}
+              required
             />
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Send Reset Link
-            </Button>
-          </form>
-        </CardContent>
+          </FormControl>
+
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Send Reset Link
+          </Button>
+
+          <Typography align="center" variant="body2">
+            Remembered your password?{" "}
+            <Link href="/" underline="hover">
+              Log in
+            </Link>
+          </Typography>
+        </Box>
       </Card>
     </Box>
   );

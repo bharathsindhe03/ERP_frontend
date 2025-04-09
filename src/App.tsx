@@ -4,7 +4,6 @@ import "./App.css";
 import { Toaster } from "sonner";
 import PageLoader from "./Components/PageLoader";
 
-
 const Login = lazy(() => import("./Pages/Login/Login"));
 const Dashboard = lazy(() => import("./Pages/Dashboard/Dashboard"));
 const ResetPassword = lazy(

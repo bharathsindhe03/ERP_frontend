@@ -3,7 +3,7 @@ import { updateJob } from "../Services/Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
 
 export const formatDate = (
-  dateString: string | undefined
+  dateString: string | null | undefined
 ): string | undefined => {
   if (!dateString) return undefined;
   const date = new Date(dateString);
@@ -54,7 +54,7 @@ export const handleSave = async (
     return;
   }
 
-  const updatedJob = {
+  const updatedJob: TableColumns = {
     slNo: editedJob.slNo,
     jobId: Number(editedJob.jobId),
     jobDate: formatDate(editedJob.jobDate),
@@ -76,6 +76,9 @@ export const handleSave = async (
     remarks: editedJob.remarks,
     apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
     dateOfCourier: formatDate(editedJob.dateOfCourier),
+    action: null, // These fields might be handled on the backend or not editable here
+    updatedBy: undefined,
+    updatedAt: undefined,
   };
 
   console.log("Calling updateJob with data:", updatedJob);

@@ -1,30 +1,30 @@
 import { toast } from "sonner";
-import api from "../../Utils/create_api"; // Assuming you have an API instance configured
+import api from "../../Utils/create_api";
+import TableColumns from "../../Interface/TableColumns";
 
-interface JobUpdateData {
-    slNo: number,
-  jobId: number;
-  jobDate?: string;
-  category?: string;
-  customerName?: string;
-}   
-
-export const updateJob = async (updatedJob: JobUpdateData) => {
-  try { 
-    console.log(updatedJob);
-    const response = await api.patch("/job/update-job", updatedJob);
+export const updateJob = async (
+  updatedJob: TableColumns
+): Promise<TableColumns | undefined> => {
+  try {
+    console.log("Updating job:", updatedJob);
+    const response = await api.patch(
+      `/job/update-job/${updatedJob.jobId}`,
+      updatedJob
+    ); // Assuming your API expects ID in the path
 
     if (response.status === 200) {
       toast.success("Job updated successfully");
+      return response.data as TableColumns;
     } else if (response.status === 400) {
       toast.error("Error updating job");
+    } else {
+      toast.error(`Failed to update job. Status: ${response.status}`);
     }
-    console.log(response);
-
-    return response.data;
+    console.log("Update response:", response);
+    return undefined;
   } catch (error) {
     console.error("Error updating job:", error);
     toast.error("Failed to update job");
-    
+    return undefined;
   }
 };

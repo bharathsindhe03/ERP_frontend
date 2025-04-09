@@ -25,7 +25,7 @@ export default function Taskbar({ isCollapsed, setIsCollapsed }: any) {
           <FiChevronLeft size={24} />
         )}
       </button>
-
+        
       {/* Logo */}
       <div className="flex justify-center py-4">
         <img
@@ -91,8 +91,6 @@ export default function Taskbar({ isCollapsed, setIsCollapsed }: any) {
           </span>
         </a>
       </nav>
-
-      {/* Add Job Modal */}
       {showModal && <AddJob setShowModal={setShowModal} />}
     </div>
   );

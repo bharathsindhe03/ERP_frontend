@@ -1,15 +1,40 @@
-import { useState } from "react";
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 import { FaTimes } from "react-icons/fa";
 import handleCRMAddJob from "../Services/Jobs/AddJobs";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
+interface AddJobProps {
+  setShowModal: (show: boolean) => void;
+}
 
-export default function AddJob({ setShowModal }: any) {
-  const [customerName, setCustomerName] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [category, setCategory] = useState("");
-  const [sellingPrice, setSellingPrice] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default function AddJob({ setShowModal }: AddJobProps) {
+  const [customerName, setCustomerName] = React.useState("");
+  const [date, setDate] = React.useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+  const [category, setCategory] = React.useState("");
+  const [sellingPrice, setSellingPrice] = React.useState<number | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
 
   const categoryOptions = [
     "Clearance",
@@ -38,93 +63,111 @@ export default function AddJob({ setShowModal }: any) {
       setShowModal
     );
   };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white text-gray-900 p-6 rounded-md shadow-lg w-96">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Add New Job</h2>
-          <button
-            onClick={() => setShowModal(false)}
-            className="text-gray-600 hover:text-gray-900"
-            title="Close Modal"
-          >
-            <FaTimes />
-          </button>
-        </div>
+    <Dialog
+      fullScreen={fullScreen}
+      open={true}
+      onClose={handleClose}
+      aria-labelledby="add-job-dialog-title"
+    >
+      <DialogTitle
+        id="add-job-dialog-title"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {"Add New Job"}
+        <Button onClick={handleClose} color="inherit" aria-label="close">
+          <FaTimes />
+        </Button>
+      </DialogTitle>
+      <DialogContent>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="customerName" className="block text-sm font-medium">
-              Customer Name
-            </label>
-            <input
-              id="customerName"
-              type="text"
-              className="w-full border p-2 rounded-md"
-              placeholder="Enter Customer Name"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="date" className="block text-sm font-medium">
-              Date
-            </label>
-            <input
-              id="date"
-              type="date"
-              className="w-full border p-2 rounded-md"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="category" className="block text-sm font-medium">
-              Category
-            </label>
-            <select
+          <TextField
+            autoFocus
+            margin="dense"
+            id="customerName"
+            label="Customer Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            required
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="dense"
+            id="date"
+            label="Date"
+            type="date"
+            fullWidth
+            variant="outlined"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            sx={{ mb: 2 }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
               id="category"
-              className="w-full border p-2 rounded-md"
               value={category}
+              label="Category"
               onChange={(e) => setCategory(e.target.value)}
               required
+              variant="outlined"
             >
-              <option value="" disabled>
+              <MenuItem value="" disabled>
                 Select Category
-              </option>
+              </MenuItem>
               {categoryOptions.map((option, index) => (
-                <option key={index} value={option}>
+                <MenuItem key={index} value={option}>
                   {option}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="sellingPrice" className="block text-sm font-medium">
-              Selling Price
-            </label>
-            <input
-              id="sellingPrice"
-              type="number"
-              className="w-full border p-2 rounded-md"
-              placeholder="Enter Selling Price"
-              value={sellingPrice ?? ""}
-              onChange={(e) => {
-                const value = e.target.value;
-                setSellingPrice(value === "" ? null : Number(value));
-              }}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-600 px-4 py-2 text-white rounded-md hover:bg-blue-500"
-          >
-            {loading ? "Loading" : "Add Job"}
-          </button>
+            </Select>
+          </FormControl>
+          <TextField
+            margin="dense"
+            id="sellingPrice"
+            label="Selling Price"
+            type="number"
+            fullWidth
+            variant="outlined"
+            value={sellingPrice === null ? "" : sellingPrice}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSellingPrice(value === "" ? null : Number(value));
+            }}
+            required
+            sx={{ mb: 2 }}
+          />
         </form>
-      </div>
-    </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          disabled={loading}
+          autoFocus
+        >
+          {loading ? <CircularProgress size={24} /> : "Add Job"}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
