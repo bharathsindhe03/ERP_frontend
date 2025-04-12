@@ -1,5 +1,4 @@
-// TableComponent.tsx
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -19,7 +18,6 @@ import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import {
-  formatDate,
   handleEdit,
   handleSave,
   handleCancel,
@@ -247,7 +245,7 @@ export default function TableComponent({
                 <TableBody>
                   {sortedJobs
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((job, index) => (
+                    .map((job) => (
                       <TableRow hover key={job.jobId}>
                         <TableCell>{job.slNo}</TableCell>
                         <TableCell>

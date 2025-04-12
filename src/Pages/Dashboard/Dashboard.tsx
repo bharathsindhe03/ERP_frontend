@@ -1,13 +1,14 @@
-// AdminPage.tsx
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Taskbar from "../../Components/Taskbar";
 import TableComponent from "../../Components/TableComponent";
 import TableColumns from "../../Interface/TableColumns";
 import handleFetchJob from "../../Services/Jobs/FetchJobs";
+import Searchbar from "../../Components/Searchbar";
 
-export default function AdminPage() {
+export default function Dashboard() {
   const [jobs, setJobs] = useState<TableColumns[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<TableColumns[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -18,18 +19,55 @@ export default function AdminPage() {
   useEffect(() => {
     localStorage.setItem("isCollapsed", JSON.stringify(isCollapsed));
   }, [isCollapsed]);
+  const fetchJobs = async () => {
+    await handleFetchJob(
+      (data) => {
+        setJobs(data);
+        setFilteredJobs(data);
+      },
+      setLoading,
+      setError
+    );
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
   useEffect(() => {
     const fetchJobs = async () => {
-      await handleFetchJob(setJobs, setLoading, setError);
+      await handleFetchJob(
+        (data) => {
+          setJobs(data);
+          setFilteredJobs(data);
+        },
+        setLoading,
+        setError
+      );
     };
     fetchJobs();
   }, []);
 
+  const handleSearch = (query: string) => {
+    const lowered = query.toLowerCase();
+    const filtered = jobs.filter((job) => {
+      return (
+        job.customerName?.toLowerCase().includes(lowered) ||
+        job.category?.toLowerCase().includes(lowered) ||
+        String(job.jobId)?.toLowerCase().includes(lowered)
+      );
+    });
+    setFilteredJobs(filtered);
+  };
+
   return (
     <div className="h-screen flex overflow-hidden">
       {/* Taskbar */}
-      <Taskbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <Taskbar
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+        onJobAdded={fetchJobs}
+      />
 
       {/* Main Content */}
       <div
@@ -37,19 +75,24 @@ export default function AdminPage() {
           isCollapsed ? "ml-[60px]" : "ml-[200px]"
         }`}
       >
-        {/* Navbar (Fixed at the top) */}
+        {/* Navbar */}
         <Navbar isCollapsed={isCollapsed} />
 
         {/* Content Below Navbar */}
-        <div className="flex-grow overflow-auto p-4 bg-white mt-[64px]">
-          <div className="overflow-x-auto min-w-[700px]">
+        <div className="flex-grow overflow-auto bg-white px-4 sm:px-6 pt-6 mt-[72px]">
+          {/* Searchbar */}
+          <div className="mb-4">
+            <Searchbar onSearch={handleSearch} />
+          </div>
+
+          {/* Table */}
+          <div className="overflow-x-auto">
             <TableComponent
-              jobs={jobs}
+              jobs={filteredJobs}
               loading={loading}
               error={error}
               isCollapsed={isCollapsed}
-            />{" "}
-            {/* Pass isCollapsed */}
+            />
           </div>
         </div>
       </div>

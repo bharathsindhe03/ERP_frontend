@@ -18,9 +18,10 @@ import Alert from "@mui/material/Alert";
 
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
+  onJobAdded?: () => void;
 }
 
-export default function AddJob({ setShowModal }: AddJobProps) {
+export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
   const [customerName, setCustomerName] = React.useState("");
   const [date, setDate] = React.useState<string>(
     new Date().toISOString().split("T")[0]
@@ -60,7 +61,10 @@ export default function AddJob({ setShowModal }: AddJobProps) {
       Number(sellingPrice),
       setLoading,
       setError,
-      setShowModal
+      () => {
+        setShowModal(false);
+        if (onJobAdded) onJobAdded();
+      }
     );
   };
 
@@ -142,7 +146,7 @@ export default function AddJob({ setShowModal }: AddJobProps) {
           </FormControl>
           <TextField
             margin="dense"
-            id="sellingPrice" 
+            id="sellingPrice"
             label="Selling"
             type="number"
             fullWidth

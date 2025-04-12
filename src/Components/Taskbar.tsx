@@ -5,7 +5,11 @@ import { IoIosAddCircle } from "react-icons/io";
 import { useState } from "react";
 import AddJob from "./AddJob";
 
-export default function Taskbar({ isCollapsed, setIsCollapsed }: any) {
+export default function Taskbar({
+  isCollapsed,
+  setIsCollapsed,
+  onJobAdded,
+}: any) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -64,7 +68,9 @@ export default function Taskbar({ isCollapsed, setIsCollapsed }: any) {
           </span>
         </a>
       </nav>
-      {showModal && <AddJob setShowModal={setShowModal} />}
+      {showModal && (
+        <AddJob setShowModal={setShowModal} onJobAdded={onJobAdded} />
+      )}
     </div>
   );
 }
