@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, ReactNode } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -91,6 +91,33 @@ export default function TableComponent({
     return filteredJobs;
   }, [filteredJobs, sortConfig]);
 
+  const columnWidths: { [key: string]: string } = {
+    slNo: "60px",
+    jobId: "120px",
+    jobDate: "140px",
+    category: "150px",
+    customerName: "200px",
+    jobParticulars: "300px",
+    jobReference: "200px",
+    boeSbNo: "150px",
+    boeSbDate: "150px",
+    arrivalDate: "150px",
+    tentativeClosureDate: "200px",
+    closedDate: "150px",
+    sellingPrice: "150px",
+    billingStatus: "150px",
+    invoiceNo: "150px",
+    invoiceDate: "150px",
+    courierTrackingNo: "200px",
+    paymentStatus: "150px",
+    remarks: "300px",
+    apekshaInvoiceNo: "200px",
+    dateOfCourier: "150px",
+    updatedBy: "150px",
+    updatedAt: "200px",
+    Action: "120px",
+  };
+
   return (
     <div className="p-4 flex flex-col h-full">
       {loading ? (
@@ -118,128 +145,78 @@ export default function TableComponent({
               <Table
                 stickyHeader
                 aria-label="CRM Table"
-                sx={{ position: "relative", zIndex: 1 }}
+                sx={{
+                  position: "relative",
+                  zIndex: 1,
+                  border: "1px solid rgba(224, 224, 224, 1)",
+                  tableLayout: "fixed",
+                }}
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ minWidth: 150 }}>Sl No</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Job ID
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          handleSort.handleSort(
-                            sortConfig,
-                            setSortConfig,
-                            "jobId"
-                          )
-                        }
+                    {Object.entries(columnWidths).map(([key, width]) => (
+                      <TableCell
+                        key={key}
+                        style={{
+                          width: width,
+                          border: "1px solid rgba(224, 224, 224, 1)",
+                          position:
+                            key === "slNo" || key === "jobId"
+                              ? "sticky"
+                              : "static",
+                          left:
+                            key === "slNo"
+                              ? 0
+                              : key === "jobId"
+                              ? parseInt(columnWidths["slNo"])
+                              : undefined,
+                          background:
+                            key === "slNo" || key === "jobId"
+                              ? "#fff"
+                              : undefined,
+                          zIndex:
+                            key === "slNo" || key === "jobId" ? 11 : undefined,
+                        }}
                       >
-                        {sortConfig.key === "jobId" &&
-                        sortConfig.direction === "ascending" ? (
-                          <ArrowUpwardIcon />
+                        {key === "billingStatus" ? (
+                          <>
+                            Billing Status
+                            <IconButton
+                              size="small"
+                              onClick={(e) => handleFilterClick(e, setAnchorEl)}
+                            >
+                              <ArrowDropDownIcon />
+                            </IconButton>
+                          </>
+                        ) : key === "jobId" ||
+                          key === "jobDate" ||
+                          key === "category" ||
+                          key === "customerName" ? (
+                          <>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                            <IconButton
+                              size="small"
+                              onClick={() =>
+                                handleSort.handleSort(
+                                  sortConfig,
+                                  setSortConfig,
+                                  key as keyof TableColumns
+                                )
+                              }
+                            >
+                              {sortConfig.key === key &&
+                              sortConfig.direction === "ascending" ? (
+                                <ArrowUpwardIcon />
+                              ) : (
+                                <ArrowDownwardIcon />
+                              )}
+                            </IconButton>
+                          </>
                         ) : (
-                          <ArrowDownwardIcon />
+                          key.charAt(0).toUpperCase() + key.slice(1)
                         )}
-                      </IconButton>
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Job Date
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          handleSort.handleSort(
-                            sortConfig,
-                            setSortConfig,
-                            "jobDate"
-                          )
-                        }
-                      >
-                        {sortConfig.key === "jobDate" &&
-                        sortConfig.direction === "ascending" ? (
-                          <ArrowUpwardIcon />
-                        ) : (
-                          <ArrowDownwardIcon />
-                        )}
-                      </IconButton>
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Category
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          handleSort.handleSort(
-                            sortConfig,
-                            setSortConfig,
-                            "category"
-                          )
-                        }
-                      >
-                        {sortConfig.key === "category" &&
-                        sortConfig.direction === "ascending" ? (
-                          <ArrowUpwardIcon />
-                        ) : (
-                          <ArrowDownwardIcon />
-                        )}
-                      </IconButton>
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Customer Name
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          handleSort.handleSort(
-                            sortConfig,
-                            setSortConfig,
-                            "customerName"
-                          )
-                        }
-                      >
-                        {sortConfig.key === "customerName" &&
-                        sortConfig.direction === "ascending" ? (
-                          <ArrowUpwardIcon />
-                        ) : (
-                          <ArrowDownwardIcon />
-                        )}
-                      </IconButton>
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Job Particulars
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Job Reference</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>BOE/SB No</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>BOE/SB Date</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Arrival Date</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Tentative Closure Date
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Closed Date</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Selling Price</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Billing Status
-                      <IconButton
-                        size="small"
-                        onClick={(e) => handleFilterClick(e, setAnchorEl)}
-                      >
-                        <ArrowDropDownIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Invoice No</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Invoice Date</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Courier Tracking No
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Payment Status</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Remarks</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Apeksha Invoice No
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>
-                      Date of Courier
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Updated By</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Updated At</TableCell>
-                    <TableCell sx={{ minWidth: 150 }}>Action</TableCell>
+                      </TableCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -247,426 +224,108 @@ export default function TableComponent({
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((job) => (
                       <TableRow hover key={job.jobId}>
-                        <TableCell>{job.slNo}</TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("jobId") ? (
-                            <TextField
-                              value={editedJob.jobId || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "jobId",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.jobId
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("jobDate") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.jobDate || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "jobDate",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.jobDate
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("category") ? (
-                            <TextField
-                              value={editedJob.category || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "category",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.category
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("customerName") ? (
-                            <TextField
-                              value={editedJob.customerName || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "customerName",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.customerName
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("jobParticulars") ? (
-                            <TextField
-                              value={editedJob.jobParticulars || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "jobParticulars",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.jobParticulars
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("jobReference") ? (
-                            <TextField
-                              value={editedJob.jobReference || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "jobReference",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.jobReference
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("boeSbNo") ? (
-                            <TextField
-                              value={editedJob.boeSbNo || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "boeSbNo",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.boeSbNo
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("boeSbDate") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.boeSbDate || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "boeSbDate",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.boeSbDate
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("arrivalDate") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.arrivalDate || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "arrivalDate",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.arrivalDate
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("tentativeClosureDate") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.tentativeClosureDate || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "tentativeClosureDate",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.tentativeClosureDate
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("closedDate") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.closedDate || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "closedDate",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.closedDate
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("sellingPrice") ? (
-                            <TextField
-                              value={editedJob.sellingPrice || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "sellingPrice",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.sellingPrice
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("billingStatus") ? (
-                            <TextField
-                              value={editedJob.billingStatus || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "billingStatus",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.billingStatus
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("invoiceNo") ? (
-                            <TextField
-                              value={editedJob.invoiceNo || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "invoiceNo",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.invoiceNo
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("invoiceDate") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.invoiceDate || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "invoiceDate",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.invoiceDate
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("courierTrackingNo") ? (
-                            <TextField
-                              value={editedJob.courierTrackingNo || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "courierTrackingNo",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.courierTrackingNo
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("paymentStatus") ? (
-                            <TextField
-                              value={editedJob.paymentStatus || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "paymentStatus",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.paymentStatus
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("remarks") ? (
-                            <TextField
-                              value={editedJob.remarks || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "remarks",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.remarks
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("apekshaInvoiceNo") ? (
-                            <TextField
-                              value={editedJob.apekshaInvoiceNo || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "apekshaInvoiceNo",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.apekshaInvoiceNo
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId &&
-                          editableColumns.includes("dateOfCourier") ? (
-                            <TextField
-                              type="date"
-                              value={editedJob.dateOfCourier || ""}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  setEditedJob,
-                                  "dateOfCourier",
-                                  e.target.value
-                                )
-                              }
-                              size="small"
-                            />
-                          ) : (
-                            job.dateOfCourier
-                          )}
-                        </TableCell>
-                        <TableCell>{job.updatedBy}</TableCell>
-                        <TableCell>
-                          {job.updatedAt ? (
-                            <>
-                              <div>{job.updatedAt.split("T")[0]}</div>
-                              <div>
-                                {job.updatedAt.split("T")[1].split(".")[0]}
-                              </div>
-                            </>
-                          ) : (
-                            "N/A"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {isEditing === job.jobId ? (
-                            <>
-                              <Button
-                                variant="contained"
-                                color="success"
-                                onClick={() =>
-                                  handleSave(
-                                    editedJob,
-                                    setIsEditing,
-                                    setEditedJob
+                        {Object.keys(columnWidths).map((key) => {
+                          let cellContent: ReactNode =
+                            job[key as keyof TableColumns];
+
+                          if (key === "updatedAt" && job.updatedAt) {
+                            cellContent = (
+                              <>
+                                <div>{job.updatedAt.split("T")[0]}</div>
+                                <div>
+                                  {job.updatedAt.split("T")[1].split(".")[0]}
+                                </div>
+                              </>
+                            );
+                          } else if (
+                            isEditing === job.jobId &&
+                            editableColumns.includes(key as keyof TableColumns)
+                          ) {
+                            cellContent = (
+                              <TextField
+                                value={
+                                  editedJob[key as keyof TableColumns] || ""
+                                }
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    setEditedJob,
+                                    key as keyof TableColumns,
+                                    e.target.value
                                   )
                                 }
-                                sx={{ mr: 1 }}
-                              >
-                                Save
-                              </Button>
-                              <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() =>
-                                  handleCancel(setIsEditing, setEditedJob)
-                                }
-                              >
-                                Cancel
-                              </Button>
-                            </>
-                          ) : (
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() =>
-                                handleEdit(job, setIsEditing, setEditedJob)
-                              }
+                                size="small"
+                              />
+                            );
+                          } else if (key === "Action") {
+                            cellContent =
+                              isEditing === job.jobId ? (
+                                <>
+                                  <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={() =>
+                                      handleSave(
+                                        editedJob,
+                                        setIsEditing,
+                                        setEditedJob
+                                      )
+                                    }
+                                    sx={{ mr: 1 }}
+                                  >
+                                    Save
+                                  </Button>
+                                  <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() =>
+                                      handleCancel(setIsEditing, setEditedJob)
+                                    }
+                                  >
+                                    Cancel
+                                  </Button>
+                                </>
+                              ) : (
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={() =>
+                                    handleEdit(job, setIsEditing, setEditedJob)
+                                  }
+                                >
+                                  Edit
+                                </Button>
+                              );
+                          }
+
+                          return (
+                            <TableCell
+                              key={key}
+                              style={{
+                                border: "1px solid rgba(224, 224, 224, 1)",
+                                position:
+                                  key === "slNo" || key === "jobId"
+                                    ? "sticky"
+                                    : "static",
+                                left:
+                                  key === "slNo"
+                                    ? 0
+                                    : key === "jobId"
+                                    ? parseInt(columnWidths["slNo"])
+                                    : undefined,
+                                background:
+                                  key === "slNo" || key === "jobId"
+                                    ? "#fff"
+                                    : undefined,
+                                zIndex:
+                                  key === "slNo" || key === "jobId"
+                                    ? 11
+                                    : undefined,
+                              }}
                             >
-                              Edit
-                            </Button>
-                          )}
-                        </TableCell>
+                              {cellContent}
+                            </TableCell>
+                          );
+                        })}
                       </TableRow>
                     ))}
                 </TableBody>
