@@ -33,7 +33,7 @@ export default function Navbar({ isCollapsed }: any) {
       ${isCollapsed ? "pl-[60px]" : "pl-[200px]"}`}
     >
       <div className="flex items-center justify-between px-4 sm:px-6 py-4">
-        {/* Left Section */}
+        
         <div className="text-lg sm:text-xl font-semibold flex items-baseline gap-1">
           <p>Welcome {userName}</p>
           <sup className="text-xs text-gray-400">
@@ -43,7 +43,6 @@ export default function Navbar({ isCollapsed }: any) {
           </sup>
         </div>
 
-        {/* Right Section */}
         <div className="relative">
           <button
             aria-describedby={id}
@@ -81,7 +80,7 @@ export default function Navbar({ isCollapsed }: any) {
             }}
             PaperProps={{
               style: {
-                zIndex: 1500, // Ensure it's above other elements
+                zIndex: 1500,
               },
             }}
           >

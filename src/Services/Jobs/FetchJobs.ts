@@ -12,7 +12,7 @@ export default async function handleFetchJob(
   try {
     const response = await api.get("/job/get-all-jobs");
 
-    console.log(response);
+    console.log("Retived = ", response);
     setJobs(response.data);
   } catch (err) {
     console.error(err);

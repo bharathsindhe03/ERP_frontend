@@ -9,24 +9,13 @@ export const handleRegister = async (
   navigate: Function
 ) => {
   try {
-    console.log("type 1");
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_SERVER_URL}/auth/register`,
-      {
-        email: email,
-        username: userName,
-        password: password,
-        role: "ADMIN",
-      }
-    );
-    // console.log("type 2");
-
-    // const response = await api.post("/auth/register", {
-    //   email: email,
-    //   username: userName,
-    //   password: password,
-    //   role: "ADMIN",
-    // });
+    
+    const response = await api.post("/auth/register", {
+      email: email,
+      username: userName,
+      password: password,
+      role: "ADMIN",
+    });
 
     console.log(response);
     if (response.status === 200) {

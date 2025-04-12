@@ -142,8 +142,8 @@ export default function AddJob({ setShowModal }: AddJobProps) {
           </FormControl>
           <TextField
             margin="dense"
-            id="sellingPrice"
-            label="Selling Price"
+            id="sellingPrice" 
+            label="Selling"
             type="number"
             fullWidth
             variant="outlined"

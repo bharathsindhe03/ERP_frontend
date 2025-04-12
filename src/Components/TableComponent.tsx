@@ -37,7 +37,7 @@ interface TableColumnProps {
   jobs: TableColumns[];
   loading: boolean;
   error: string | null;
-  isCollapsed: boolean; // Add isCollapsed prop
+  isCollapsed: boolean;
 }
 
 export default function TableComponent({
@@ -249,7 +249,7 @@ export default function TableComponent({
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((job, index) => (
                       <TableRow hover key={job.jobId}>
-                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{job.slNo}</TableCell>
                         <TableCell>
                           {isEditing === job.jobId &&
                           editableColumns.includes("jobId") ? (
@@ -714,24 +714,6 @@ export default function TableComponent({
             }
           >
             Done
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              handleFilterSelect("Job Closed", setBillingFilter, setAnchorEl)
-            }
-          >
-            Job Closed
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              handleFilterSelect(
-                "Custom Process",
-                setBillingFilter,
-                setAnchorEl
-              )
-            }
-          >
-            Custom Process
           </MenuItem>
         </MenuList>
       </Popover>

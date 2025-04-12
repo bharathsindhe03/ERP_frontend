@@ -1,5 +1,5 @@
 export default interface TableColumns {
-  slNo: number | null;
+  slNo: number ;
   jobId: number | null;
   jobDate: string | null | undefined;
   category: string | null | undefined;

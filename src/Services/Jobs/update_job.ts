@@ -6,11 +6,11 @@ export const updateJob = async (
   updatedJob: TableColumns
 ): Promise<TableColumns | undefined> => {
   try {
-    console.log("Updating job:", updatedJob);
+    console.log("Updating job sl number :", updatedJob.slNo);
     const response = await api.patch(
-      `/job/update-job/${updatedJob.jobId}`,
+      `/job/update-job/${updatedJob.slNo}`,
       updatedJob
-    ); // Assuming your API expects ID in the path
+    ); 
 
     if (response.status === 200) {
       toast.success("Job updated successfully");

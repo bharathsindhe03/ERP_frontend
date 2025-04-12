@@ -1,7 +1,6 @@
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import logo from "../assets/cropped_logo.png";
-import { IoBarChart, IoBagSharp } from "react-icons/io5";
-import { FaClock } from "react-icons/fa6";
+import { IoBagSharp } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
 import { useState } from "react";
 import AddJob from "./AddJob";
@@ -25,7 +24,7 @@ export default function Taskbar({ isCollapsed, setIsCollapsed }: any) {
           <FiChevronLeft size={24} />
         )}
       </button>
-        
+
       {/* Logo */}
       <div className="flex justify-center py-4">
         <img
@@ -62,32 +61,6 @@ export default function Taskbar({ isCollapsed, setIsCollapsed }: any) {
             } transition-all duration-300`}
           >
             Add Jobs
-          </span>
-        </a>
-        <a
-          href="#"
-          className="flex items-center space-x-2 hover:text-white transition-all duration-300"
-        >
-          <FaClock className="text-2xl" />
-          <span
-            className={`${
-              isCollapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
-            } transition-all duration-300`}
-          >
-            Time Sheet
-          </span>
-        </a>
-        <a
-          href="#"
-          className="flex items-center space-x-2 hover:text-white transition-all duration-300"
-        >
-          <IoBarChart className="text-2xl" />
-          <span
-            className={`${
-              isCollapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
-            } transition-all duration-300`}
-          >
-            Data Analytics
           </span>
         </a>
       </nav>

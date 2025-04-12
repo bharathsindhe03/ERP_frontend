@@ -49,13 +49,13 @@ export const handleSave = async (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
-  if (!editedJob.jobId || editedJob.slNo === undefined) {
+  if (!editedJob.jobId || editedJob.slNo != undefined) {
     console.error("Missing required fields:", editedJob);
     return;
   }
 
   const updatedJob: TableColumns = {
-    slNo: editedJob.slNo,
+    slNo: Number(editedJob.slNo) ?? 0,
     jobId: Number(editedJob.jobId),
     jobDate: formatDate(editedJob.jobDate),
     category: editedJob.category,
@@ -76,9 +76,9 @@ export const handleSave = async (
     remarks: editedJob.remarks,
     apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
     dateOfCourier: formatDate(editedJob.dateOfCourier),
-    action: null, // These fields might be handled on the backend or not editable here
-    updatedBy: undefined,
-    updatedAt: undefined,
+    action: null,
+    updatedBy: null,
+    updatedAt: null,
   };
 
   console.log("Calling updateJob with data:", updatedJob);
