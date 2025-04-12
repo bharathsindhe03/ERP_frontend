@@ -36,7 +36,7 @@ export default function AddJob({ setShowModal }: AddJobProps) {
     setShowModal(false);
   };
 
-  const categoryOptions = [
+  const [categoryOptions, setCategoryOptions] = React.useState([
     "Clearance",
     "Domestic Freight",
     "Export Freight",
@@ -47,8 +47,27 @@ export default function AddJob({ setShowModal }: AddJobProps) {
     "Transportation",
     "DTA Movement",
     "Duty Payment",
-  ];
+  ]);
+  const [addingNew, setAddingNew] = React.useState(false);
+const [newCategory, setNewCategory] = React.useState("");
+const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
+
+const handleAddNewCategory = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  e.stopPropagation();
+  if (e.key === 'Enter' && newCategory.trim()) {
+    if (!categoryOptions.includes(newCategory.trim())) {
+      setCategoryOptions((prev) => [...prev, newCategory.trim()]);
+    }
+    setCategory(newCategory.trim());
+    setNewCategory('');
+    setAddingNew(false);
+    e.preventDefault(); // prevents dropdown from closing
+  }
+};
+
+
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formattedDate = date.split("-").reverse().join("-");
@@ -126,10 +145,18 @@ export default function AddJob({ setShowModal }: AddJobProps) {
               id="category"
               value={category}
               label="Category"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setDropdownOpen(false); // Close dropdown after selecting
+              }}
               required
               variant="outlined"
+              open={dropdownOpen}
+              onClose={() => setDropdownOpen(false)}
+              onOpen={() => setDropdownOpen(true)}
+              MenuProps={{ disableAutoFocusItem: true }}
             >
+
               <MenuItem value="" disabled>
                 Select Category
               </MenuItem>
@@ -138,6 +165,49 @@ export default function AddJob({ setShowModal }: AddJobProps) {
                   {option}
                 </MenuItem>
               ))}
+
+              <MenuItem disabled divider />
+
+              {addingNew ? (
+                <MenuItem disableRipple>
+                  <TextField
+                    size="small"
+                    placeholder="New category"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    onKeyDown={handleAddNewCategory}
+                    autoFocus
+                    onClick={(e) => e.stopPropagation()} // 👈 prevent closing on click
+                    InputProps={{
+                      endAdornment: (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setAddingNew(false);
+                            setNewCategory("");
+                          }}
+                        >
+                          <FaTimes size={12} />
+                        </Button>
+                      ),
+                    }}
+                  />
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setAddingNew(true);
+                    setDropdownOpen(true); // <-- keep dropdown open on first click
+                  }}
+                  sx={{ fontStyle: 'italic', color: 'primary.main' }}
+                >
+                  + Add new category
+                </MenuItem>
+
+              )}
+
             </Select>
           </FormControl>
           <TextField
