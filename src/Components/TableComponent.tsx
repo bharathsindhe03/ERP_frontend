@@ -37,6 +37,11 @@ interface TableColumnProps {
   error: string | null;
   isCollapsed: boolean;
 }
+const dropdownOptions: { [key: string]: string[] } = {
+  billingStatus: ["Done","Job Closed","Open"]
+  // Add more dropdown fields if needed
+};
+
 
 export default function TableComponent({
   jobs,
@@ -241,21 +246,37 @@ export default function TableComponent({
                             isEditing === job.jobId &&
                             editableColumns.includes(key as keyof TableColumns)
                           ) {
-                            cellContent = (
-                              <TextField
-                                value={
-                                  editedJob[key as keyof TableColumns] || ""
-                                }
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    setEditedJob,
-                                    key as keyof TableColumns,
-                                    e.target.value
-                                  )
-                                }
-                                size="small"
-                              />
-                            );
+                            if (key === "billingStatus") {
+                              // Render dropdown for billingStatus
+                              cellContent = (
+                                <TextField
+                                  select
+                                  value={editedJob[key as keyof TableColumns] || ""}
+                                  onChange={(e) =>
+                                    handleInputChange(setEditedJob, key as keyof TableColumns, e.target.value)
+                                  }
+                                  size="small"
+                                  fullWidth
+                                >
+                                  {dropdownOptions.billingStatus.map((status) => (
+                                    <MenuItem key={status} value={status}>
+                                      {status}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                              );
+                            } else {
+                              // For other fields, just render the regular TextField
+                              cellContent = (
+                                <TextField
+                                  value={editedJob[key as keyof TableColumns] || ""}
+                                  onChange={(e) =>
+                                    handleInputChange(setEditedJob, key as keyof TableColumns, e.target.value)
+                                  }
+                                  size="small"
+                                />
+                              );
+                            }
                           } else if (key === "Action") {
                             cellContent =
                               isEditing === job.jobId ? (
