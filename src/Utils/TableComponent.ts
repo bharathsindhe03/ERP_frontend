@@ -49,10 +49,7 @@ export const handleSave = async (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
-  if (!editedJob.jobId || editedJob.slNo != undefined) {
-    console.error("Missing required fields:", editedJob);
-    return;
-  }
+  
 
   const updatedJob: TableColumns = {
     slNo: Number(editedJob.slNo) ?? 0,

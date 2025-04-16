@@ -1,16 +1,11 @@
-import axios from "axios";
 import { toast } from "sonner";
+import api from "../../Utils/create_api";
 
-export default async function handleVerifyOTP(
-  otp: string,
-  navigate: Function
-) {
+export default async function handleVerifyOTP(otp: string, navigate: Function) {
   try {
     const email = localStorage.getItem("email");
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_SERVER_URL}/auth/verify-otp`,
-      { params: { email, otp } }
-    );
+    const response = await api.post("/auth/verify-otp", { email, otp });
+
     console.log(response);
     if (response.status === 200) {
       navigate("/resetpassword");

@@ -1,5 +1,6 @@
-import axios from "axios";
+
 import { toast } from "sonner";
+import api from "../../Utils/create_api";
 
 export const handleUpdatePassword = async (
   newPassword: string,
@@ -7,10 +8,11 @@ export const handleUpdatePassword = async (
 ) => {
   try {
     const email = localStorage.getItem("email");
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_SERVER_URL}/auth/update-password`,
-      { params: { email, newPassword } }
-    );
+   
+    const response = await api.post("/auth/update-password", {
+      email: email,
+      new_password: newPassword,
+    });
     console.log(response.data);
     if (response.status === 200) {
       toast.success("Password updated successfully");

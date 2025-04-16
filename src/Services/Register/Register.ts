@@ -9,10 +9,18 @@ export const handleRegister = async (
   navigate: Function
 ) => {
   try {
-    
+    // const response = await axios.post(
+    //   `${import.meta.env.VITE_BASE_SERVER_URL}/auth/register`,
+    //   {
+    //     email: email,
+    //     username: userName,
+    //     password: password,
+    //     role: "ADMIN",
+    //   }
+    // );
     const response = await api.post("/auth/register", {
       email: email,
-      username: userName,
+      userName: userName,
       password: password,
       role: "ADMIN",
     });
