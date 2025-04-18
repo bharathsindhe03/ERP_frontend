@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Taskbar from "../../Components/Taskbar";
 import TableComponent from "../../Components/TableComponent";
@@ -16,6 +16,7 @@ export default function Dashboard() {
     const storedState = localStorage.getItem("isCollapsed");
     return storedState ? JSON.parse(storedState) : false;
   });
+  const [billingFilter, setBillingFilter] = useState<string | null>(null); // State for billing filter
 
   useEffect(() => {
     localStorage.setItem("isCollapsed", JSON.stringify(isCollapsed));
@@ -48,6 +49,17 @@ export default function Dashboard() {
     setFilteredJobs(filtered);
   };
 
+  const handleBillingFilterChange = (filter: string | null) => {
+    setBillingFilter(filter);
+  };
+
+  const filteredByBillingStatus = useMemo(() => {
+    if (!billingFilter || billingFilter === "All") {
+      return filteredJobs;
+    }
+    return filteredJobs.filter((job) => job.billingStatus === billingFilter);
+  }, [filteredJobs, billingFilter]);
+
   return (
     <Box
       sx={{
@@ -61,6 +73,7 @@ export default function Dashboard() {
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
         onJobAdded={fetchJobs}
+        onFilterChange={handleBillingFilterChange} // Pass the filter function
       />
 
       {/* Main Content */}
@@ -94,10 +107,11 @@ export default function Dashboard() {
           {/* Table */}
           <Box sx={{ overflowX: "auto" }}>
             <TableComponent
-              jobs={filteredJobs}
+              jobs={filteredByBillingStatus} // Use the filtered jobs
               loading={loading}
               error={error}
               isCollapsed={isCollapsed}
+              initialBillingFilter={billingFilter} // Optionally pass the initial filter
             />
           </Box>
         </Box>

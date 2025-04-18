@@ -1,4 +1,4 @@
-import { useState, useMemo, ReactNode } from "react";
+import { useState, useMemo, ReactNode, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,9 +25,9 @@ import {
   handleCancel,
   handleInputChange,
   handleSort,
-  handleFilterClick,
-  handleFilterClose,
-  handleFilterSelect,
+  handleFilterClick as handleBillingFilterButtonClick, // Renamed to avoid conflict
+  handleFilterClose as handleBillingFilterClose, // Renamed to avoid conflict
+  handleFilterSelect as handleBillingFilterSelect, // Renamed to avoid conflict
   handleChangePage,
   handleChangeRowsPerPage,
   getEditableColumns,
@@ -38,6 +38,7 @@ interface TableColumnProps {
   loading: boolean;
   error: string | null;
   isCollapsed: boolean;
+  initialBillingFilter?: string | null; // Optional prop to set initial filter
 }
 
 const dropdownOptions: { [key: string]: string[] } = {
@@ -49,6 +50,7 @@ export default function TableComponent({
   loading,
   error,
   isCollapsed,
+  initialBillingFilter, // Receive the initial filter
 }: TableColumnProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -61,6 +63,13 @@ export default function TableComponent({
   }>({ key: null, direction: null });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  // Set initial billing filter if provided
+  useEffect(() => {
+    if (initialBillingFilter) {
+      setBillingFilter(initialBillingFilter);
+    }
+  }, [initialBillingFilter]);
 
   const filteredJobs = useMemo(
     () =>
@@ -200,7 +209,9 @@ export default function TableComponent({
                             <Typography>Billing Status</Typography>
                             <IconButton
                               size="small"
-                              onClick={(e) => handleFilterClick(e, setAnchorEl)}
+                              onClick={(e) =>
+                                handleBillingFilterButtonClick(e, setAnchorEl)
+                              }
                             >
                               <ArrowDropDownIcon />
                             </IconButton>
@@ -412,34 +423,38 @@ export default function TableComponent({
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
-        onClose={() => handleFilterClose(setAnchorEl)}
+        onClose={() => handleBillingFilterClose(setAnchorEl)}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <MenuList>
           <MenuItem
             onClick={() =>
-              handleFilterSelect("All", setBillingFilter, setAnchorEl)
+              handleBillingFilterSelect("All", setBillingFilter, setAnchorEl)
             }
           >
             All
           </MenuItem>
           <MenuItem
             onClick={() =>
-              handleFilterSelect("Done", setBillingFilter, setAnchorEl)
+              handleBillingFilterSelect("Done", setBillingFilter, setAnchorEl)
             }
           >
             Done
           </MenuItem>
           <MenuItem
             onClick={() =>
-              handleFilterSelect("Job Closed", setBillingFilter, setAnchorEl)
+              handleBillingFilterSelect(
+                "Job Closed",
+                setBillingFilter,
+                setAnchorEl
+              )
             }
           >
             Job Closed
           </MenuItem>
           <MenuItem
             onClick={() =>
-              handleFilterSelect("Open", setBillingFilter, setAnchorEl)
+              handleBillingFilterSelect("Open", setBillingFilter, setAnchorEl)
             }
           >
             Open
