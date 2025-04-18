@@ -1,5 +1,17 @@
-// Components/Searchbar.tsx
 import { useState } from "react";
+import {
+  TextField,
+  Box,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 interface SearchbarProps {
   onSearch: (query: string) => void;
@@ -7,6 +19,8 @@ interface SearchbarProps {
 
 export default function Searchbar({ onSearch }: SearchbarProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null); // Example filter state
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -14,15 +28,66 @@ export default function Searchbar({ onSearch }: SearchbarProps) {
     onSearch(value);
   };
 
+  const handleFilterClick = () => {
+    setFilterDialogOpen(true);
+  };
+
+  const handleFilterDialogClose = () => {
+    setFilterDialogOpen(false);
+  };
+
+  const handleFilterSelect = (filter: string) => {
+    setSelectedFilter(filter);
+    console.log(`Selected filter: ${filter}`);
+    // Here you would typically apply the filter to your data
+    setFilterDialogOpen(false);
+  };
+
+  const availableFilters = ["Category", "Status", "Date Range"]; // Example filters
+
   return (
-    <div className="w-full max-w-md">
-      <input
-        type="text"
-        placeholder="Search jobs..."
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+      }}
+    >
+      <TextField
+        fullWidth
+        label="Search jobs..."
+        variant="outlined"
         value={searchTerm}
         onChange={handleChange}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+          },
+          "& .MuiInputLabel-root": {
+            fontSize: "1rem",
+          },
+        }}
       />
-    </div>
+      <IconButton onClick={handleFilterClick} sx={{ ml: 1, scale: 1.5 }}>
+        <FilterAltIcon />
+      </IconButton>
+
+      <Dialog open={filterDialogOpen} onClose={handleFilterDialogClose}>
+        <DialogTitle>Filter Options</DialogTitle>
+        <DialogContent>
+          <List>
+            {availableFilters.map((filter) => (
+              <ListItem key={filter} disablePadding>
+                <ListItemButton onClick={() => handleFilterSelect(filter)}>
+                  <ListItemText primary={filter} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
+    </Box>
   );
 }

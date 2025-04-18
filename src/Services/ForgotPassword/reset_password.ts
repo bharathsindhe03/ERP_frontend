@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import api from "../../Utils/create_api";
 
@@ -8,7 +7,7 @@ export const handleUpdatePassword = async (
 ) => {
   try {
     const email = localStorage.getItem("email");
-   
+
     const response = await api.post("/auth/update-password", {
       email: email,
       new_password: newPassword,

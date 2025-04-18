@@ -5,6 +5,7 @@ import TableComponent from "../../Components/TableComponent";
 import TableColumns from "../../Interface/TableColumns";
 import handleFetchJob from "../../Services/Jobs/FetchJobs";
 import Searchbar from "../../Components/Searchbar";
+import { Box } from "@mui/material";
 
 export default function Dashboard() {
   const [jobs, setJobs] = useState<TableColumns[]>([]);
@@ -19,6 +20,7 @@ export default function Dashboard() {
   useEffect(() => {
     localStorage.setItem("isCollapsed", JSON.stringify(isCollapsed));
   }, [isCollapsed]);
+
   const fetchJobs = async () => {
     await handleFetchJob(
       (data) => {
@@ -31,20 +33,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      await handleFetchJob(
-        (data) => {
-          setJobs(data);
-          setFilteredJobs(data);
-        },
-        setLoading,
-        setError
-      );
-    };
     fetchJobs();
   }, []);
 
@@ -61,7 +49,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden">
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
       {/* Taskbar */}
       <Taskbar
         isCollapsed={isCollapsed}
@@ -70,32 +64,44 @@ export default function Dashboard() {
       />
 
       {/* Main Content */}
-      <div
-        className={`flex flex-col w-full transition-all duration-300 ${
-          isCollapsed ? "ml-[60px]" : "ml-[200px]"
-        }`}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          ml: isCollapsed ? "60px" : "200px",
+          transition: "all 0.3s ease",
+        }}
       >
         {/* Navbar */}
         <Navbar isCollapsed={isCollapsed} />
 
         {/* Content Below Navbar */}
-        <div className="flex-grow overflow-auto bg-white px-4 sm:px-6 pt-6 mt-[72px]">
+        <Box
+          sx={{
+            flexGrow: 1,
+            overflow: "auto",
+            backgroundColor: "#fff",
+            paddingX: { xs: 2, sm: 3 },
+            paddingTop: "72px",
+          }}
+        >
           {/* Searchbar */}
-          <div className="mb-4">
+          <Box sx={{ marginTop: 2, marginBottom: 2 }}>
             <Searchbar onSearch={handleSearch} />
-          </div>
+          </Box>
 
           {/* Table */}
-          <div className="overflow-x-auto">
+          <Box sx={{ overflowX: "auto" }}>
             <TableComponent
               jobs={filteredJobs}
               loading={loading}
               error={error}
               isCollapsed={isCollapsed}
             />
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }

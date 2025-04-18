@@ -3,19 +3,23 @@ import { handleRegister } from "../../Services/Register/Register";
 import { useNavigate } from "react-router-dom";
 import { validatePassword } from "../../Utils/validate_password";
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  TextField,
+  Typography,
+  Link,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+
+import logo from "../../assets/only_logo.png";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -24,6 +28,7 @@ export default function Register() {
   const [passwordError, setPasswordError] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handlePasswordChange = (e: any) => {
@@ -33,12 +38,15 @@ export default function Register() {
     setPasswordError(errorMessage);
     setIsPasswordValid(isValid);
   };
+
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
+
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!isPasswordValid) return;
@@ -51,13 +59,29 @@ export default function Register() {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      bgcolor="background.default"
-      p={3}
+      bgcolor="#F9FAFB"
+      px={2}
     >
-      <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+      <Card
+        sx={{
+          p: 4,
+          width: { xs: "100%", sm: 450 },
+          boxShadow: 4,
+          borderRadius: 4,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Box
+          component="img"
+          src={logo}
+          alt="Logo"
+          sx={{ width: 120, mx: "auto", mb: 2 }}
+        />
+
+        <Typography variant="h4" align="center" color="#111928" gutterBottom>
           Register
         </Typography>
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -71,25 +95,29 @@ export default function Register() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               variant="outlined"
+              fullWidth
+              required
             />
           </FormControl>
+
           <FormControl>
             <TextField
               label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               variant="outlined"
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <AlternateEmailIcon />
-                    </InputAdornment>
-                  ),
-                },
+              fullWidth
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <AlternateEmailIcon />
+                  </InputAdornment>
+                ),
               }}
             />
           </FormControl>
+
           <FormControl>
             <TextField
               label="Password"
@@ -99,35 +127,52 @@ export default function Register() {
               error={!!passwordError}
               helperText={passwordError}
               type={showPassword ? "text" : "password"}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
+              fullWidth
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
           </FormControl>
+
           <Button
             type="submit"
             variant="contained"
-            color="primary"
+            sx={{
+              backgroundColor: "#111928",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#fff",
+                color: "#111928",
+              },
+            }}
             fullWidth
             disabled={!isPasswordValid}
           >
             Register
           </Button>
-          <Typography align="center">
-            Already have an account? <Link href="/">Login</Link>
+
+          <Typography align="center" fontSize="0.9rem">
+            Already have an account?{" "}
+            <Link
+              href="/"
+              underline="hover"
+              sx={{ color: "#111928" }}
+              fontWeight={500}
+            >
+              Login
+            </Link>
           </Typography>
         </Box>
       </Card>

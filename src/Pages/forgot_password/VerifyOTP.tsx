@@ -2,13 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import handleVerifyOTP from "../../Services/ForgotPassword/verify_otp";
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import Alert from "@mui/material/Alert";
+import {
+  Box,
+  Button,
+  Card,
+  TextField,
+  Typography,
+  FormControl,
+  Alert,
+} from "@mui/material";
 
 export default function VerifyOTP() {
   const [otp, setOtp] = useState("");
@@ -33,11 +35,19 @@ export default function VerifyOTP() {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      bgcolor="background.default"
-      p={3}
+      bgcolor="#F9FAFB"
+      px={2}
     >
-      <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+      <Card
+        sx={{
+          p: 4,
+          width: { xs: "100%", sm: 450 },
+          boxShadow: 4,
+          borderRadius: 4,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Typography variant="h4" align="center" color="#111928" gutterBottom>
           Verify OTP
         </Typography>
 
@@ -49,6 +59,7 @@ export default function VerifyOTP() {
           gap={2}
           mt={2}
         >
+          Please enter the OTP sent to your registered email.
           <FormControl>
             <TextField
               label="OTP"
@@ -57,12 +68,23 @@ export default function VerifyOTP() {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required
+              fullWidth
             />
           </FormControl>
-
           {error && <Alert severity="error">{error}</Alert>}
-
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: "#111928",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#fff",
+                color: "#111928",
+              },
+            }}
+            fullWidth
+          >
             Verify OTP
           </Button>
         </Box>

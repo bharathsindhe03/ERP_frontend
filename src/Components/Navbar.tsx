@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import { Box, Button, Typography } from "@mui/material";
 
 export default function Navbar({ isCollapsed }: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,82 +29,91 @@ export default function Navbar({ isCollapsed }: any) {
   const id = open ? "profile-popover" : undefined;
 
   return (
-    <nav
-      className={`fixed top-0 right-0 bg-gray-900 text-white w-full shadow-md transition-all duration-300
-      ${isCollapsed ? "pl-[60px]" : "pl-[200px]"}`}
+    <Box
+      component="nav"
+      position="fixed"
+      top={0}
+      right={0}
+      width="100%"
+      bgcolor="#111928" // Use the primary color
+      color="white"
+      px={4}
+      py={2}
+      boxShadow={4}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      sx={{
+        paddingLeft: isCollapsed ? "60px" : "200px", // Adjust padding based on isCollapsed prop
+        transition: "padding-left 0.3s ease",
+      }}
     >
-      <div className="flex items-center justify-between px-4 sm:px-6 py-4">
-        
-        <div className="text-lg sm:text-xl font-semibold flex items-baseline gap-1">
-          <p>Welcome {userName}</p>
-          <sup className="text-xs text-gray-400">
-            <span className="bg-gray-700 px-2 py-1 rounded-full text-gray-300">
-              {department}
-            </span>
-          </sup>
-        </div>
-
-        <div className="relative">
-          <button
-            aria-describedby={id}
-            onClick={handleOpen}
-            className="flex items-center gap-2 p-2"
-          >
-            <FaUserCircle size={30} className="text-gray-300" />
-            <div className="hidden sm:block">
-              <div className="flex items-center gap-2">
-                <span className="text-sm sm:text-base font-medium">
-                  {userName}
-                </span>
-                <span className="text-xs bg-gray-700 px-2 py-1 rounded-full text-gray-300">
-                  {department}
-                </span>
-              </div>
-              <span className="text-xs sm:text-sm text-gray-300 block">
-                {userEmail}
-              </span>
-            </div>
-          </button>
-
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            PaperProps={{
-              style: {
-                zIndex: 1500,
-              },
+      {/* Left side: User info */}
+      <Box display="flex" alignItems="center">
+        <Typography variant="h6" color="inherit">
+          Welcome {userName}
+        </Typography>
+        <Box ml={1}>
+          <Typography
+            variant="caption"
+            color="inherit"
+            sx={{
+              display: "inline-block",
+              fontSize: "0.75rem",
+              borderBottom: "none", // Remove any border line under the department name
+              paddingBottom: "0", // Ensure there's no padding
             }}
           >
-            <MenuList>
-              <MenuItem
-                onClick={handleClose}
-                sx={{ "&:hover": { backgroundColor: "#f0f0f0" } }}
-              >
-                Profile
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  handleLogOut(navigator);
-                }}
-                sx={{ "&:hover": { backgroundColor: "#f0f0f0" }, color: "red" }}
-              >
-                Logout
-              </MenuItem>
-            </MenuList>
-          </Popover>
-        </div>
-      </div>
-    </nav>
+            <sup>{department}</sup> {/* Department as superscript */}
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Right side: Profile and logout */}
+      <Box position="relative">
+        <Button
+          onClick={handleOpen}
+          startIcon={<FaUserCircle size={30} />}
+          endIcon={
+            <Typography
+              variant="body2"
+              color="inherit"
+              sx={{ textTransform: "none" }}
+            >
+              {userName} {/* Display username as it is */}
+            </Typography>
+          }
+          color="inherit"
+        ></Button>
+
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <MenuList>
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                handleLogOut(navigator);
+              }}
+              style={{ color: "red" }}
+            >
+              Logout
+            </MenuItem>
+          </MenuList>
+        </Popover>
+      </Box>
+    </Box>
   );
 }

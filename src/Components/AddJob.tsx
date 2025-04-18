@@ -5,17 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import { FaTimes } from "react-icons/fa";
 import handleCRMAddJob from "../Services/Jobs/AddJobs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
-
+import CategorySelector from "./ui/CategorySelector";
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
   onJobAdded?: () => void;
@@ -49,26 +45,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
     "DTA Movement",
     "Duty Payment",
   ]);
-  const [addingNew, setAddingNew] = React.useState(false);
-const [newCategory, setNewCategory] = React.useState("");
-const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
-
-const handleAddNewCategory = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  e.stopPropagation();
-  if (e.key === 'Enter' && newCategory.trim()) {
-    if (!categoryOptions.includes(newCategory.trim())) {
-      setCategoryOptions((prev) => [...prev, newCategory.trim()]);
-    }
-    setCategory(newCategory.trim());
-    setNewCategory('');
-    setAddingNew(false);
-    e.preventDefault(); // prevents dropdown from closing
-  }
-};
-
-
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formattedDate = date.split("-").reverse().join("-");
@@ -142,78 +119,13 @@ const handleAddNewCategory = (e: React.KeyboardEvent<HTMLInputElement>) => {
               shrink: true,
             }}
           />
-          <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
-            <InputLabel id="category-label">Category</InputLabel>
-            <Select
-              labelId="category-label"
-              id="category"
-              value={category}
-              label="Category"
-              onChange={(e) => {
-                setCategory(e.target.value);
-                setDropdownOpen(false); // Close dropdown after selecting
-              }}
-              required
-              variant="outlined"
-              open={dropdownOpen}
-              onClose={() => setDropdownOpen(false)}
-              onOpen={() => setDropdownOpen(true)}
-              MenuProps={{ disableAutoFocusItem: true }}
-            >
+          <CategorySelector
+            category={category}
+            setCategory={setCategory}
+            categoryOptions={categoryOptions}
+            setCategoryOptions={setCategoryOptions}
+          />
 
-              <MenuItem value="" disabled>
-                Select Category
-              </MenuItem>
-              {categoryOptions.map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-
-              <MenuItem disabled divider />
-
-              {addingNew ? (
-                <MenuItem disableRipple>
-                  <TextField
-                    size="small"
-                    placeholder="New category"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    onKeyDown={handleAddNewCategory}
-                    autoFocus
-                    onClick={(e) => e.stopPropagation()} // 👈 prevent closing on click
-                    InputProps={{
-                      endAdornment: (
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setAddingNew(false);
-                            setNewCategory("");
-                          }}
-                        >
-                          <FaTimes size={12} />
-                        </Button>
-                      ),
-                    }}
-                  />
-                </MenuItem>
-              ) : (
-                <MenuItem
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setAddingNew(true);
-                    setDropdownOpen(true); // <-- keep dropdown open on first click
-                  }}
-                  sx={{ fontStyle: 'italic', color: 'primary.main' }}
-                >
-                  + Add new category
-                </MenuItem>
-
-              )}
-
-            </Select>
-          </FormControl>
           <TextField
             margin="dense"
             id="sellingPrice"

@@ -14,35 +14,55 @@ import {
 } from "@mui/material";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import logo from "../../assets/only_logo.png";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     await handleLogIn(username, password, navigate);
   };
+
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
+
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      bgcolor="background.default"
-      p={3}
+      bgcolor="#F9FAFB"
+      px={2}
     >
-      <Card sx={{ p: 4, width: { xs: "100%", sm: 450 }, boxShadow: 3 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+      <Card
+        sx={{
+          p: 4,
+          width: { xs: "100%", sm: 450 },
+          boxShadow: 4,
+          borderRadius: 4,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Box
+          component="img"
+          src={logo}
+          alt="Logo"
+          sx={{ width: 120, mx: "auto", mb: 2 }}
+        />
+
+        <Typography variant="h4" align="center" color="#111928" gutterBottom>
           Login
         </Typography>
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -56,43 +76,75 @@ export default function Login() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               variant="outlined"
+              fullWidth
+              required
             />
           </FormControl>
+
           <FormControl>
             <TextField
+              label="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              label="Password"
               variant="outlined"
+              sx={{ color: "#111928" }}
+              fullWidth
+              required
               type={showPassword ? "text" : "password"}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      aria-label="toggle password visibility"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
           </FormControl>
+
           <Box textAlign="right">
-            <Link href="/forgotpassword" variant="body2">
+            <Link
+              href="/forgotpassword"
+              underline="hover"
+              sx={{ color: "#111928" }}
+              fontSize="0.875rem"
+            >
               Forgot Password?
             </Link>
           </Box>
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: "#111928",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#fff",
+                color: "#111928",
+              },
+            }}
+            fullWidth
+          >
             Login
           </Button>
-          <Typography align="center">
-            Don't have an account? <Link href="/register">Create Account</Link>
+
+          <Typography align="center" fontSize="0.9rem">
+            Don't have an account?
+            <Link
+              href="/register"
+              underline="hover"
+              sx={{ color: "#111928" }}
+              fontWeight={500}
+            >
+              Create Account
+            </Link>
           </Typography>
         </Box>
       </Card>

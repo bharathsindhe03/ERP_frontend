@@ -1,8 +1,15 @@
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import logo from "../assets/cropped_logo.png";
+import logo from "../assets/apeksha white text-02.png";
+import { useState } from "react";
 import { IoBagSharp } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
-import { useState } from "react";
+import {
+  Box,
+  IconButton,
+  List,
+  ListItemText,
+  ListItemButton,
+} from "@mui/material";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import AddJob from "./AddJob";
 
 export default function Taskbar({
@@ -13,64 +20,58 @@ export default function Taskbar({
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div
-      className={`bg-gray-900 text-white h-screen fixed top-0 left-0 z-50 transition-width duration-300 
-      overflow-hidden ${isCollapsed ? "w-[60px]" : "w-[200px]"}`}
+    <Box
+      position="fixed"
+      top={0}
+      left={0}
+      height="100vh"
+      bgcolor="#111928" // Use the primary color
+      width={isCollapsed ? 60 : 200}
+      zIndex={1000}
+      component="nav" // Explicitly set the component prop to 'nav' to avoid the type error
     >
       {/* Toggle Button */}
-      <button
-        className="absolute top-4 right-[-12px] bg-gray-700 text-white p-1 rounded-full hover:bg-gray-600 transition-colors"
+      <IconButton
         onClick={() => setIsCollapsed(!isCollapsed)}
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: -12,
+          bgcolor: "white",
+          color: "#111928",
+          "&:hover": { bgcolor: "#f0f0f0" },
+        }}
       >
         {isCollapsed ? (
           <FiChevronRight size={24} />
         ) : (
           <FiChevronLeft size={24} />
         )}
-      </button>
+      </IconButton>
 
       {/* Logo */}
-      <div className="flex justify-center py-4">
-        <img
-          src={logo}
-          alt="Logo"
-          className="w-12 h-12 transition-opacity duration-300"
-        />
-      </div>
+      <Box display="flex" justifyContent="center" py={3}>
+        <img src={logo} alt="Logo" style={{ width: "150px", height: "auto" }} />
+      </Box>
 
       {/* Sidebar Links */}
-      <nav className="flex flex-col mt-6 space-y-3 px-4">
-        <a
-          href="#"
-          className="flex items-center space-x-2 hover:text-white transition-all duration-300"
-        >
-          <IoBagSharp className="text-2xl" />
-          <span
-            className={`${
-              isCollapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
-            } transition-all duration-300`}
-          >
-            Current Jobs
-          </span>
-        </a>
-        <a
-          href="#"
-          onClick={() => setShowModal(true)}
-          className="flex items-center space-x-2 hover:text-white transition-all duration-300"
-        >
-          <IoIosAddCircle className="text-2xl" />
-          <span
-            className={`${
-              isCollapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
-            } transition-all duration-300`}
-          >
-            Add Jobs
-          </span>
-        </a>
-      </nav>
+      <List sx={{ color: "white" }}>
+        <ListItemButton component="li">
+          {" "}
+          {/* Using ListItemButton to avoid type error */}
+          <IoBagSharp size={24} />
+          {!isCollapsed && <ListItemText primary="Current Jobs" />}
+        </ListItemButton>
+        <ListItemButton component="li" onClick={() => setShowModal(true)}>
+          {/* Using ListItemButton to avoid type error */}
+          <IoIosAddCircle size={24} />
+          {!isCollapsed && <ListItemText primary="Add Jobs" />}
+        </ListItemButton>
+      </List>
+
       {showModal && (
         <AddJob setShowModal={setShowModal} onJobAdded={onJobAdded} />
       )}
-    </div>
+    </Box>
   );
 }

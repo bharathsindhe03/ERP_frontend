@@ -1,5 +1,4 @@
 import { useState, useMemo, ReactNode } from "react";
-import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,14 +8,17 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import TableColumns from "../Interface/TableColumns";
-import { IconButton } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import TableColumns from "../Interface/TableColumns";
 import {
   handleEdit,
   handleSave,
@@ -37,11 +39,10 @@ interface TableColumnProps {
   error: string | null;
   isCollapsed: boolean;
 }
-const dropdownOptions: { [key: string]: string[] } = {
-  billingStatus: ["Done","Job Closed","Open"]
-  // Add more dropdown fields if needed
-};
 
+const dropdownOptions: { [key: string]: string[] } = {
+  billingStatus: ["Done", "Job Closed", "Open"],
+};
 
 export default function TableComponent({
   jobs,
@@ -120,50 +121,57 @@ export default function TableComponent({
     dateOfCourier: "150px",
     updatedBy: "150px",
     updatedAt: "200px",
-    Action: "120px",
+    Action: "220px",
   };
 
   return (
-    <div className="p-4 flex flex-col h-full">
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {loading ? (
-        <div>Loading...</div>
+        <Typography variant="body1">Loading...</Typography>
       ) : error ? (
-        <div className="text-red-600 text-center py-4">{error}</div>
+        <Typography variant="body1" color="error" align="center" py={4}>
+          Please check your internet connection and try again.
+          <br />
+          Please Logout and login again.
+        </Typography>
       ) : (
-        <Paper
+        <Box
           sx={{
             width: "100%",
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
+            border: "1px solid rgba(224, 224, 224, 1)", // Added border here
+            borderRadius: 2,
           }}
         >
-          <div
-            className="overflow-auto"
-            style={{
+          <Box
+            sx={{
+              overflow: "auto",
               maxHeight: "65vh",
               overflowX: "auto",
               marginRight: isCollapsed ? "0px" : "150px",
             }}
           >
-            <TableContainer sx={{ zIndex: 10, minWidth: "100%" }}>
+            <TableContainer sx={{ minWidth: "100%" }}>
               <Table
                 stickyHeader
                 aria-label="CRM Table"
-                sx={{
-                  position: "relative",
-                  zIndex: 1,
-                  border: "1px solid rgba(224, 224, 224, 1)",
-                  tableLayout: "fixed",
-                }}
+                sx={{ tableLayout: "fixed" }}
               >
                 <TableHead>
                   <TableRow>
                     {Object.entries(columnWidths).map(([key, width]) => (
                       <TableCell
                         key={key}
-                        style={{
-                          width: width,
+                        sx={{
+                          width,
                           border: "1px solid rgba(224, 224, 224, 1)",
                           position:
                             key === "slNo" || key === "jobId"
@@ -184,21 +192,33 @@ export default function TableComponent({
                         }}
                       >
                         {key === "billingStatus" ? (
-                          <>
-                            Billing Status
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <Typography>Billing Status</Typography>
                             <IconButton
                               size="small"
                               onClick={(e) => handleFilterClick(e, setAnchorEl)}
                             >
                               <ArrowDropDownIcon />
                             </IconButton>
-                          </>
-                        ) : key === "jobId" ||
-                          key === "jobDate" ||
-                          key === "category" ||
-                          key === "customerName" ? (
-                          <>
-                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                          </Stack>
+                        ) : [
+                            "jobId",
+                            "jobDate",
+                            "category",
+                            "customerName",
+                          ].includes(key) ? (
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <Typography>
+                              {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </Typography>
                             <IconButton
                               size="small"
                               onClick={() =>
@@ -216,9 +236,11 @@ export default function TableComponent({
                                 <ArrowDownwardIcon />
                               )}
                             </IconButton>
-                          </>
+                          </Stack>
                         ) : (
-                          key.charAt(0).toUpperCase() + key.slice(1)
+                          <Typography>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                          </Typography>
                         )}
                       </TableCell>
                     ))}
@@ -234,53 +256,62 @@ export default function TableComponent({
                             job[key as keyof TableColumns];
 
                           if (key === "updatedAt" && job.updatedAt) {
+                            const [date, time] = job.updatedAt.split("T");
                             cellContent = (
-                              <>
-                                <div>{job.updatedAt.split("T")[0]}</div>
-                                <div>
-                                  {job.updatedAt.split("T")[1].split(".")[0]}
-                                </div>
-                              </>
+                              <Stack spacing={0.5}>
+                                <Typography>{date}</Typography>
+                                <Typography>{time.split(".")[0]}</Typography>
+                              </Stack>
                             );
                           } else if (
                             isEditing === job.jobId &&
                             editableColumns.includes(key as keyof TableColumns)
                           ) {
-                            if (key === "billingStatus") {
-                              // Render dropdown for billingStatus
-                              cellContent = (
+                            cellContent =
+                              key === "billingStatus" ? (
                                 <TextField
                                   select
-                                  value={editedJob[key as keyof TableColumns] || ""}
+                                  value={
+                                    editedJob[key as keyof TableColumns] || ""
+                                  }
                                   onChange={(e) =>
-                                    handleInputChange(setEditedJob, key as keyof TableColumns, e.target.value)
+                                    handleInputChange(
+                                      setEditedJob,
+                                      key as keyof TableColumns,
+                                      e.target.value
+                                    )
                                   }
                                   size="small"
                                   fullWidth
                                 >
-                                  {dropdownOptions.billingStatus.map((status) => (
-                                    <MenuItem key={status} value={status}>
-                                      {status}
-                                    </MenuItem>
-                                  ))}
+                                  {dropdownOptions.billingStatus.map(
+                                    (status) => (
+                                      <MenuItem key={status} value={status}>
+                                        {status}
+                                      </MenuItem>
+                                    )
+                                  )}
                                 </TextField>
-                              );
-                            } else {
-                              // For other fields, just render the regular TextField
-                              cellContent = (
+                              ) : (
                                 <TextField
-                                  value={editedJob[key as keyof TableColumns] || ""}
+                                  value={
+                                    editedJob[key as keyof TableColumns] || ""
+                                  }
                                   onChange={(e) =>
-                                    handleInputChange(setEditedJob, key as keyof TableColumns, e.target.value)
+                                    handleInputChange(
+                                      setEditedJob,
+                                      key as keyof TableColumns,
+                                      e.target.value
+                                    )
                                   }
                                   size="small"
+                                  fullWidth
                                 />
                               );
-                            }
                           } else if (key === "Action") {
                             cellContent =
                               isEditing === job.jobId ? (
-                                <>
+                                <Stack direction="row" spacing={1}>
                                   <Button
                                     variant="contained"
                                     color="success"
@@ -291,12 +322,11 @@ export default function TableComponent({
                                         setEditedJob
                                       )
                                     }
-                                    sx={{ mr: 1 }}
                                   >
                                     Save
                                   </Button>
                                   <Button
-                                    variant="contained"
+                                    variant="outlined"
                                     color="error"
                                     onClick={() =>
                                       handleCancel(setIsEditing, setEditedJob)
@@ -304,11 +334,10 @@ export default function TableComponent({
                                   >
                                     Cancel
                                   </Button>
-                                </>
+                                </Stack>
                               ) : (
                                 <Button
                                   variant="contained"
-                                  color="primary"
                                   onClick={() =>
                                     handleEdit(job, setIsEditing, setEditedJob)
                                   }
@@ -321,7 +350,7 @@ export default function TableComponent({
                           return (
                             <TableCell
                               key={key}
-                              style={{
+                              sx={{
                                 border: "1px solid rgba(224, 224, 224, 1)",
                                 position:
                                   key === "slNo" || key === "jobId"
@@ -352,9 +381,20 @@ export default function TableComponent({
                 </TableBody>
               </Table>
             </TableContainer>
-          </div>
+          </Box>
           <TablePagination
-            style={{ marginRight: isCollapsed ? "40px" : "180px" }}
+            sx={{
+              px: 2,
+              mt: 1,
+              borderTop: "1px solid rgba(224, 224, 224, 1)", // Added top border
+              borderLeft: "1px solid rgba(224, 224, 224, 1)", // Added left border
+              borderRight: isCollapsed
+                ? "1px solid rgba(224, 224, 224, 1)"
+                : `1px solid rgba(224, 224, 224, 1)`, // Added right border
+              borderBottomLeftRadius: 2,
+              borderBottomRightRadius: 2,
+              mr: isCollapsed ? "0px" : "150px",
+            }}
             rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={jobs.length}
@@ -367,16 +407,13 @@ export default function TableComponent({
               handleChangeRowsPerPage(event, setRowsPerPage, setPage)
             }
           />
-        </Paper>
+        </Box>
       )}
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => handleFilterClose(setAnchorEl)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <MenuList>
           <MenuItem
@@ -393,8 +430,22 @@ export default function TableComponent({
           >
             Done
           </MenuItem>
+          <MenuItem
+            onClick={() =>
+              handleFilterSelect("Job Closed", setBillingFilter, setAnchorEl)
+            }
+          >
+            Job Closed
+          </MenuItem>
+          <MenuItem
+            onClick={() =>
+              handleFilterSelect("Open", setBillingFilter, setAnchorEl)
+            }
+          >
+            Open
+          </MenuItem>
         </MenuList>
       </Popover>
-    </div>
+    </Box>
   );
 }
