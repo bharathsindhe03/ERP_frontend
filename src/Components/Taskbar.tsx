@@ -28,7 +28,6 @@ export default function Taskbar({
   isCollapsed,
   setIsCollapsed,
   onJobAdded,
-  onFilterChange,
   onShowAllJobs,
   onShowCurrentJobs,
   onManageEmployeesClick,

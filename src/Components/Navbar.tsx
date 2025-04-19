@@ -13,7 +13,7 @@ import {
 } from "../Services/Utils/LocalStorageUtils";
 
 export default function Navbar({ isCollapsed }: any) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const navigator = useNavigate();
   const userName = getUsername();
