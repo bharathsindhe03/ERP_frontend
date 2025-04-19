@@ -29,7 +29,7 @@ export default function ResetPassword() {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNewPassword(value);
-    const { isValid, errorMessage } = validatePassword(value);
+    const { errorMessage } = validatePassword(value);
     setPasswordError(errorMessage);
   };
 
