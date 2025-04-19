@@ -12,7 +12,7 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import AddJob from "./AddJob";
+import AddJob from "./forms/AddJob";
 
 interface TaskbarProps {
   isCollapsed: boolean;

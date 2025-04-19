@@ -41,15 +41,55 @@ export default function Dashboard() {
     fetchJobs();
   }, []);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = (query: string, filters?: any) => {
     const lowered = query.toLowerCase();
-    const filtered = jobs.filter((job) => {
+    let filtered = jobs.filter((job) => {
       return (
         job.customerName?.toLowerCase().includes(lowered) ||
         job.category?.toLowerCase().includes(lowered) ||
         String(job.jobId)?.toLowerCase().includes(lowered)
       );
     });
+
+    if (filters) {
+      if (filters.jobDateFrom) {
+        filtered = filtered.filter(
+          (job) => job.jobDate && new Date(job.jobDate) >= filters.jobDateFrom
+        );
+      }
+      if (filters.jobDateTo) {
+        filtered = filtered.filter(
+          (job) => job.jobDate && new Date(job.jobDate) <= filters.jobDateTo
+        );
+      }
+      if (filters.categories && filters.categories.length > 0) {
+        filtered = filtered.filter((job) =>
+          filters.categories.includes(job.category || "")
+        );
+      }
+      if (filters.sellingPriceFrom !== null) {
+        filtered = filtered.filter(
+          (job) =>
+            job.sellingPrice !== undefined &&
+            job.sellingPrice !== null && // Added null check
+            job.sellingPrice >= filters.sellingPriceFrom
+        );
+      }
+      if (filters.sellingPriceTo !== null) {
+        filtered = filtered.filter(
+          (job) =>
+            job.sellingPrice !== undefined &&
+            job.sellingPrice !== null && // Added null check
+            job.sellingPrice <= filters.sellingPriceTo
+        );
+      }
+      if (filters.billingStatuses && filters.billingStatuses.length > 0) {
+        filtered = filtered.filter((job) =>
+          filters.billingStatuses.includes(job.billingStatus || "")
+        );
+      }
+    }
+
     setFilteredJobs(filtered);
   };
 
@@ -119,7 +159,8 @@ export default function Dashboard() {
           {activeContent === "jobs" && (
             <>
               <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-                <Searchbar onSearch={handleSearch} />
+                <Searchbar onSearch={handleSearch} jobs={jobs} />{" "}
+                {/* Passed the jobs prop here */}
               </Box>
               <Box sx={{ overflowX: "auto" }}>
                 <TableComponent

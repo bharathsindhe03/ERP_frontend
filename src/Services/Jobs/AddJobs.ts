@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import api from "../../Utils/create_api";
 
-export default async function handleCRMAddJob(
+export default async function handleAddJob(
   customerName: string,
   date: string,
   category: string,

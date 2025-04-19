@@ -1,31 +1,52 @@
 import { useState } from "react";
-import {
-  TextField,
-  Box,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { TextField, Box, IconButton, Dialog } from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import TableColumns from "../Interface/TableColumns";
+import AdvanceFilter from "./forms/AdvanceFilter";
 
 interface SearchbarProps {
-  onSearch: (query: string) => void;
+  onSearch: (query: string, filters?: any) => void;
+  jobs: TableColumns[];
 }
 
-export default function Searchbar({ onSearch }: SearchbarProps) {
+interface CategoryCounts {
+  [category: string]: number;
+}
+
+interface BillingStatusCounts {
+  [status: string]: number;
+}
+
+export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [jobDateFrom, setJobDateFrom] = useState<Date | null>(null);
+  const [jobDateTo, setJobDateTo] = useState<Date | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [sellingPriceFrom, setSellingPriceFrom] = useState<number | null>(null);
+  const [sellingPriceTo, setSellingPriceTo] = useState<number | null>(null);
+  const [selectedBillingStatuses, setSelectedBillingStatuses] = useState<
+    string[]
+  >([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const categoryCounts: CategoryCounts = jobs.reduce((acc, job) => {
+    if (job.category) {
+      acc[job.category] = (acc[job.category] || 0) + 1;
+    }
+    return acc;
+  }, {} as CategoryCounts); // Explicitly cast to CategoryCounts
+
+  const billingStatusCounts: BillingStatusCounts = jobs.reduce((acc, job) => {
+    if (job.billingStatus) {
+      acc[job.billingStatus] = (acc[job.billingStatus] || 0) + 1;
+    }
+    return acc;
+  }, {} as BillingStatusCounts); // Explicitly cast to BillingStatusCounts
+
+  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    onSearch(value);
+    onSearch(value, getFilters());
   };
 
   const handleFilterClick = () => {
@@ -34,16 +55,70 @@ export default function Searchbar({ onSearch }: SearchbarProps) {
 
   const handleFilterDialogClose = () => {
     setFilterDialogOpen(false);
+    resetFilters();
+    onSearch(searchTerm); // Apply search term even if filters are closed
   };
 
-  const handleFilterSelect = (filter: string) => {
-    setSelectedFilter(filter);
-    console.log(`Selected filter: ${filter}`);
+  const handleJobDateFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setJobDateFrom(e.target.value ? new Date(e.target.value) : null);
+  };
 
+  const handleJobDateToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setJobDateTo(e.target.value ? new Date(e.target.value) : null);
+  };
+
+  const handleCategoryCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value, checked } = event.target;
+    setSelectedCategories((prev) =>
+      checked ? [...prev, value] : prev.filter((cat) => cat !== value)
+    );
+  };
+
+  const handleSellingPriceFromChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSellingPriceFrom(e.target.value ? Number(e.target.value) : null);
+  };
+
+  const handleSellingPriceToChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSellingPriceTo(e.target.value ? Number(e.target.value) : null);
+  };
+
+  const handleBillingStatusCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value, checked } = event.target;
+    setSelectedBillingStatuses((prev) =>
+      checked ? [...prev, value] : prev.filter((status) => status !== value)
+    );
+  };
+
+  const applyFilters = () => {
+    onSearch(searchTerm, getFilters());
     setFilterDialogOpen(false);
   };
 
-  const availableFilters = ["Category", "Status", "Date Range"];
+  const resetFilters = () => {
+    setJobDateFrom(null);
+    setJobDateTo(null);
+    setSelectedCategories([]);
+    setSellingPriceFrom(null);
+    setSellingPriceTo(null);
+    setSelectedBillingStatuses([]);
+  };
+
+  const getFilters = () => ({
+    jobDateFrom,
+    jobDateTo,
+    categories: selectedCategories,
+    sellingPriceFrom,
+    sellingPriceTo,
+    billingStatuses: selectedBillingStatuses,
+  });
 
   return (
     <Box
@@ -60,7 +135,7 @@ export default function Searchbar({ onSearch }: SearchbarProps) {
         label="Search jobs..."
         variant="outlined"
         value={searchTerm}
-        onChange={handleChange}
+        onChange={handleSearchTermChange}
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: "8px",
@@ -75,18 +150,25 @@ export default function Searchbar({ onSearch }: SearchbarProps) {
       </IconButton>
 
       <Dialog open={filterDialogOpen} onClose={handleFilterDialogClose}>
-        <DialogTitle>Filter Options</DialogTitle>
-        <DialogContent>
-          <List>
-            {availableFilters.map((filter) => (
-              <ListItem key={filter} disablePadding>
-                <ListItemButton onClick={() => handleFilterSelect(filter)}>
-                  <ListItemText primary={filter} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </DialogContent>
+        <AdvanceFilter
+          open={filterDialogOpen}
+          onClose={handleFilterDialogClose}
+          onApply={applyFilters}
+          jobDateFrom={jobDateFrom}
+          jobDateTo={jobDateTo}
+          sellingPriceFrom={sellingPriceFrom}
+          sellingPriceTo={sellingPriceTo}
+          selectedCategories={selectedCategories}
+          selectedBillingStatuses={selectedBillingStatuses}
+          categoryCounts={categoryCounts}
+          billingStatusCounts={billingStatusCounts}
+          onDateFromChange={handleJobDateFromChange}
+          onDateToChange={handleJobDateToChange}
+          onSellingPriceFromChange={handleSellingPriceFromChange}
+          onSellingPriceToChange={handleSellingPriceToChange}
+          onCategoryChange={handleCategoryCheckboxChange}
+          onBillingStatusChange={handleBillingStatusCheckboxChange}
+        />
       </Dialog>
     </Box>
   );

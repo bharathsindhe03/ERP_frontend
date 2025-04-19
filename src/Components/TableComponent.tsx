@@ -32,6 +32,7 @@ import {
   handleChangeRowsPerPage,
   getEditableColumns,
 } from "../Utils/TableComponent";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface TableColumnProps {
   jobs: TableColumns[];
@@ -143,7 +144,7 @@ export default function TableComponent({
       }}
     >
       {loading ? (
-        <Typography variant="body1">Loading...</Typography>
+        <CircularProgress color="inherit" />
       ) : error ? (
         <Typography variant="body1" color="error" align="center" py={4}>
           Please check your internet connection and try again.

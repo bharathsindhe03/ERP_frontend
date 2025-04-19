@@ -5,12 +5,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import handleCRMAddJob from "../Services/Jobs/AddJobs";
+import handleAddJob from "../../Services/Jobs/AddJobs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
-import CategorySelector from "./ui/CategorySelector";
+import CategorySelector from "../ui/CategorySelector";
 import CloseIcon from "@mui/icons-material/Close";
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
@@ -50,7 +50,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
     e.preventDefault();
     const formattedDate = date.split("-").reverse().join("-");
 
-    await handleCRMAddJob(
+    await handleAddJob(
       customerName,
       formattedDate,
       category,
