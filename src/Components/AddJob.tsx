@@ -5,13 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { FaTimes } from "react-icons/fa";
 import handleCRMAddJob from "../Services/Jobs/AddJobs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import CategorySelector from "./ui/CategorySelector";
+import CloseIcon from "@mui/icons-material/Close";
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
   onJobAdded?: () => void;
@@ -81,7 +81,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
       >
         {"Add New Job"}
         <Button onClick={handleClose} color="inherit" aria-label="close">
-          <FaTimes />
+          <CloseIcon />
         </Button>
       </DialogTitle>
       <DialogContent>
@@ -144,12 +144,34 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button
+          onClick={handleClose}
+          variant="contained"
+          sx={{
+            backgroundColor: "red",
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "#fff",
+              color: "#111928",
+              border: "1px solid red",
+            },
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           type="submit"
           onClick={handleSubmit}
           disabled={loading}
           autoFocus
+          sx={{
+            backgroundColor: "#111928",
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "#fff",
+              color: "#111928",
+            },
+          }}
         >
           {loading ? <CircularProgress size={24} /> : "Add Job"}
         </Button>

@@ -13,13 +13,15 @@ import {
 } from "@mui/material";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import AddJob from "./AddJob";
-import { userInfo } from "os";
 
 interface TaskbarProps {
   isCollapsed: boolean;
   setIsCollapsed: (collapsed: boolean) => void;
   onJobAdded: () => void;
   onFilterChange: (filter: string | null) => void;
+  onShowAllJobs: () => void;
+  onShowCurrentJobs: () => void;
+  onManageEmployeesClick: () => void;
 }
 
 export default function Taskbar({
@@ -27,12 +29,16 @@ export default function Taskbar({
   setIsCollapsed,
   onJobAdded,
   onFilterChange,
+  onShowAllJobs,
+  onShowCurrentJobs,
+  onManageEmployeesClick,
 }: TaskbarProps) {
   const [showModal, setShowModal] = useState(false);
 
-  const handleCurrentJobsClick = () => {
-    onFilterChange("Open");
+  const handleAddJobClick = () => {
+    setShowModal(true);
   };
+
   const userRole = localStorage.getItem("role");
   const canAddJob = userRole === "ADMIN" || userRole === "CRM";
   const canManageEmployees = userRole === "ADMIN";
@@ -48,7 +54,6 @@ export default function Taskbar({
       zIndex={1000}
       component="nav"
     >
-      {/* Toggle Button */}
       <IconButton
         onClick={() => setIsCollapsed(!isCollapsed)}
         sx={{
@@ -67,43 +72,32 @@ export default function Taskbar({
         )}
       </IconButton>
 
-      {/* Logo */}
       <Box display="flex" justifyContent="center" py={3}>
         <img src={logo} alt="Logo" style={{ width: "150px", height: "auto" }} />
       </Box>
 
-      {/* Sidebar Links */}
       <List sx={{ color: "white" }}>
-        {/* All Roles: Jobs */}
-        <ListItemButton component="li">
-          <WorkIcon sx={{ fontSize: 24 }} />
-          {!isCollapsed && <ListItemText primary="Jobs" />}
-        </ListItemButton>
-
-        {/* All Roles: Current Jobs */}
-        <ListItemButton component="li" onClick={handleCurrentJobsClick}>
-          <WorkHistoryIcon sx={{ fontSize: 24 }} />
-          {!isCollapsed && <ListItemText primary="Current Jobs" />}
-        </ListItemButton>
-
-        {/* Admin + CRM: Add Job */}
         {canAddJob && (
-          <ListItemButton component="li" onClick={() => setShowModal(true)}>
+          <ListItemButton component="li" onClick={handleAddJobClick}>
             <AddIcon sx={{ fontSize: 24 }} />
             {!isCollapsed && <ListItemText primary="Add Jobs" />}
           </ListItemButton>
         )}
-
-        {/* Admin Only: Manage Employees */}
+        <ListItemButton component="li" onClick={onShowAllJobs}>
+          <WorkIcon sx={{ fontSize: 24 }} />
+          {!isCollapsed && <ListItemText primary="Jobs" />}
+        </ListItemButton>
+        <ListItemButton component="li" onClick={onShowCurrentJobs}>
+          <WorkHistoryIcon sx={{ fontSize: 24 }} />
+          {!isCollapsed && <ListItemText primary="Current Jobs" />}
+        </ListItemButton>
         {canManageEmployees && (
-          <ListItemButton component="li" onClick={() => setShowModal(true)}>
+          <ListItemButton component="li" onClick={onManageEmployeesClick}>
             <ManageAccountsIcon sx={{ fontSize: 24 }} />
             {!isCollapsed && <ListItemText primary="Manage Employees" />}
           </ListItemButton>
         )}
       </List>
-
-      {/* Modal */}
       {showModal && (
         <AddJob setShowModal={setShowModal} onJobAdded={onJobAdded} />
       )}

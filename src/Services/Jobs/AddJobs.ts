@@ -14,16 +14,6 @@ export default async function handleCRMAddJob(
   setError(null);
 
   try {
-    console.log(customerName, date, category, sellingPrice);
-    console.log(
-      typeof customerName,
-      typeof date,
-      typeof category,
-      typeof sellingPrice
-    );
-    console.log(`${import.meta.env.VITE_BASE_SERVER_URL}/crm/create-job`);
-
-    
     const response = await api.post("/crm/create-job", {
       customerName,
       date,

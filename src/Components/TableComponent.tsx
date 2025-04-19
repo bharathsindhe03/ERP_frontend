@@ -25,9 +25,9 @@ import {
   handleCancel,
   handleInputChange,
   handleSort,
-  handleFilterClick as handleBillingFilterButtonClick, // Renamed to avoid conflict
-  handleFilterClose as handleBillingFilterClose, // Renamed to avoid conflict
-  handleFilterSelect as handleBillingFilterSelect, // Renamed to avoid conflict
+  handleFilterClick as handleBillingFilterButtonClick,
+  handleFilterClose as handleBillingFilterClose,
+  handleFilterSelect as handleBillingFilterSelect,
   handleChangePage,
   handleChangeRowsPerPage,
   getEditableColumns,
@@ -38,7 +38,7 @@ interface TableColumnProps {
   loading: boolean;
   error: string | null;
   isCollapsed: boolean;
-  initialBillingFilter?: string | null; // Optional prop to set initial filter
+  initialBillingFilter?: string | null;
 }
 
 const dropdownOptions: { [key: string]: string[] } = {
@@ -50,8 +50,10 @@ export default function TableComponent({
   loading,
   error,
   isCollapsed,
-  initialBillingFilter, // Receive the initial filter
+  initialBillingFilter,
 }: TableColumnProps) {
+  console.log("initialBillingFilter in TableComponent:", initialBillingFilter);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditing, setIsEditing] = useState<number | null>(null);
@@ -64,10 +66,9 @@ export default function TableComponent({
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  // Set initial billing filter if provided
   useEffect(() => {
-    if (initialBillingFilter) {
-      setBillingFilter(initialBillingFilter);
+    if (initialBillingFilter !== undefined) {
+      setBillingFilter("All");
     }
   }, [initialBillingFilter]);
 
@@ -120,7 +121,7 @@ export default function TableComponent({
     tentativeClosureDate: "200px",
     closedDate: "150px",
     sellingPrice: "150px",
-    billingStatus: "150px",
+    billingStatus: "200px",
     invoiceNo: "150px",
     invoiceDate: "150px",
     courierTrackingNo: "200px",
@@ -397,11 +398,11 @@ export default function TableComponent({
             sx={{
               px: 2,
               mt: 1,
-              borderTop: "1px solid rgba(224, 224, 224, 1)", // Added top border
-              borderLeft: "1px solid rgba(224, 224, 224, 1)", // Added left border
+              borderTop: "1px solid rgba(224, 224, 224, 1)",
+              borderLeft: "1px solid rgba(224, 224, 224, 1)",
               borderRight: isCollapsed
                 ? "1px solid rgba(224, 224, 224, 1)"
-                : `1px solid rgba(224, 224, 224, 1)`, // Added right border
+                : `1px solid rgba(224, 224, 224, 1)`,
               borderBottomLeftRadius: 2,
               borderBottomRightRadius: 2,
               mr: isCollapsed ? "0px" : "150px",

@@ -29,11 +29,8 @@ export default function App() {
             <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/verifyotp" element={<VerifyOTP />} />
-
             <Route path="/dashboard" element={<Dashboard />} />
-
             <Route path="/forbidden" element={<ForbiddenPage />} />
-
             <Route path="/*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

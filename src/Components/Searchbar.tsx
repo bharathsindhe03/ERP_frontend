@@ -20,7 +20,7 @@ interface SearchbarProps {
 export default function Searchbar({ onSearch }: SearchbarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null); // Example filter state
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -39,11 +39,11 @@ export default function Searchbar({ onSearch }: SearchbarProps) {
   const handleFilterSelect = (filter: string) => {
     setSelectedFilter(filter);
     console.log(`Selected filter: ${filter}`);
-    // Here you would typically apply the filter to your data
+
     setFilterDialogOpen(false);
   };
 
-  const availableFilters = ["Category", "Status", "Date Range"]; // Example filters
+  const availableFilters = ["Category", "Status", "Date Range"];
 
   return (
     <Box

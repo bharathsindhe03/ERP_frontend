@@ -6,6 +6,7 @@ import TableColumns from "../../Interface/TableColumns";
 import handleFetchJob from "../../Services/Jobs/FetchJobs";
 import Searchbar from "../../Components/Searchbar";
 import { Box } from "@mui/material";
+import ManageEmployee from "../../Components/ManageEmployee";
 
 export default function Dashboard() {
   const [jobs, setJobs] = useState<TableColumns[]>([]);
@@ -16,7 +17,10 @@ export default function Dashboard() {
     const storedState = localStorage.getItem("isCollapsed");
     return storedState ? JSON.parse(storedState) : false;
   });
-  const [billingFilter, setBillingFilter] = useState<string | null>(null); // State for billing filter
+  const [billingFilter, setBillingFilter] = useState<string | null>(null);
+  const [activeContent, setActiveContent] = useState<
+    "jobs" | "manageEmployees"
+  >("jobs");
 
   useEffect(() => {
     localStorage.setItem("isCollapsed", JSON.stringify(isCollapsed));
@@ -53,6 +57,22 @@ export default function Dashboard() {
     setBillingFilter(filter);
   };
 
+  const handleShowAllJobs = () => {
+    setBillingFilter(null);
+    setFilteredJobs(jobs);
+    setActiveContent("jobs");
+  };
+
+  const handleShowCurrentJobs = () => {
+    setBillingFilter("Open");
+    setFilteredJobs(jobs.filter((job) => job.billingStatus === "Open"));
+    setActiveContent("jobs");
+  };
+
+  const handleManageEmployeesClick = () => {
+    setActiveContent("manageEmployees");
+  };
+
   const filteredByBillingStatus = useMemo(() => {
     if (!billingFilter || billingFilter === "All") {
       return filteredJobs;
@@ -68,15 +88,15 @@ export default function Dashboard() {
         overflow: "hidden",
       }}
     >
-      {/* Taskbar */}
       <Taskbar
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
         onJobAdded={fetchJobs}
-        onFilterChange={handleBillingFilterChange} // Pass the filter function
+        onFilterChange={handleBillingFilterChange}
+        onShowAllJobs={handleShowAllJobs}
+        onShowCurrentJobs={handleShowCurrentJobs}
+        onManageEmployeesClick={handleManageEmployeesClick}
       />
-
-      {/* Main Content */}
       <Box
         sx={{
           display: "flex",
@@ -86,10 +106,7 @@ export default function Dashboard() {
           transition: "all 0.3s ease",
         }}
       >
-        {/* Navbar */}
         <Navbar isCollapsed={isCollapsed} />
-
-        {/* Content Below Navbar */}
         <Box
           sx={{
             flexGrow: 1,
@@ -99,21 +116,23 @@ export default function Dashboard() {
             paddingTop: "72px",
           }}
         >
-          {/* Searchbar */}
-          <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-            <Searchbar onSearch={handleSearch} />
-          </Box>
-
-          {/* Table */}
-          <Box sx={{ overflowX: "auto" }}>
-            <TableComponent
-              jobs={filteredByBillingStatus} // Use the filtered jobs
-              loading={loading}
-              error={error}
-              isCollapsed={isCollapsed}
-              initialBillingFilter={billingFilter} // Optionally pass the initial filter
-            />
-          </Box>
+          {activeContent === "jobs" && (
+            <>
+              <Box sx={{ marginTop: 2, marginBottom: 2 }}>
+                <Searchbar onSearch={handleSearch} />
+              </Box>
+              <Box sx={{ overflowX: "auto" }}>
+                <TableComponent
+                  jobs={filteredByBillingStatus}
+                  loading={loading}
+                  error={error}
+                  isCollapsed={isCollapsed}
+                  initialBillingFilter={billingFilter}
+                />
+              </Box>
+            </>
+          )}
+          {activeContent === "manageEmployees" && <ManageEmployee />}
         </Box>
       </Box>
     </Box>

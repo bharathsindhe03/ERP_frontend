@@ -5,7 +5,11 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
-  const userRole = localStorage.getItem("role"); // Get role from localStorage
+  const userRole = localStorage.getItem("role");
 
-  return allowedRoles.includes(userRole || "") ? <Outlet /> : <Navigate to="/forbidden" replace />;
+  return allowedRoles.includes(userRole || "") ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/forbidden" replace />
+  );
 }

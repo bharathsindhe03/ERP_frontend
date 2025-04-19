@@ -49,8 +49,6 @@ export const handleSave = async (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
-  
-
   const updatedJob: TableColumns = {
     slNo: Number(editedJob.slNo) ?? 0,
     jobId: Number(editedJob.jobId),

@@ -9,12 +9,16 @@ export const updateJob = async (
     console.log("Updating job ", updatedJob);
     console.log(typeof updatedJob.slNo);
     console.log(typeof JSON.stringify(updatedJob));
-    const response = await api.patch('/job/update-job', JSON.stringify(updatedJob), {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    
+    const response = await api.patch(
+      "/job/update-job",
+      JSON.stringify(updatedJob),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     if (response.status === 200) {
       toast.success("Job updated successfully");
       return response.data as TableColumns;
