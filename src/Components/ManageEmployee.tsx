@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import api from "../Utils/create_api";
-import { toast } from "sonner";
 import { fetchUsers } from "../Services/ManageEmployee/FetchEmp";
 import { deleteUser } from "../Services/ManageEmployee/DeleteEmp";
-import handleAddUser from "../Services/ManageEmployee/AddEmp"
+import handleAddUser from "../Services/ManageEmployee/AddEmp";
 
 import {
   Box,
@@ -58,8 +56,6 @@ export default function ManageEmployee() {
     fetchUsers(setUsers, setLoading);
   }, []);
 
- 
-
   return (
     <>
       {/* Add New Button */}
@@ -94,7 +90,11 @@ export default function ManageEmployee() {
             </Box>
           ) : (
             <TableContainer sx={{ minWidth: "100%" }} component={Paper}>
-              <Table stickyHeader aria-label="CRM Table" sx={{ tableLayout: "fixed" }}>
+              <Table
+                stickyHeader
+                aria-label="CRM Table"
+                sx={{ tableLayout: "fixed" }}
+              >
                 <TableHead>
                   <TableRow>
                     {Object.entries(columnWidths).map(([key, width]) => (
@@ -142,7 +142,12 @@ export default function ManageEmployee() {
                         <IconButton
                           color="error"
                           onClick={() =>
-                            deleteUser(user.userName, fetchUsers, setUsers, setLoading)
+                            deleteUser(
+                              user.userName,
+                              fetchUsers,
+                              setUsers,
+                              setLoading
+                            )
                           }
                         >
                           <DeleteIcon />
@@ -160,7 +165,16 @@ export default function ManageEmployee() {
       {/* Add New User Dialog */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add New User</DialogTitle>
-        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 0,minWidth:300,width:400 }}>
+        <DialogContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            mt: 0,
+            minWidth: 300,
+            width: 400,
+          }}
+        >
           <TextField
             label="Username"
             value={userName}
@@ -195,10 +209,9 @@ export default function ManageEmployee() {
             fullWidth
             margin="normal"
           >
-          <MenuItem value="ADMIN">Admin</MenuItem>
-          <MenuItem value="EMPLOYEE">Employee</MenuItem>
-        </TextField>
-
+            <MenuItem value="ADMIN">Admin</MenuItem>
+            <MenuItem value="EMPLOYEE">Employee</MenuItem>
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
