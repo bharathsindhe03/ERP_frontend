@@ -1,8 +1,8 @@
-import CRMJob from "../../Interface/TableColumns";
+import TableColumns from "../../Interface/TableColumns";
 import api from "../../Utils/create_api";
 
 export default async function handleFetchJob(
-  setJobs: (jobs: CRMJob[]) => void,
+  setJobs: (jobs: TableColumns[]) => void,
   setLoading: (loading: boolean) => void,
   setError: (error: string | null) => void
 ) {
@@ -12,7 +12,7 @@ export default async function handleFetchJob(
   try {
     const response = await api.get("/job/get-all-jobs");
     console.log("Fetch Jobs: ", response);
-    setJobs(response.data);
+    setJobs(Array.isArray(response.data) ? response.data : []);
   } catch (err) {
     console.error(err);
     setError(err instanceof Error ? err.message : "An error occurred");

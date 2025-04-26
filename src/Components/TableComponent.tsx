@@ -78,8 +78,12 @@ export default function TableComponent({
   const filteredJobs = useMemo(
     () =>
       billingFilter === "All"
-        ? jobs
-        : jobs.filter((job) => job.billingStatus === billingFilter),
+        ? Array.isArray(jobs)
+          ? jobs
+          : []
+        : Array.isArray(jobs)
+        ? jobs.filter((job) => job.billingStatus === billingFilter)
+        : [],
     [billingFilter, jobs]
   );
 
