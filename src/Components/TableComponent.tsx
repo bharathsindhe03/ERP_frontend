@@ -68,7 +68,9 @@ export default function TableComponent({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
-    if (initialBillingFilter !== undefined) {
+    if (initialBillingFilter !== null && initialBillingFilter !== undefined) {
+      setBillingFilter(initialBillingFilter);
+    } else {
       setBillingFilter("All");
     }
   }, [initialBillingFilter]);
@@ -107,6 +109,7 @@ export default function TableComponent({
     }
     return filteredJobs;
   }, [filteredJobs, sortConfig]);
+  console.log("isCollapsed in TableComponent:", isCollapsed);
 
   const columnWidths: { [key: string]: string } = {
     slNo: "60px",
@@ -122,6 +125,7 @@ export default function TableComponent({
     tentativeClosureDate: "200px",
     closedDate: "150px",
     sellingPrice: "150px",
+    costPrice: "150px",
     billingStatus: "200px",
     invoiceNo: "150px",
     invoiceDate: "150px",
@@ -144,7 +148,16 @@ export default function TableComponent({
       }}
     >
       {loading ? (
-        <CircularProgress color="inherit" />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
       ) : error ? (
         <Typography variant="body1" color="error" align="center" py={4}>
           Please check your internet connection and try again.
@@ -154,12 +167,19 @@ export default function TableComponent({
       ) : (
         <Box
           sx={{
-            width: "100%",
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            border: "1px solid rgba(224, 224, 224, 1)", // Added border here
+            border: "1px solid rgba(224, 224, 224, 1)",
             borderRadius: 2,
+            marginRight: isCollapsed ? "50px" : "200px", // Default for medium screens
+            transition: "margin 0.3s ease",
+            "@media (max-width: 1200px)": {
+              marginRight: isCollapsed ? "30px" : "100px", // Adjust for smaller screens
+            },
+            "@media (max-width: 768px)": {
+              marginRight: isCollapsed ? "20px" : "50px", // Adjust for mobile screens
+            },
           }}
         >
           <Box
@@ -167,7 +187,6 @@ export default function TableComponent({
               overflow: "auto",
               maxHeight: "65vh",
               overflowX: "auto",
-              marginRight: isCollapsed ? "0px" : "150px",
             }}
           >
             <TableContainer sx={{ minWidth: "100%" }}>
@@ -178,9 +197,9 @@ export default function TableComponent({
               >
                 <TableHead>
                   <TableRow>
-                    {Object.entries(columnWidths).map(([key, width]) => (
+                    {Object.entries(columnWidths).map(([key, width], index) => (
                       <TableCell
-                        key={key}
+                        key={index}
                         sx={{
                           width,
                           border: "1px solid rgba(224, 224, 224, 1)",
@@ -262,8 +281,8 @@ export default function TableComponent({
                 <TableBody>
                   {sortedJobs
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((job) => (
-                      <TableRow hover key={job.jobId}>
+                    .map((job, index) => (
+                      <TableRow hover key={index}>
                         {Object.keys(columnWidths).map((key) => {
                           let cellContent: ReactNode =
                             job[key as keyof TableColumns];
@@ -397,16 +416,8 @@ export default function TableComponent({
           </Box>
           <TablePagination
             sx={{
-              px: 2,
-              mt: 1,
               borderTop: "1px solid rgba(224, 224, 224, 1)",
-              borderLeft: "1px solid rgba(224, 224, 224, 1)",
-              borderRight: isCollapsed
-                ? "1px solid rgba(224, 224, 224, 1)"
-                : `1px solid rgba(224, 224, 224, 1)`,
-              borderBottomLeftRadius: 2,
-              borderBottomRightRadius: 2,
-              mr: isCollapsed ? "0px" : "150px",
+              backgroundColor: "#fff",
             }}
             rowsPerPageOptions={[10, 25, 50]}
             component="div"

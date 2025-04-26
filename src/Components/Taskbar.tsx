@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import AddJob from "./forms/AddJob";
-
+import Tooltip from "@mui/material/Tooltip";
 interface TaskbarProps {
   isCollapsed: boolean;
   setIsCollapsed: (collapsed: boolean) => void;
@@ -77,24 +77,32 @@ export default function Taskbar({
 
       <List sx={{ color: "white" }}>
         {canAddJob && (
-          <ListItemButton component="li" onClick={handleAddJobClick}>
-            <AddIcon sx={{ fontSize: 24 }} />
-            {!isCollapsed && <ListItemText primary="Add Jobs" />}
-          </ListItemButton>
+          <Tooltip title="Add a new job" arrow placement="right">
+            <ListItemButton component="li" onClick={handleAddJobClick}>
+              <AddIcon sx={{ fontSize: 24 }} />
+              {!isCollapsed && <ListItemText primary="Add Jobs" />}
+            </ListItemButton>
+          </Tooltip>
         )}
-        <ListItemButton component="li" onClick={onShowAllJobs}>
-          <WorkIcon sx={{ fontSize: 24 }} />
-          {!isCollapsed && <ListItemText primary="Jobs" />}
-        </ListItemButton>
-        <ListItemButton component="li" onClick={onShowCurrentJobs}>
-          <WorkHistoryIcon sx={{ fontSize: 24 }} />
-          {!isCollapsed && <ListItemText primary="Current Jobs" />}
-        </ListItemButton>
-        {canManageEmployees && (
-          <ListItemButton component="li" onClick={onManageEmployeesClick}>
-            <ManageAccountsIcon sx={{ fontSize: 24 }} />
-            {!isCollapsed && <ListItemText primary="Manage Employees" />}
+        <Tooltip title="View all jobs" arrow placement="right">
+          <ListItemButton component="li" onClick={onShowAllJobs}>
+            <WorkIcon sx={{ fontSize: 24 }} />
+            {!isCollapsed && <ListItemText primary="Jobs" />}
           </ListItemButton>
+        </Tooltip>
+        <Tooltip title="View current jobs" arrow placement="right">
+          <ListItemButton component="li" onClick={onShowCurrentJobs}>
+            <WorkHistoryIcon sx={{ fontSize: 24 }} />
+            {!isCollapsed && <ListItemText primary="Current Jobs" />}
+          </ListItemButton>
+        </Tooltip>
+        {canManageEmployees && (
+          <Tooltip title="Manage employees" arrow placement="right">
+            <ListItemButton component="li" onClick={onManageEmployeesClick}>
+              <ManageAccountsIcon sx={{ fontSize: 24 }} />
+              {!isCollapsed && <ListItemText primary="Manage Employees" />}
+            </ListItemButton>
+          </Tooltip>
         )}
       </List>
       {showModal && (

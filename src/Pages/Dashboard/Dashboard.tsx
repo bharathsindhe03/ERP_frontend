@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Taskbar from "../../Components/Taskbar";
-import TableComponent from "../../Components/TableComponent";
 import TableColumns from "../../Interface/TableColumns";
 import handleFetchJob from "../../Services/Jobs/FetchJobs";
 import Searchbar from "../../Components/Searchbar";
 import { Box } from "@mui/material";
 import ManageEmployee from "../../Components/ManageEmployee";
+import MyRoleBasedTable from "../../Components/MyRoleBasedTable";
 
 export default function Dashboard() {
+  const role = localStorage.getItem("role") || null;
   const [jobs, setJobs] = useState<TableColumns[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<TableColumns[]>([]);
   const [loading, setLoading] = useState(true);
@@ -163,12 +164,13 @@ export default function Dashboard() {
                 {/* Passed the jobs prop here */}
               </Box>
               <Box sx={{ overflowX: "auto" }}>
-                <TableComponent
+                <MyRoleBasedTable
                   jobs={filteredByBillingStatus}
                   loading={loading}
                   error={error}
                   isCollapsed={isCollapsed}
                   initialBillingFilter={billingFilter}
+                  userRole={role}
                 />
               </Box>
             </>
