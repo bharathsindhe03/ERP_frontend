@@ -36,12 +36,14 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
     return acc;
   }, {} as CategoryCounts); // Explicitly cast to CategoryCounts
 
-  const billingStatusCounts: BillingStatusCounts = jobs.reduce((acc, job) => {
-    if (job.billingStatus) {
-      acc[job.billingStatus] = (acc[job.billingStatus] || 0) + 1;
-    }
-    return acc;
-  }, {} as BillingStatusCounts); // Explicitly cast to BillingStatusCounts
+  const billingStatusCounts: BillingStatusCounts = Array.isArray(jobs)
+    ? jobs.reduce((acc, job) => {
+        if (job.billingStatus) {
+          acc[job.billingStatus] = (acc[job.billingStatus] || 0) + 1;
+        }
+        return acc;
+      }, {} as BillingStatusCounts)
+    : {};
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

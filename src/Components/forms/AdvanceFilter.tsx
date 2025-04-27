@@ -102,7 +102,9 @@ export default function AdvanceFilter({
           alignItems: "center",
         }}
       >
-        <Typography variant="h6">Filter Options</Typography>
+        <Typography variant="h6" component="div">
+          Filter Options
+        </Typography>
         <IconButton onClick={onClose} size="small">
           <CloseIcon />
         </IconButton>

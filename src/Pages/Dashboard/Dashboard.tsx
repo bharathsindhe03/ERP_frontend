@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Taskbar from "../../Components/Taskbar";
-import TableComponent from "../../Components/TableComponent";
 import TableColumns from "../../Interface/TableColumns";
 import handleFetchJob from "../../Services/Jobs/FetchJobs";
 import Searchbar from "../../Components/Searchbar";
 import { Box } from "@mui/material";
 import ManageEmployee from "../../Components/ManageEmployee";
+import MyRoleBasedTable from "../../Components/MyRoleBasedTable";
 
 export default function Dashboard() {
+  const role = localStorage.getItem("role") || null;
   const [jobs, setJobs] = useState<TableColumns[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<TableColumns[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,15 +53,25 @@ export default function Dashboard() {
     });
 
     if (filters) {
+      console.log("Filters:", filters); // Debugging line
+
       if (filters.jobDateFrom) {
-        filtered = filtered.filter(
-          (job) => job.jobDate && new Date(job.jobDate) >= filters.jobDateFrom
+        const jobDateFrom = new Date(
+          filters.jobDateFrom.split("-").reverse().join("-")
         );
+        filtered = filtered.filter((job) => {
+          const jobDate = job.jobDate ? new Date(job.jobDate) : null;
+          return jobDate && jobDate >= jobDateFrom;
+        });
       }
       if (filters.jobDateTo) {
-        filtered = filtered.filter(
-          (job) => job.jobDate && new Date(job.jobDate) <= filters.jobDateTo
+        const jobDateTo = new Date(
+          filters.jobDateTo.split("-").reverse().join("-")
         );
+        filtered = filtered.filter((job) => {
+          const jobDate = job.jobDate ? new Date(job.jobDate) : null;
+          return jobDate && jobDate <= jobDateTo;
+        });
       }
       if (filters.categories && filters.categories.length > 0) {
         filtered = filtered.filter((job) =>
@@ -71,7 +82,7 @@ export default function Dashboard() {
         filtered = filtered.filter(
           (job) =>
             job.sellingPrice !== undefined &&
-            job.sellingPrice !== null && // Added null check
+            job.sellingPrice !== null &&
             job.sellingPrice >= filters.sellingPriceFrom
         );
       }
@@ -79,7 +90,7 @@ export default function Dashboard() {
         filtered = filtered.filter(
           (job) =>
             job.sellingPrice !== undefined &&
-            job.sellingPrice !== null && // Added null check
+            job.sellingPrice !== null &&
             job.sellingPrice <= filters.sellingPriceTo
         );
       }
@@ -163,12 +174,13 @@ export default function Dashboard() {
                 {/* Passed the jobs prop here */}
               </Box>
               <Box sx={{ overflowX: "auto" }}>
-                <TableComponent
+                <MyRoleBasedTable
                   jobs={filteredByBillingStatus}
                   loading={loading}
                   error={error}
                   isCollapsed={isCollapsed}
                   initialBillingFilter={billingFilter}
+                  userRole={role}
                 />
               </Box>
             </>
