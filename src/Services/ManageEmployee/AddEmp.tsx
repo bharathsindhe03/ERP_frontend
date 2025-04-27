@@ -4,7 +4,7 @@ import { fetchUsers } from "../../Services/ManageEmployee/FetchEmp";
 
 const handleAddUser = async (
   userName: string,
-  password: string,
+  // password: string,
   email: string,
   role: string,
   setUsers: any,
@@ -17,9 +17,9 @@ const handleAddUser = async (
 ) => {
   try {
     console.log('adding..')
-    const res = await api.post("admin/register", {
+    const res = await api.post("/admin/initiate-register", {
       userName,
-      password,
+      // password,
       email,
       role,
     });

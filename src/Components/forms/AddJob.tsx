@@ -12,6 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import CategorySelector from "../ui/CategorySelector";
 import CloseIcon from "@mui/icons-material/Close";
+import api from "../../Utils/create_api"
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
   onJobAdded?: () => void;
@@ -33,18 +34,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
     setShowModal(false);
   };
 
-  const [categoryOptions, setCategoryOptions] = React.useState([
-    "Clearance",
-    "Domestic Freight",
-    "Export Freight",
-    "Freight & Clearance",
-    "Import Freight",
-    "Service",
-    "Storage",
-    "Transportation",
-    "DTA Movement",
-    "Duty Payment",
-  ]);
+  const [categoryOptions, setCategoryOptions] = React.useState<string[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

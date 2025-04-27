@@ -19,6 +19,10 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TableColumns from "../Interface/TableColumns";
+import { 
+  handleAddNewCategory, fetchCategories, handleDeleteCategory 
+} 
+from "../Services/FieldOption/index";
 import {
   handleEdit,
   handleSave,
@@ -34,6 +38,7 @@ import {
 } from "../Utils/TableComponent";
 import CircularProgress from "@mui/material/CircularProgress";
 
+
 interface TableColumnProps {
   jobs: TableColumns[];
   loading: boolean;
@@ -41,7 +46,12 @@ interface TableColumnProps {
   isCollapsed: boolean;
   initialBillingFilter?: string | null;
 }
-
+interface BillingStatusSelectorProps {
+  billingStatus: string;
+  setBillingStatus: (value: string) => void;
+  billingStatusOptions: string[];
+  setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>;
+}
 const dropdownOptions: { [key: string]: string[] } = {
   billingStatus: ["Done", "Job Closed", "Open"],
 };
