@@ -56,20 +56,26 @@ export default function Dashboard() {
       console.log("Filters:", filters); // Debugging line
 
       if (filters.jobDateFrom) {
-        const jobDateFrom = new Date(
-          filters.jobDateFrom.split("-").reverse().join("-")
-        );
+        const jobDateFrom =
+          filters.jobDateFrom instanceof Date
+            ? filters.jobDateFrom
+            : new Date(filters.jobDateFrom.split("-").reverse().join("-")); // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
         filtered = filtered.filter((job) => {
-          const jobDate = job.jobDate ? new Date(job.jobDate) : null;
+          const jobDate = job.jobDate
+            ? new Date(job.jobDate.split("-").reverse().join("-")) // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+            : null;
           return jobDate && jobDate >= jobDateFrom;
         });
       }
       if (filters.jobDateTo) {
-        const jobDateTo = new Date(
-          filters.jobDateTo.split("-").reverse().join("-")
-        );
+        const jobDateTo =
+          filters.jobDateTo instanceof Date
+            ? filters.jobDateTo
+            : new Date(filters.jobDateTo.split("-").reverse().join("-")); // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
         filtered = filtered.filter((job) => {
-          const jobDate = job.jobDate ? new Date(job.jobDate) : null;
+          const jobDate = job.jobDate
+            ? new Date(job.jobDate.split("-").reverse().join("-")) // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+            : null;
           return jobDate && jobDate <= jobDateTo;
         });
       }
