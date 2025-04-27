@@ -18,6 +18,7 @@ interface CategorySelectorProps {
   setCategory: (value: string) => void;
   categoryOptions: string[];
   setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>;
+  field:string
 }
 
 export default function CategorySelector({
@@ -35,7 +36,7 @@ export default function CategorySelector({
   const handleDropdownToggle = async () => {
     setDropdownOpen((prev) => !prev);
     if (!dropdownOpen) {
-      await fetchCategories(setCategoryOptions, setLoading, setError); // Fetch categories using the utility function
+      await fetchCategories(setCategoryOptions, setLoading, setError,'category'); // Fetch categories using the utility function
     }
   };
 

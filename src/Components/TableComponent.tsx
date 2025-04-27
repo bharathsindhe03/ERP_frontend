@@ -19,6 +19,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TableColumns from "../Interface/TableColumns";
+import BillingStatusDropdown from "../Components/ui/BillingStatusDropdown"
 import { 
   handleAddNewCategory, fetchCategories, handleDeleteCategory 
 } 
@@ -60,6 +61,18 @@ interface BillingStatusSelectorProps {
 const dropdownOptions: { [key: string]: string[] } = {
   billingStatus: ["Done", "Job Closed", "Open"],
 };
+
+export const handleAddBillingStatus = (status: string, setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>) => {
+  // Add the new status to the dropdown options
+  setBillingStatusOptions((prevOptions) => [...prevOptions, status]);
+};
+
+export const handleDeleteBillingStatus = (status: string, setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>) => {
+  // Remove the status from the dropdown options
+  setBillingStatusOptions((prevOptions) => prevOptions.filter((option) => option !== status));
+};
+
+
 
 export default function TableComponent({
   jobs,
@@ -300,29 +313,23 @@ export default function TableComponent({
                           ) {
                             cellContent =
                               key === "billingStatus" ? (
-                                <TextField
-                                  select
-                                  value={
-                                    editedJob[key as keyof TableColumns] || ""
-                                  }
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      setEditedJob,
-                                      key as keyof TableColumns,
-                                      e.target.value
-                                    )
-                                  }
-                                  size="small"
-                                  fullWidth
-                                >
-                                  {dropdownOptions.billingStatus.map(
-                                    (status) => (
-                                      <MenuItem key={status} value={status}>
-                                        {status}
-                                      </MenuItem>
-                                    )
-                                  )}
-                                </TextField>
+                                // <TextField
+                                //   select
+                                //   value={editedJob.billingStatus || ""}
+                                //   onChange={(e) =>
+                                //     handleInputChange(setEditedJob, "billingStatus", e.target.value)
+                                //   }
+                                //   size="small"
+                                //   fullWidth
+                                // >
+                                //   {dropdownOptions.billingStatus.map((status) => (
+                                //     <MenuItem key={status} value={status}>
+                                //       {status}
+                                //     </MenuItem>
+                                //   ))}
+                                // </TextField>
+                                <BillingStatusDropdown/>
+
                               ) : (
                                 <TextField
                                   value={
