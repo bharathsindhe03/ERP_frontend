@@ -177,7 +177,6 @@ export default function MyRoleBasedTable({
   const allowedFields =
     userRole && roleBasedFields[userRole] ? roleBasedFields[userRole] : [];
 
-  // Fix: Check if allowedFields has any valid fields
   if (allowedFields.length === 0) {
     console.error("Invalid user role:", userRole);
     return (
@@ -188,33 +187,25 @@ export default function MyRoleBasedTable({
   }
 
   const modifiedJobs = jobs.map((job) => {
-    const filteredJob: Partial<TableColumns> & {
-      Action?: TableColumns["action"] | null;
-    } = {};
+    const filteredJob: Partial<TableColumns> = {};
     for (const field of allowedFields) {
-      if (field in job) {
-        filteredJob[field as keyof TableColumns] =
-          job[field as keyof TableColumns] ?? undefined;
+      if (field === "Action") {
+        continue; // Skip "Action", it's not part of TableColumns
       }
-    }
-    if (allowedFields.includes("Action")) {
-      filteredJob.Action = job.action;
+      if (field in job) {
+        const typedField = field as keyof TableColumns;
+        const value = job[typedField];
+        if (value !== undefined && value !== null) {
+          (filteredJob as any)[typedField] = value;
+        }
+      }
     }
     return filteredJob;
   });
 
-  // Create a dynamic column configuration based on allowed fields and fullColumnConfig
   const dynamicColumnConfig: ColumnConfig[] = fullColumnConfig.filter(
     (config) => allowedFields.includes(config.field as string)
   );
-
-  // Add the Action column config if it's in the allowed fields (or always include it)
-  const actionColumnConfig = fullColumnConfig.find(
-    (config) => config.field === "Action"
-  );
-  // if (actionColumnConfig && allowedFields.includes("Action")) {
-  //   dynamicColumnConfig.push(actionColumnConfig);
-  // }
 
   return (
     <TableComponent
@@ -223,7 +214,7 @@ export default function MyRoleBasedTable({
       error={error}
       isCollapsed={isCollapsed}
       initialBillingFilter={initialBillingFilter}
-      columnConfig={dynamicColumnConfig} // Pass the dynamic column configuration
+      columnConfig={dynamicColumnConfig}
     />
   );
 }

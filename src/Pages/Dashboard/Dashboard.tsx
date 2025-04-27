@@ -53,15 +53,25 @@ export default function Dashboard() {
     });
 
     if (filters) {
+      console.log("Filters:", filters); // Debugging line
+
       if (filters.jobDateFrom) {
-        filtered = filtered.filter(
-          (job) => job.jobDate && new Date(job.jobDate) >= filters.jobDateFrom
+        const jobDateFrom = new Date(
+          filters.jobDateFrom.split("-").reverse().join("-")
         );
+        filtered = filtered.filter((job) => {
+          const jobDate = job.jobDate ? new Date(job.jobDate) : null;
+          return jobDate && jobDate >= jobDateFrom;
+        });
       }
       if (filters.jobDateTo) {
-        filtered = filtered.filter(
-          (job) => job.jobDate && new Date(job.jobDate) <= filters.jobDateTo
+        const jobDateTo = new Date(
+          filters.jobDateTo.split("-").reverse().join("-")
         );
+        filtered = filtered.filter((job) => {
+          const jobDate = job.jobDate ? new Date(job.jobDate) : null;
+          return jobDate && jobDate <= jobDateTo;
+        });
       }
       if (filters.categories && filters.categories.length > 0) {
         filtered = filtered.filter((job) =>
@@ -72,7 +82,7 @@ export default function Dashboard() {
         filtered = filtered.filter(
           (job) =>
             job.sellingPrice !== undefined &&
-            job.sellingPrice !== null && // Added null check
+            job.sellingPrice !== null &&
             job.sellingPrice >= filters.sellingPriceFrom
         );
       }
@@ -80,7 +90,7 @@ export default function Dashboard() {
         filtered = filtered.filter(
           (job) =>
             job.sellingPrice !== undefined &&
-            job.sellingPrice !== null && // Added null check
+            job.sellingPrice !== null &&
             job.sellingPrice <= filters.sellingPriceTo
         );
       }
