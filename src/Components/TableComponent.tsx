@@ -40,6 +40,11 @@ interface TableColumnProps {
   error: string | null;
   isCollapsed: boolean;
   initialBillingFilter?: string | null;
+  columnConfig: {
+    field: keyof TableColumns | "Action";
+    headerName: string;
+    width: string;
+  }[]; // Add columnConfig prop
 }
 
 const dropdownOptions: { [key: string]: string[] } = {
@@ -52,8 +57,10 @@ export default function TableComponent({
   error,
   isCollapsed,
   initialBillingFilter,
+  columnConfig, 
 }: TableColumnProps) {
   console.log("initialBillingFilter in TableComponent:", initialBillingFilter);
+  console.log("columnConfig in TableComponent:", columnConfig);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -113,35 +120,6 @@ export default function TableComponent({
     }
     return filteredJobs;
   }, [filteredJobs, sortConfig]);
-  console.log("isCollapsed in TableComponent:", isCollapsed);
-
-  const columnWidths: { [key: string]: string } = {
-    slNo: "60px",
-    jobId: "120px",
-    jobDate: "140px",
-    category: "150px",
-    customerName: "200px",
-    jobParticulars: "300px",
-    jobReference: "200px",
-    boeSbNo: "150px",
-    boeSbDate: "150px",
-    arrivalDate: "150px",
-    tentativeClosureDate: "200px",
-    closedDate: "150px",
-    sellingPrice: "150px",
-    costPrice: "150px",
-    billingStatus: "200px",
-    invoiceNo: "150px",
-    invoiceDate: "150px",
-    courierTrackingNo: "200px",
-    paymentStatus: "150px",
-    remarks: "300px",
-    apekshaInvoiceNo: "200px",
-    dateOfCourier: "150px",
-    updatedBy: "150px",
-    updatedAt: "200px",
-    Action: "220px",
-  };
 
   return (
     <Box
@@ -201,37 +179,47 @@ export default function TableComponent({
               >
                 <TableHead>
                   <TableRow>
-                    {Object.entries(columnWidths).map(([key, width], index) => (
+                    {columnConfig.map((col, index) => (
                       <TableCell
                         key={index}
                         sx={{
-                          width,
+                          width: col.width,
                           border: "1px solid rgba(224, 224, 224, 1)",
                           position:
-                            key === "slNo" || key === "jobId"
+                            col.field === "slNo"
+                              ? "sticky"
+                              : col.field === "jobId"
                               ? "sticky"
                               : "static",
+
                           left:
-                            key === "slNo"
+                            col.field === "slNo"
                               ? 0
-                              : key === "jobId"
-                              ? parseInt(columnWidths["slNo"])
+                              : col.field === "jobId"
+                              ? columnConfig
+                                  .filter((c) => c.field === "slNo")
+                                  .reduce(
+                                    (sum, c) => sum + parseInt(c.width),
+                                    0
+                                  )
                               : undefined,
                           background:
-                            key === "slNo" || key === "jobId"
+                            col.field === "slNo" || col.field === "jobId"
                               ? "#fff"
                               : undefined,
                           zIndex:
-                            key === "slNo" || key === "jobId" ? 11 : undefined,
+                            col.field === "slNo" || col.field === "jobId"
+                              ? 11
+                              : undefined,
                         }}
                       >
-                        {key === "billingStatus" ? (
+                        {col.field === "billingStatus" ? (
                           <Stack
                             direction="row"
                             alignItems="center"
                             spacing={1}
                           >
-                            <Typography>Billing Status</Typography>
+                            <Typography>{col.headerName}</Typography>
                             <IconButton
                               size="small"
                               onClick={(e) =>
@@ -246,26 +234,24 @@ export default function TableComponent({
                             "jobDate",
                             "category",
                             "customerName",
-                          ].includes(key) ? (
+                          ].includes(col.field as string) ? (
                           <Stack
                             direction="row"
                             alignItems="center"
                             spacing={1}
                           >
-                            <Typography>
-                              {key.charAt(0).toUpperCase() + key.slice(1)}
-                            </Typography>
+                            <Typography>{col.headerName}</Typography>
                             <IconButton
                               size="small"
                               onClick={() =>
                                 handleSort.handleSort(
                                   sortConfig,
                                   setSortConfig,
-                                  key as keyof TableColumns
+                                  col.field as keyof TableColumns
                                 )
                               }
                             >
-                              {sortConfig.key === key &&
+                              {sortConfig.key === col.field &&
                               sortConfig.direction === "ascending" ? (
                                 <ArrowUpwardIcon />
                               ) : (
@@ -274,9 +260,7 @@ export default function TableComponent({
                             </IconButton>
                           </Stack>
                         ) : (
-                          <Typography>
-                            {key.charAt(0).toUpperCase() + key.slice(1)}
-                          </Typography>
+                          <Typography>{col.headerName}</Typography>
                         )}
                       </TableCell>
                     ))}
@@ -287,7 +271,8 @@ export default function TableComponent({
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((job, index) => (
                       <TableRow hover key={index}>
-                        {Object.keys(columnWidths).map((key) => {
+                        {columnConfig.map((col) => {
+                          const key = col.field;
                           let cellContent: ReactNode =
                             job[key as keyof TableColumns];
 
@@ -396,7 +381,12 @@ export default function TableComponent({
                                   key === "slNo"
                                     ? 0
                                     : key === "jobId"
-                                    ? parseInt(columnWidths["slNo"])
+                                    ? columnConfig
+                                        .filter((c) => c.field === "slNo")
+                                        .reduce(
+                                          (sum, c) => sum + parseInt(c.width),
+                                          0
+                                        )
                                     : undefined,
                                 background:
                                   key === "slNo" || key === "jobId"

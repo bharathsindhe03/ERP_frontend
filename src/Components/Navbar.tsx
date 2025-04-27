@@ -112,7 +112,6 @@ export default function Navbar({ isCollapsed }: any) {
           }}
         >
           <MenuList>
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem
               onClick={() => {
                 handleClose();
