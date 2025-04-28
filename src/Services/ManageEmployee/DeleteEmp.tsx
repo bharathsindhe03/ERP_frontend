@@ -14,10 +14,10 @@ export const deleteUser = async (
       toast.success("User deleted successfully");
       fetchUsers(setUsers, setLoading); 
     } else {
-      toast.error("Failed to delete user");
+      toast.error("Failed to delete user. Please try again.");
     }
   } catch (error) {
     console.error(error);
-    toast.error("Error while deleting user");
+    toast.error("Failed to delete user. Please try again.");
   }
 };

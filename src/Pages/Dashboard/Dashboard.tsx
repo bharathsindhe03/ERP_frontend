@@ -53,16 +53,14 @@ export default function Dashboard() {
     });
 
     if (filters) {
-      console.log("Filters:", filters); // Debugging line
-
       if (filters.jobDateFrom) {
         const jobDateFrom =
           filters.jobDateFrom instanceof Date
             ? filters.jobDateFrom
-            : new Date(filters.jobDateFrom.split("-").reverse().join("-")); // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+            : new Date(filters.jobDateFrom.split("-").reverse().join("-"));
         filtered = filtered.filter((job) => {
           const jobDate = job.jobDate
-            ? new Date(job.jobDate.split("-").reverse().join("-")) // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+            ? new Date(job.jobDate.split("-").reverse().join("-"))
             : null;
           return jobDate && jobDate >= jobDateFrom;
         });
@@ -71,10 +69,10 @@ export default function Dashboard() {
         const jobDateTo =
           filters.jobDateTo instanceof Date
             ? filters.jobDateTo
-            : new Date(filters.jobDateTo.split("-").reverse().join("-")); // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+            : new Date(filters.jobDateTo.split("-").reverse().join("-"));
         filtered = filtered.filter((job) => {
           const jobDate = job.jobDate
-            ? new Date(job.jobDate.split("-").reverse().join("-")) // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+            ? new Date(job.jobDate.split("-").reverse().join("-"))
             : null;
           return jobDate && jobDate <= jobDateTo;
         });
@@ -115,7 +113,7 @@ export default function Dashboard() {
   };
 
   const handleShowAllJobs = () => {
-    setBillingFilter(null);
+    setBillingFilter("All");
     setFilteredJobs(jobs);
     setActiveContent("jobs");
   };

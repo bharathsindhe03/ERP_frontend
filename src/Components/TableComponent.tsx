@@ -19,11 +19,6 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TableColumns from "../Interface/TableColumns";
-import BillingStatusDropdown from "../Components/ui/BillingStatusDropdown"
-import { 
-  handleAddNewCategory, fetchCategories, handleDeleteCategory 
-} 
-from "../Services/FieldOption/index";
 import {
   handleEdit,
   handleSave,
@@ -38,7 +33,8 @@ import {
   getEditableColumns,
 } from "../Utils/TableComponent";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import UniversalDropdown from "./ui/UniversalDropdown";
+import { fetchCategories } from "../Services/FieldOption/getFields";
 
 interface TableColumnProps {
   jobs: TableColumns[];
@@ -52,27 +48,24 @@ interface TableColumnProps {
     width: string;
   }[]; // Add columnConfig prop
 }
-interface BillingStatusSelectorProps {
-  billingStatus: string;
-  setBillingStatus: (value: string) => void;
-  billingStatusOptions: string[];
-  setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>;
-}
-const dropdownOptions: { [key: string]: string[] } = {
-  billingStatus: ["Done", "Job Closed", "Open"],
-};
 
-export const handleAddBillingStatus = (status: string, setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>) => {
+export const handleAddBillingStatus = (
+  status: string,
+  setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>
+) => {
   // Add the new status to the dropdown options
   setBillingStatusOptions((prevOptions) => [...prevOptions, status]);
 };
 
-export const handleDeleteBillingStatus = (status: string, setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>) => {
+export const handleDeleteBillingStatus = (
+  status: string,
+  setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>
+) => {
   // Remove the status from the dropdown options
-  setBillingStatusOptions((prevOptions) => prevOptions.filter((option) => option !== status));
+  setBillingStatusOptions((prevOptions) =>
+    prevOptions.filter((option) => option !== status)
+  );
 };
-
-
 
 export default function TableComponent({
   jobs,
@@ -80,11 +73,8 @@ export default function TableComponent({
   error,
   isCollapsed,
   initialBillingFilter,
-  columnConfig, 
+  columnConfig,
 }: TableColumnProps) {
-  console.log("initialBillingFilter in TableComponent:", initialBillingFilter);
-  console.log("columnConfig in TableComponent:", columnConfig);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditing, setIsEditing] = useState<number | null>(null);
@@ -94,7 +84,7 @@ export default function TableComponent({
     key: keyof TableColumns | null;
     direction: "ascending" | "descending" | null;
   }>({ key: null, direction: null });
-
+  const [billingStatus, setBillingStatus] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
@@ -119,7 +109,12 @@ export default function TableComponent({
 
   const role = useMemo(() => localStorage.getItem("role"), []);
   const editableColumns = useMemo(() => getEditableColumns(role), [role]);
-
+  const [billingFilterOptions, setBillingFilterOptions] = useState<string[]>(
+    []
+  );
+  useEffect(() => {
+    fetchCategories(setBillingFilterOptions, "billingstatus");
+  }, []);
   const sortedJobs = useMemo(() => {
     if (sortConfig.key) {
       return [...filteredJobs].sort((a, b) => {
@@ -328,8 +323,12 @@ export default function TableComponent({
                                 //     </MenuItem>
                                 //   ))}
                                 // </TextField>
-                                <BillingStatusDropdown/>
-
+                                <UniversalDropdown
+                                  label="Billing Status"
+                                  value={billingStatus}
+                                  setValue={setBillingStatus}
+                                  fieldName="billingstatus"
+                                />
                               ) : (
                                 <TextField
                                   value={
@@ -451,38 +450,16 @@ export default function TableComponent({
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <MenuList>
-          <MenuItem
-            onClick={() =>
-              handleBillingFilterSelect("All", setBillingFilter, setAnchorEl)
-            }
-          >
-            All
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              handleBillingFilterSelect("Done", setBillingFilter, setAnchorEl)
-            }
-          >
-            Done
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              handleBillingFilterSelect(
-                "Job Closed",
-                setBillingFilter,
-                setAnchorEl
-              )
-            }
-          >
-            Job Closed
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              handleBillingFilterSelect("Open", setBillingFilter, setAnchorEl)
-            }
-          >
-            Open
-          </MenuItem>
+          {billingFilterOptions.map((option) => (
+            <MenuItem
+              key={option}
+              onClick={() =>
+                handleBillingFilterSelect(option, setBillingFilter, setAnchorEl)
+              }
+            >
+              {option}
+            </MenuItem>
+          ))}
         </MenuList>
       </Popover>
     </Box>

@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import api from "../Utils/create_api";
-import { toast } from "sonner";
 import { fetchUsers } from "../Services/ManageEmployee/FetchEmp";
 import { deleteUser } from "../Services/ManageEmployee/DeleteEmp";
-import handleAddUser from "../Services/ManageEmployee/AddEmp"
-
 import {
   Box,
   TableContainer,
@@ -18,14 +14,9 @@ import {
   IconButton,
   CircularProgress,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddUserDialog from "./forms/AddUserDialog"; // Import the new AddUserDialog component
 
 const columnWidths: Record<string, string> = {
   slNo: "50px",
@@ -46,19 +37,11 @@ type User = {
 export default function ManageEmployee() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
-  // States for Add User Dialog
   const [open, setOpen] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("ADMIN");
 
   useEffect(() => {
     fetchUsers(setUsers, setLoading);
   }, []);
-
- 
 
   return (
     <>
@@ -81,20 +64,18 @@ export default function ManageEmployee() {
           marginTop: 2,
         }}
       >
-        <Box
-          sx={{
-            overflow: "auto",
-            maxHeight: "65vh",
-            overflowX: "auto",
-          }}
-        >
+        <Box sx={{ overflow: "auto", maxHeight: "65vh", overflowX: "hidden" }}>
           {loading ? (
             <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
               <CircularProgress />
             </Box>
           ) : (
             <TableContainer sx={{ minWidth: "100%" }} component={Paper}>
-              <Table stickyHeader aria-label="CRM Table" sx={{ tableLayout: "fixed" }}>
+              <Table
+                stickyHeader
+                aria-label="CRM Table"
+                sx={{ tableLayout: "fixed" }}
+              >
                 <TableHead>
                   <TableRow>
                     {Object.entries(columnWidths).map(([key, width]) => (
@@ -142,7 +123,12 @@ export default function ManageEmployee() {
                         <IconButton
                           color="error"
                           onClick={() =>
-                            deleteUser(user.userName, fetchUsers, setUsers, setLoading)
+                            deleteUser(
+                              user.userName,
+                              fetchUsers,
+                              setUsers,
+                              setLoading
+                            )
                           }
                         >
                           <DeleteIcon />
@@ -157,74 +143,8 @@ export default function ManageEmployee() {
         </Box>
       </Box>
 
-      {/* Add New User Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Add New User</DialogTitle>
-        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 0,minWidth:300,width:400 }}>
-          <TextField
-            label="Username"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            variant="outlined" // Ensures label floats
-            fullWidth // Ensures it takes up full width
-            margin="normal" // Adds spacing between input fields
-          />
-          {/* <TextField
-            label="Password"
-            type="password"
-            // value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fullWidth
-            margin="normal"
-          /> */}
-
-          <TextField
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-
-          <TextField
-            select
-            label="Role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            fullWidth
-            margin="normal"
-          >
-          <MenuItem value="ADMIN">Admin</MenuItem>
-          <MenuItem value="EMPLOYEE">Employee</MenuItem>
-        </TextField>
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button
-            onClick={() =>
-              handleAddUser(
-                userName,
-                // password,
-                email,
-                role,
-                setUsers,
-                setLoading,
-                setOpen,
-                setUserName,
-                setPassword,
-                setEmail,
-                setRole
-              )
-            }
-            variant="contained"
-            color="primary"
-          >
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Add User Dialog */}
+      <AddUserDialog open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

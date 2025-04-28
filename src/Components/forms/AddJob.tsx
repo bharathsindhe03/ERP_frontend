@@ -1,4 +1,3 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -10,31 +9,29 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
-import CategorySelector from "../ui/CategorySelector";
-import CloseIcon from "@mui/icons-material/Close";
-import api from "../../Utils/create_api"
+import UniversalDropdown from "../ui/UniversalDropdown";
+import { useState } from "react";
+
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
   onJobAdded?: () => void;
 }
 
 export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
-  const [customerName, setCustomerName] = React.useState("");
-  const [date, setDate] = React.useState<string>(
+  const [customerName, setCustomerName] = useState("");
+  const [date, setDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );
-  const [category, setCategory] = React.useState("");
-  const [sellingPrice, setSellingPrice] = React.useState<number | null>(null);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [category, setCategory] = useState("");
+  const [sellingPrice, setSellingPrice] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClose = () => {
     setShowModal(false);
   };
-
-  const [categoryOptions, setCategoryOptions] = React.useState<string[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,10 +66,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
           alignItems: "center",
         }}
       >
-        {"Add New Job"}
-        <Button onClick={handleClose} color="inherit" aria-label="close">
-          <CloseIcon />
-        </Button>
+        Add New Job
       </DialogTitle>
       <DialogContent>
         {error && (
@@ -109,11 +103,11 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
               shrink: true,
             }}
           />
-          <CategorySelector
-            category={category}
-            setCategory={setCategory}
-            categoryOptions={categoryOptions}
-            setCategoryOptions={setCategoryOptions}
+          <UniversalDropdown
+            label="Category"
+            value={category}
+            setValue={setCategory}
+            fieldName="category"
           />
 
           <TextField

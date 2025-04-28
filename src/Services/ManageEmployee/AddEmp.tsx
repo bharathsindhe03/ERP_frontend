@@ -1,39 +1,24 @@
 import api from "../../Utils/create_api";
 import { toast } from "sonner";
-import { fetchUsers } from "../../Services/ManageEmployee/FetchEmp";
 
-const handleAddUser = async (
-  userName: string,
-  // password: string,
-  email: string,
-  role: string,
-  setUsers: any,
-  setLoading: any,
-  setOpen: any,
-  setUserName: any,
-  setPassword: any,
-  setEmail: any,
-  setRole: any
-) => {
+const handleAddUser = async (userName: string, email: string, role: string) => {
+  // Validate inputs
+  if (!userName || !email || !role) {
+    toast.error("Please fill in all fields.");
+    return;
+  }
   try {
-    console.log('adding..')
-    const res = await api.post("/admin/initiate-register", {
+    const response = await api.post("/admin/initiate-register", {
       userName,
-      // password,
       email,
       role,
     });
-    if (res.status === 200) {
+    if (response.status === 200) {
       toast.success("User added successfully");
-      setOpen(false);
-      setUserName("");  // Now passed correctly
-      setPassword("");
-      setEmail("");
-      setRole("ADMIN");
-      fetchUsers(setUsers, setLoading);
     }
-  } catch (err) {
-    toast.error("Failed to add user");
+  } catch (error) {
+    console.error("Error adding user:", error);
+    toast.error("Failed to add user. Please try again.");
   }
 };
 

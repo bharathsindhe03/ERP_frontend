@@ -159,21 +159,27 @@ export default function AdvanceFilter({
                 <Paper sx={{ width: "100%", mt: 1, zIndex: 1 }}>
                   <ClickAwayListener onClickAway={handleCategoryMenuClose}>
                     <MenuList autoFocusItem={categoryMenuOpen}>
-                      {Object.keys(categoryCounts).map((category) => (
-                        <MenuItem key={category}>
-                          <ListItemIcon>
-                            <Checkbox
-                              edge="start"
-                              checked={selectedCategories.includes(category)}
-                              onChange={onCategoryChange}
-                              value={category}
+                      {Object.keys(categoryCounts).length > 0 ? (
+                        Object.keys(categoryCounts).map((category) => (
+                          <MenuItem key={category}>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={selectedCategories.includes(category)}
+                                onChange={onCategoryChange}
+                                value={category}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={`${category} (${categoryCounts[category]})`}
                             />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={`${category} (${categoryCounts[category]})`}
-                          />
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>
+                          <ListItemText primary="No options available" />
                         </MenuItem>
-                      ))}
+                      )}
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -224,21 +230,29 @@ export default function AdvanceFilter({
                 <Paper sx={{ width: "100%", mt: 1, zIndex: 1 }}>
                   <ClickAwayListener onClickAway={handleBillingStatusMenuClose}>
                     <MenuList autoFocusItem={billingStatusMenuOpen}>
-                      {Object.keys(billingStatusCounts).map((status) => (
-                        <MenuItem key={status}>
-                          <ListItemIcon>
-                            <Checkbox
-                              edge="start"
-                              checked={selectedBillingStatuses.includes(status)}
-                              onChange={onBillingStatusChange}
-                              value={status}
+                      {Object.keys(billingStatusCounts).length > 0 ? (
+                        Object.keys(billingStatusCounts).map((status) => (
+                          <MenuItem key={status}>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={selectedBillingStatuses.includes(
+                                  status
+                                )}
+                                onChange={onBillingStatusChange}
+                                value={status}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={`${status} (${billingStatusCounts[status]})`}
                             />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={`${status} (${billingStatusCounts[status]})`}
-                          />
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>
+                          <ListItemText primary="No options available" />
                         </MenuItem>
-                      ))}
+                      )}
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -246,10 +260,33 @@ export default function AdvanceFilter({
             </div>
           </Box>
 
-          {/* Action Buttons */}
           <Stack direction="row" justifyContent="flex-end" spacing={1}>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button variant="contained" onClick={onApply}>
+            <Button
+              onClick={onClose}
+              sx={{
+                backgroundColor: "red",
+                color: "#ffffff",
+                "&:hover": {
+                  backgroundColor: "#fff",
+                  color: "#111928",
+                  border: "1px solid red",
+                },
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={onApply}
+              sx={{
+                backgroundColor: "#111928",
+                color: "#ffffff",
+                "&:hover": {
+                  backgroundColor: "#fff",
+                  color: "#111928",
+                },
+              }}
+            >
               Apply Filters
             </Button>
           </Stack>

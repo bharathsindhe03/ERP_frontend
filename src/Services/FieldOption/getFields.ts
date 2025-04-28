@@ -1,23 +1,20 @@
-// categoryGet.ts
-
-import api from "../../Utils/create_api"; // Make sure the API import is correct
+import { toast } from "sonner";
+import api from "../../Utils/create_api";
 
 export const fetchCategories = async (
   setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setError: React.Dispatch<React.SetStateAction<string | null>>,
-  field:string,
 
+  field: string
 ) => {
   try {
-    setLoading(true);
     const response = await api.get(`/fieldOption/${field}`);
     if (response?.data) {
-      setCategoryOptions(response.data); // Set categories once fetched
+      setCategoryOptions(response.data); 
     }
   } catch (error) {
-    setError("Error fetching categories. Please try again later.");
+    console.error("Error fetching categories:", error);
+    
+    toast.error("Error fetching categories. Please try again later.");
   } finally {
-    setLoading(false);
   }
 };
