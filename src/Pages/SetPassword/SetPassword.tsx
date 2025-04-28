@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { handleSetPassword } from "../../Services/Register/SetPassword";
+import { handleSetPassword } from "../../Services/SetPassword/SetPassword";
 import { validatePassword } from "../../Utils/validate_password";
 
 import {

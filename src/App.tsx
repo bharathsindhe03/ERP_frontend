@@ -12,7 +12,7 @@ const ResetPassword = lazy(
 const ForgotPassword = lazy(
   () => import("./Pages/forgot_password/ForgotPassword")
 );
-const SetPassword = lazy(() => import("./Pages/Register/SetPassword"));
+const SetPassword = lazy(() => import("./Pages/SetPassword/SetPassword"));
 const VerifyOTP = lazy(() => import("./Pages/forgot_password/VerifyOTP"));
 const ErrorPage = lazy(() => import("./Pages/Utils/ErrorPage"));
 const ForbiddenPage = lazy(() => import("./Pages/Utils/ForbiddenPage"));
@@ -25,7 +25,7 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Login />} />
-            {/* <Route path="/register" element={<Register />} /> */}
+
             <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/verifyotp" element={<VerifyOTP />} />

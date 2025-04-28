@@ -134,18 +134,6 @@ export default function Login() {
           >
             Login
           </Button>
-
-          <Typography align="center" fontSize="0.9rem">
-            Don't have an account?
-            <Link
-              href="/register"
-              underline="hover"
-              sx={{ color: "#111928" }}
-              fontWeight={500}
-            >
-              Create Account
-            </Link>
-          </Typography>
         </Box>
       </Card>
     </Box>
