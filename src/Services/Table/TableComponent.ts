@@ -86,7 +86,6 @@ export const handleSave = async (
   
   // Now assign only the fields allowed by the role
   if (role === "ADMIN") {
-    console.log(editedJob.billingStatus);
     Object.assign(updatedJob, {
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
@@ -147,7 +146,15 @@ export const handleSave = async (
   console.log("Calling updateJob with data:", updatedJob);
 
   try {
-    await updateJob(updatedJob);
+    const payload = {
+      ...updatedJob,
+      payment_status: updatedJob.paymentStatus,
+      courier_tracking_no: updatedJob.courierTrackingNo,
+    };
+    // delete (payload as any).paymentStatus;
+    // delete (payload as any).courierTrackingNo;
+  
+    await updateJob(payload);
     setIsEditing(null);
     setEditedJob({});
   } catch (error) {
@@ -168,7 +175,6 @@ export const handleInputChange = (
   field: keyof TableColumns,
   value: string
 ) => {
-  console.log(`Updating field: ${field}, Value: ${value}`);
   setEditedJob((prev) => ({ ...prev, [field]: value }));
 };
 

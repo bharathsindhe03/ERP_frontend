@@ -343,7 +343,7 @@ export default function TableComponent({
                                       val
                                     )
                                   }
-                                  fieldName="billingStatus"
+                                  fieldName="billingstatus"
                                 />
                               ) : (
                                 <TextField
