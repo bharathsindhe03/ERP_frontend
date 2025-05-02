@@ -284,6 +284,7 @@ export default function TableComponent({
                                 "arrivalDate",
                                 "tentativeClosureDate",
                                 "closedDate",
+                                "boeSbDate",
                                 "invoiceDate",
                                 "dateOfCourier",
                                 "jobDate",
@@ -323,16 +324,18 @@ export default function TableComponent({
                               ) : key === "category" ? (
                                 <UniversalDropdown
                                   label="Category"
-                                  value={categoryStatus}
-                                  setValue={setCategoryStatus}
+                                  value={editedJob.category || ""}
+                                  setValue={(val: string) => handleInputChange(setEditedJob, "category", val)}
                                   fieldName="category"
                                 />
                               ) : key === "billingStatus" ? (
                                 <UniversalDropdown
                                   label="Billing Status"
-                                  value={billingStatus}
-                                  setValue={setBillingStatus}
-                                  fieldName="billingstatus"
+                                  value={editedJob.billingStatus || ""}
+                                  setValue={(val: string) =>
+                                    handleInputChange(setEditedJob, "billingStatus", val)
+                                  }
+                                  fieldName="billingStatus"
                                 />
                               ) : (
                                 <TextField
@@ -358,6 +361,7 @@ export default function TableComponent({
                                       variant="contained"
                                       color="success"
                                       onClick={() => {
+                                        console.log("ediited",editedJob)
                                         handleSave(
                                           editedJob,
                                           setIsEditing,

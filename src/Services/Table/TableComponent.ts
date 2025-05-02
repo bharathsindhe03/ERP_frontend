@@ -1,7 +1,7 @@
 import TableColumns from "../../Interface/TableColumns";
 import { updateJob } from "../Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
-
+import {getRole} from "../../Services/Utils/LocalStorageUtils"
 export const formatDate = (
   dateString: string | null | undefined
 ): string | undefined => {
@@ -16,7 +16,6 @@ export const formatDate = (
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 };
-
 export const handleEdit = (
   job: TableColumns,
   setIsEditing: Dispatch<SetStateAction<number | null>>,
@@ -53,32 +52,97 @@ export const handleSave = async (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
+  const role = getRole() || null;
+
+  if (!role) return null;
+  
   const updatedJob: TableColumns = {
     slNo: Number(editedJob.slNo),
-    jobId: Number(editedJob.jobId),
-    jobDate: formatDate(editedJob.jobDate),
-    category: editedJob.category,
-    customerName: editedJob.customerName,
-    jobParticulars: editedJob.jobParticulars,
-    jobReference: editedJob.jobReference,
-    boeSbNo: editedJob.boeSbNo,
-    boeSbDate: formatDate(editedJob.boeSbDate),
-    arrivalDate: formatDate(editedJob.arrivalDate),
-    tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
-    closedDate: formatDate(editedJob.closedDate),
-    sellingPrice: editedJob.sellingPrice,
-    billingStatus: editedJob.billingStatus,
-    invoiceNo: editedJob.invoiceNo,
-    invoiceDate: formatDate(editedJob.invoiceDate),
-    courierTrackingNo: editedJob.courierTrackingNo,
-    paymentStatus: editedJob.paymentStatus,
-    remarks: editedJob.remarks,
-    apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
-    dateOfCourier: formatDate(editedJob.dateOfCourier),
+    jobId: Number(editedJob.jobId) ,
+    jobDate: formatDate(editedJob.jobDate) ,
+    category: editedJob.category ,
+    customerName: editedJob.customerName ,
+    jobParticulars: "",
+    jobReference: "",
+    boeSbNo: "",
+    boeSbDate: "",
+    arrivalDate: "",
+    tentativeClosureDate: "",
+    closedDate: "",
+    sellingPrice: 0,
+    costPrice: 0,
+    billingStatus: "" ,
+    invoiceNo: "",
+    invoiceDate: "",
+    courierTrackingNo: "",
+    paymentStatus: null,
+    remarks: "",
+    apekshaInvoiceNo: "",
+    dateOfCourier: "",
     action: null,
     updatedBy: null,
     updatedAt: null,
   };
+  
+  // Now assign only the fields allowed by the role
+  if (role === "ADMIN") {
+    console.log(editedJob.billingStatus);
+    Object.assign(updatedJob, {
+      jobParticulars: editedJob.jobParticulars,
+      jobReference: editedJob.jobReference,
+      boeSbNo: editedJob.boeSbNo,
+      boeSbDate: formatDate(editedJob.boeSbDate),
+      arrivalDate: formatDate(editedJob.arrivalDate),
+      tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
+      closedDate: formatDate(editedJob.closedDate),
+      sellingPrice: Number(editedJob.sellingPrice),
+      costPrice: Number(editedJob.costPrice),
+      billingStatus: editedJob.billingStatus,
+      invoiceNo: editedJob.invoiceNo,
+      invoiceDate: formatDate(editedJob.invoiceDate),
+      courierTrackingNo: editedJob.courierTrackingNo,
+      paymentStatus: editedJob.paymentStatus,
+      remarks: editedJob.remarks,
+      apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
+      dateOfCourier: formatDate(editedJob.dateOfCourier),
+    });
+  } else if (role === "CRM") {
+    Object.assign(updatedJob, {
+      jobId: Number(editedJob.jobId),
+      customerName: editedJob.customerName,
+      jobDate: formatDate(editedJob.jobDate),
+      category: editedJob.category,
+      sellingPrice: editedJob.sellingPrice,
+    });
+  } else if (role === "OPERATIONS") {
+    Object.assign(updatedJob, {
+      jobParticulars: editedJob.jobParticulars,
+      jobReference: editedJob.jobReference,
+      boeSbNo: editedJob.boeSbNo,
+      boeSbDate: formatDate(editedJob.boeSbDate),
+      arrivalDate: formatDate(editedJob.arrivalDate),
+      tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
+      closedDate: formatDate(editedJob.closedDate),
+      billingStatus: editedJob.billingStatus,
+      invoiceNo: editedJob.invoiceNo,
+      invoiceDate: formatDate(editedJob.invoiceDate),
+      courierTrackingNo: editedJob.courierTrackingNo,
+      paymentStatus: editedJob.paymentStatus,
+      remarks: editedJob.remarks,
+      apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
+      dateOfCourier: formatDate(editedJob.dateOfCourier),
+    });
+  } else if (role === "BILLING") {
+    Object.assign(updatedJob, {
+      paymentStatus: editedJob.paymentStatus,
+      remarks: editedJob.remarks,
+      sellingPrice: editedJob.sellingPrice,
+      costPrice: editedJob.costPrice,
+      invoiceNo: editedJob.invoiceNo,
+      invoiceDate: formatDate(editedJob.invoiceDate),
+    });
+  }
+  
 
   console.log("Calling updateJob with data:", updatedJob);
 
