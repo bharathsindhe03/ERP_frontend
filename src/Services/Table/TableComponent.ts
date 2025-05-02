@@ -168,6 +168,7 @@ export const handleInputChange = (
   field: keyof TableColumns,
   value: string
 ) => {
+  console.log(`Updating field: ${field}, Value: ${value}`);
   setEditedJob((prev) => ({ ...prev, [field]: value }));
 };
 

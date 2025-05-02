@@ -64,12 +64,10 @@ export default function TableComponent({
   const [isEditing, setIsEditing] = useState<number | null>(null); // use index
   const [editedJob, setEditedJob] = useState<Partial<TableColumns>>({});
   const [billingFilter, setBillingFilter] = useState<string>("All");
-  const [categoryStatus, setCategoryStatus] = useState<string>("");
   const [sortConfig, setSortConfig] = useState<{
     key: keyof TableColumns | null;
     direction: "ascending" | "descending" | null;
   }>({ key: null, direction: null });
-  const [billingStatus, setBillingStatus] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
@@ -325,7 +323,13 @@ export default function TableComponent({
                                 <UniversalDropdown
                                   label="Category"
                                   value={editedJob.category || ""}
-                                  setValue={(val: string) => handleInputChange(setEditedJob, "category", val)}
+                                  setValue={(val: string) =>
+                                    handleInputChange(
+                                      setEditedJob,
+                                      "category",
+                                      val
+                                    )
+                                  }
                                   fieldName="category"
                                 />
                               ) : key === "billingStatus" ? (
@@ -333,7 +337,11 @@ export default function TableComponent({
                                   label="Billing Status"
                                   value={editedJob.billingStatus || ""}
                                   setValue={(val: string) =>
-                                    handleInputChange(setEditedJob, "billingStatus", val)
+                                    handleInputChange(
+                                      setEditedJob,
+                                      "billingStatus",
+                                      val
+                                    )
                                   }
                                   fieldName="billingStatus"
                                 />
@@ -361,7 +369,7 @@ export default function TableComponent({
                                       variant="contained"
                                       color="success"
                                       onClick={() => {
-                                        console.log("ediited",editedJob)
+                                        console.log("ediited", editedJob);
                                         handleSave(
                                           editedJob,
                                           setIsEditing,

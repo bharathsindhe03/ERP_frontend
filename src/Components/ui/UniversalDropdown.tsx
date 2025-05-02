@@ -99,6 +99,7 @@ export default function UniversalDropdown({
                 <ListItem key={option} disablePadding>
                   <ListItemButton
                     onClick={() => {
+                      console.log("Selected value:", option);
                       setValue(option);
                       handleClose();
                     }}
