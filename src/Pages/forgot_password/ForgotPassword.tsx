@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleForgotPassword } from "../../Services/ForgotPassword/forgot_password";
 
-import {
-  Box,
-  Button,
-  Card,
-  TextField,
-  Typography,
-  Link,
-  FormControl,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import FormControl from "@mui/material/FormControl";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");

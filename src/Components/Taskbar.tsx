@@ -4,13 +4,11 @@ import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import WorkIcon from "@mui/icons-material/Work";
 import AddIcon from "@mui/icons-material/Add";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import {
-  Box,
-  IconButton,
-  List,
-  ListItemText,
-  ListItemButton,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import AddJob from "./forms/AddJob";
 import Tooltip from "@mui/material/Tooltip";
@@ -22,6 +20,7 @@ interface TaskbarProps {
   onShowAllJobs: () => void;
   onShowCurrentJobs: () => void;
   onManageEmployeesClick: () => void;
+  onJobUpdate: () => void;
 }
 
 export default function Taskbar({
@@ -31,6 +30,7 @@ export default function Taskbar({
   onShowAllJobs,
   onShowCurrentJobs,
   onManageEmployeesClick,
+  onJobUpdate,
 }: TaskbarProps) {
   const [showModal, setShowModal] = useState(false);
 
@@ -106,7 +106,11 @@ export default function Taskbar({
         )}
       </List>
       {showModal && (
-        <AddJob setShowModal={setShowModal} onJobAdded={onJobAdded} />
+        <AddJob
+          setShowModal={setShowModal}
+          onJobAdded={onJobAdded}
+          onJobUpdate={onJobUpdate}
+        />
       )}
     </Box>
   );

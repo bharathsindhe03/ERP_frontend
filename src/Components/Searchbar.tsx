@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { TextField, Box, IconButton, Dialog } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Dialog from "@mui/material/Dialog";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import TableColumns from "../Interface/TableColumns";
 import AdvanceFilter from "./forms/AdvanceFilter";

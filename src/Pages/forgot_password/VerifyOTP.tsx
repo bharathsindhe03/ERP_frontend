@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import handleVerifyOTP from "../../Services/ForgotPassword/verify_otp";
 
-import {
-  Box,
-  Button,
-  Card,
-  TextField,
-  Typography,
-  FormControl,
-  Alert,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import Alert from "@mui/material/Alert";
 
 export default function VerifyOTP() {
   const [otp, setOtp] = useState("");

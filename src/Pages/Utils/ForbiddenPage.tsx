@@ -4,7 +4,7 @@ export default function ForbiddenPage() {
       <h1 className="text-6xl font-bold text-red-500">403</h1>
       <h2 className="text-2xl mt-2">Forbidden</h2>
       <p className="text-gray-400 mt-2">
-        You don’t have permission to access this page.
+        You don't have permission to access this page.
       </p>
 
       <div className="mt-6 flex space-x-4">

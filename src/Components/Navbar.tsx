@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import { Box, Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import {
   getEmail,
   getRole,

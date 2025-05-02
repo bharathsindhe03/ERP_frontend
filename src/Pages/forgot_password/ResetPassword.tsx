@@ -2,17 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleUpdatePassword } from "../../Services/ForgotPassword/reset_password";
 
-import {
-  Box,
-  Button,
-  Card,
-  TextField,
-  Typography,
-  FormControl,
-  Alert,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { validatePassword } from "../../Utils/validate_password";

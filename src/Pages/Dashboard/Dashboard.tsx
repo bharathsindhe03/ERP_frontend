@@ -4,7 +4,7 @@ import Taskbar from "../../Components/Taskbar";
 import TableColumns from "../../Interface/TableColumns";
 import handleFetchJob from "../../Services/Jobs/FetchJobs";
 import Searchbar from "../../Components/Searchbar";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import ManageEmployee from "../../Components/ManageEmployee";
 import MyRoleBasedTable from "../../Components/MyRoleBasedTable";
 
@@ -151,6 +151,7 @@ export default function Dashboard() {
         onShowAllJobs={handleShowAllJobs}
         onShowCurrentJobs={handleShowCurrentJobs}
         onManageEmployeesClick={handleManageEmployeesClick}
+        onJobUpdate={fetchJobs}
       />
       <Box
         sx={{
@@ -174,8 +175,7 @@ export default function Dashboard() {
           {activeContent === "jobs" && (
             <>
               <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-                <Searchbar onSearch={handleSearch} jobs={jobs} />{" "}
-                {/* Passed the jobs prop here */}
+                <Searchbar onSearch={handleSearch} jobs={jobs} />
               </Box>
               <Box sx={{ overflowX: "auto" }}>
                 <MyRoleBasedTable
@@ -185,6 +185,7 @@ export default function Dashboard() {
                   isCollapsed={isCollapsed}
                   initialBillingFilter={billingFilter}
                   userRole={role}
+                  onJobUpdate={fetchJobs}
                 />
               </Box>
             </>

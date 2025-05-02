@@ -47,6 +47,7 @@ interface TableColumnProps {
     headerName: string;
     width: string;
   }[];
+  onJobUpdate: () => void;
 }
 
 export default function TableComponent({
@@ -56,12 +57,14 @@ export default function TableComponent({
   isCollapsed,
   initialBillingFilter,
   columnConfig,
+  onJobUpdate,
 }: TableColumnProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditing, setIsEditing] = useState<number | null>(null); // use index
   const [editedJob, setEditedJob] = useState<Partial<TableColumns>>({});
   const [billingFilter, setBillingFilter] = useState<string>("All");
+  const [categoryStatus, setCategoryStatus] = useState<string>("");
   const [sortConfig, setSortConfig] = useState<{
     key: keyof TableColumns | null;
     direction: "ascending" | "descending" | null;
@@ -317,6 +320,13 @@ export default function TableComponent({
                                   InputLabelProps={{ shrink: true }}
                                   autoFocus
                                 />
+                              ) : key === "category" ? (
+                                <UniversalDropdown
+                                  label="Category"
+                                  value={categoryStatus}
+                                  setValue={setCategoryStatus}
+                                  fieldName="category"
+                                />
                               ) : key === "billingStatus" ? (
                                 <UniversalDropdown
                                   label="Billing Status"
@@ -354,6 +364,7 @@ export default function TableComponent({
                                           setEditedJob
                                         );
                                         setIsEditing(null);
+                                        onJobUpdate();
                                       }}
                                     >
                                       Save

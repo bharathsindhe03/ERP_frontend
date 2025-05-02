@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { fetchUsers } from "../Services/ManageEmployee/FetchEmp";
 import { deleteUser } from "../Services/ManageEmployee/DeleteEmp";
-import {
-  Box,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Typography,
-  Paper,
-  IconButton,
-  CircularProgress,
-  Button,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddUserDialog from "./forms/AddUserDialog"; // Import the new AddUserDialog component
 

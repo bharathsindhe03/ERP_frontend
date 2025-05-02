@@ -3,17 +3,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { handleSetPassword } from "../../Services/SetPassword/SetPassword";
 import { validatePassword } from "../../Utils/validate_password";
 
-import {
-  Box,
-  Button,
-  Card,
-  FormControl,
-  TextField,
-  Typography,
-  Link,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -21,7 +19,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import logo from "../../assets/only_logo.png";
 
 export default function SetPassword() {
-  const [email, setEmail] = useState(""); 
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -30,14 +28,13 @@ export default function SetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const emailParam = params.get("email");
     if (emailParam) {
-      setEmail(emailParam); 
+      setEmail(emailParam);
     } else {
-      navigate("/"); 
+      navigate("/");
     }
   }, [location.search, navigate]);
 
@@ -49,7 +46,9 @@ export default function SetPassword() {
     setIsPasswordValid(isValid); // Validate password
   };
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault(); // Prevent mouse-down default behavior
   };
 
@@ -170,39 +169,6 @@ export default function SetPassword() {
     </Box>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useState } from "react";
 // import { handleRegister } from "../../Services/Register/Register";
