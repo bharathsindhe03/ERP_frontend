@@ -1,5 +1,5 @@
-import TableColumns from "../Interface/TableColumns";
-import { updateJob } from "../Services/Jobs/update_job";
+import TableColumns from "../../Interface/TableColumns";
+import { updateJob } from "../Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
 
 export const formatDate = (
@@ -7,6 +7,10 @@ export const formatDate = (
 ): string | undefined => {
   if (!dateString) return undefined;
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    console.error("Invalid date:", dateString);
+    return undefined;
+  }
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
@@ -50,7 +54,7 @@ export const handleSave = async (
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
   const updatedJob: TableColumns = {
-    slNo: Number(editedJob.slNo) ?? 0,
+    slNo: Number(editedJob.slNo),
     jobId: Number(editedJob.jobId),
     jobDate: formatDate(editedJob.jobDate),
     category: editedJob.category,

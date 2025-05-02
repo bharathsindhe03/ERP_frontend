@@ -1,7 +1,7 @@
 // categoryDelete.ts
 
 import { toast } from "sonner";
-import api from "../../Utils/create_api";
+import api from "../Utils/create_api";
 
 export const handleDeleteCategory = async (
   categoryToDelete: string,

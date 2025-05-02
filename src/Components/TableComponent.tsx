@@ -31,7 +31,7 @@ import {
   handleChangePage,
   handleChangeRowsPerPage,
   getEditableColumns,
-} from "../Utils/TableComponent";
+} from "../Services/Table/TableComponent";
 import CircularProgress from "@mui/material/CircularProgress";
 import UniversalDropdown from "./ui/UniversalDropdown";
 import { fetchCategories } from "../Services/FieldOption/getFields";
@@ -46,26 +46,8 @@ interface TableColumnProps {
     field: keyof TableColumns | "Action";
     headerName: string;
     width: string;
-  }[]; // Add columnConfig prop
+  }[];
 }
-
-export const handleAddBillingStatus = (
-  status: string,
-  setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>
-) => {
-  // Add the new status to the dropdown options
-  setBillingStatusOptions((prevOptions) => [...prevOptions, status]);
-};
-
-export const handleDeleteBillingStatus = (
-  status: string,
-  setBillingStatusOptions: React.Dispatch<React.SetStateAction<string[]>>
-) => {
-  // Remove the status from the dropdown options
-  setBillingStatusOptions((prevOptions) =>
-    prevOptions.filter((option) => option !== status)
-  );
-};
 
 export default function TableComponent({
   jobs,
@@ -77,7 +59,7 @@ export default function TableComponent({
 }: TableColumnProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [isEditing, setIsEditing] = useState<number | null>(null); // use index
   const [editedJob, setEditedJob] = useState<Partial<TableColumns>>({});
   const [billingFilter, setBillingFilter] = useState<string>("All");
   const [sortConfig, setSortConfig] = useState<{
@@ -115,6 +97,7 @@ export default function TableComponent({
   useEffect(() => {
     fetchCategories(setBillingFilterOptions, "billingstatus");
   }, []);
+
   const sortedJobs = useMemo(() => {
     if (sortConfig.key) {
       return [...filteredJobs].sort((a, b) => {
@@ -140,13 +123,7 @@ export default function TableComponent({
   }, [filteredJobs, sortConfig]);
 
   return (
-    <Box
-      sx={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       {loading ? (
         <Box
           sx={{
@@ -162,6 +139,8 @@ export default function TableComponent({
         <Typography variant="body1" color="error" align="center" py={4}>
           Please check your internet connection and try again.
           <br />
+          Or
+          <br />
           Please Logout and login again.
         </Typography>
       ) : (
@@ -172,23 +151,17 @@ export default function TableComponent({
             flexDirection: "column",
             border: "1px solid rgba(224, 224, 224, 1)",
             borderRadius: 2,
-            marginRight: isCollapsed ? "50px" : "200px", // Default for medium screens
+            marginRight: isCollapsed ? "50px" : "200px",
             transition: "margin 0.3s ease",
             "@media (max-width: 1200px)": {
-              marginRight: isCollapsed ? "30px" : "100px", // Adjust for smaller screens
+              marginRight: isCollapsed ? "30px" : "100px",
             },
             "@media (max-width: 768px)": {
-              marginRight: isCollapsed ? "20px" : "50px", // Adjust for mobile screens
+              marginRight: isCollapsed ? "20px" : "50px",
             },
           }}
         >
-          <Box
-            sx={{
-              overflow: "auto",
-              maxHeight: "65vh",
-              overflowX: "auto",
-            }}
-          >
+          <Box sx={{ overflow: "auto", maxHeight: "65vh", overflowX: "auto" }}>
             <TableContainer sx={{ minWidth: "100%" }}>
               <Table
                 stickyHeader
@@ -203,13 +176,9 @@ export default function TableComponent({
                         sx={{
                           width: col.width,
                           border: "1px solid rgba(224, 224, 224, 1)",
-                          position:
-                            col.field === "slNo"
-                              ? "sticky"
-                              : col.field === "jobId"
-                              ? "sticky"
-                              : "static",
-
+                          position: ["slNo", "jobId"].includes(col.field)
+                            ? "sticky"
+                            : "static",
                           left:
                             col.field === "slNo"
                               ? 0
@@ -221,14 +190,12 @@ export default function TableComponent({
                                     0
                                   )
                               : undefined,
-                          background:
-                            col.field === "slNo" || col.field === "jobId"
-                              ? "#fff"
-                              : undefined,
-                          zIndex:
-                            col.field === "slNo" || col.field === "jobId"
-                              ? 11
-                              : undefined,
+                          background: ["slNo", "jobId"].includes(col.field)
+                            ? "#fff"
+                            : undefined,
+                          zIndex: ["slNo", "jobId"].includes(col.field)
+                            ? 11
+                            : undefined,
                         }}
                       >
                         {col.field === "billingStatus" ? (
@@ -287,42 +254,70 @@ export default function TableComponent({
                 <TableBody>
                   {sortedJobs
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((job, index) => (
-                      <TableRow hover key={index}>
-                        {columnConfig.map((col) => {
-                          const key = col.field;
-                          let cellContent: ReactNode =
-                            job[key as keyof TableColumns];
+                    .map((job, rowIndex) => {
+                      const actualIndex = page * rowsPerPage + rowIndex;
+                      return (
+                        <TableRow hover key={actualIndex}>
+                          {columnConfig.map((col) => {
+                            const key = col.field;
+                            let cellContent: ReactNode =
+                              job[key as keyof TableColumns];
 
-                          if (key === "updatedAt" && job.updatedAt) {
-                            const [date, time] = job.updatedAt.split("T");
-                            cellContent = (
-                              <Stack spacing={0.5}>
-                                <Typography>{date}</Typography>
-                                <Typography>{time.split(".")[0]}</Typography>
-                              </Stack>
-                            );
-                          } else if (
-                            isEditing === job.jobId &&
-                            editableColumns.includes(key as keyof TableColumns)
-                          ) {
-                            cellContent =
-                              key === "billingStatus" ? (
-                                // <TextField
-                                //   select
-                                //   value={editedJob.billingStatus || ""}
-                                //   onChange={(e) =>
-                                //     handleInputChange(setEditedJob, "billingStatus", e.target.value)
-                                //   }
-                                //   size="small"
-                                //   fullWidth
-                                // >
-                                //   {dropdownOptions.billingStatus.map((status) => (
-                                //     <MenuItem key={status} value={status}>
-                                //       {status}
-                                //     </MenuItem>
-                                //   ))}
-                                // </TextField>
+                            if (key === "updatedAt" && job.updatedAt) {
+                              const [date, time] = job.updatedAt.split("T");
+                              cellContent = (
+                                <Stack spacing={0.5}>
+                                  <Typography>{date}</Typography>
+                                  <Typography>{time.split(".")[0]}</Typography>
+                                </Stack>
+                              );
+                            } else if (
+                              isEditing === actualIndex &&
+                              editableColumns.includes(
+                                key as keyof TableColumns
+                              )
+                            ) {
+                              cellContent = [
+                                "arrivalDate",
+                                "tentativeClosureDate",
+                                "closedDate",
+                                "invoiceDate",
+                                "dateOfCourier",
+                                "jobDate",
+                              ].includes(key) ? (
+                                <TextField
+                                  type="date"
+                                  value={
+                                    editedJob[key as keyof TableColumns] &&
+                                    !isNaN(
+                                      new Date(
+                                        editedJob[
+                                          key as keyof TableColumns
+                                        ] as string
+                                      ).getTime()
+                                    )
+                                      ? new Date(
+                                          editedJob[
+                                            key as keyof TableColumns
+                                          ] as string
+                                        )
+                                          .toISOString()
+                                          .split("T")[0]
+                                      : ""
+                                  }
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      setEditedJob,
+                                      key as keyof TableColumns,
+                                      e.target.value
+                                    )
+                                  }
+                                  size="small"
+                                  fullWidth
+                                  InputLabelProps={{ shrink: true }}
+                                  autoFocus
+                                />
+                              ) : key === "billingStatus" ? (
                                 <UniversalDropdown
                                   label="Billing Status"
                                   value={billingStatus}
@@ -345,81 +340,88 @@ export default function TableComponent({
                                   fullWidth
                                 />
                               );
-                          } else if (key === "Action") {
-                            cellContent =
-                              isEditing === job.jobId ? (
-                                <Stack direction="row" spacing={1}>
+                            } else if (key === "Action") {
+                              cellContent =
+                                isEditing === actualIndex ? (
+                                  <Stack direction="row" spacing={1}>
+                                    <Button
+                                      variant="contained"
+                                      color="success"
+                                      onClick={() => {
+                                        handleSave(
+                                          editedJob,
+                                          setIsEditing,
+                                          setEditedJob
+                                        );
+                                        setIsEditing(null);
+                                      }}
+                                    >
+                                      Save
+                                    </Button>
+                                    <Button
+                                      variant="outlined"
+                                      color="error"
+                                      onClick={() =>
+                                        handleCancel(setIsEditing, setEditedJob)
+                                      }
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </Stack>
+                                ) : (
                                   <Button
                                     variant="contained"
-                                    color="success"
-                                    onClick={() =>
-                                      handleSave(
-                                        editedJob,
+                                    onClick={() => {
+                                      handleEdit(
+                                        job,
                                         setIsEditing,
                                         setEditedJob
-                                      )
-                                    }
+                                      );
+                                      setIsEditing(actualIndex);
+                                    }}
                                   >
-                                    Save
+                                    Edit
                                   </Button>
-                                  <Button
-                                    variant="outlined"
-                                    color="error"
-                                    onClick={() =>
-                                      handleCancel(setIsEditing, setEditedJob)
-                                    }
-                                  >
-                                    Cancel
-                                  </Button>
-                                </Stack>
-                              ) : (
-                                <Button
-                                  variant="contained"
-                                  onClick={() =>
-                                    handleEdit(job, setIsEditing, setEditedJob)
-                                  }
-                                >
-                                  Edit
-                                </Button>
-                              );
-                          }
+                                );
+                            }
 
-                          return (
-                            <TableCell
-                              key={key}
-                              sx={{
-                                border: "1px solid rgba(224, 224, 224, 1)",
-                                position:
-                                  key === "slNo" || key === "jobId"
-                                    ? "sticky"
-                                    : "static",
-                                left:
-                                  key === "slNo"
-                                    ? 0
-                                    : key === "jobId"
-                                    ? columnConfig
-                                        .filter((c) => c.field === "slNo")
-                                        .reduce(
-                                          (sum, c) => sum + parseInt(c.width),
-                                          0
-                                        )
-                                    : undefined,
-                                background:
-                                  key === "slNo" || key === "jobId"
-                                    ? "#fff"
-                                    : undefined,
-                                zIndex:
-                                  key === "slNo" || key === "jobId"
-                                    ? 11
-                                    : undefined,
-                              }}
-                            >
-                              {cellContent}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    ))}
+                            return (
+                              <TableCell
+                                key={key}
+                                sx={{
+                                  border: "1px solid rgba(224, 224, 224, 1)",
+                                  position:
+                                    key === "slNo" || key === "jobId"
+                                      ? "sticky"
+                                      : "static",
+                                  left:
+                                    key === "slNo"
+                                      ? 0
+                                      : key === "jobId"
+                                      ? columnConfig
+                                          .filter((c) => c.field === "slNo")
+                                          .reduce(
+                                            (sum, c) => sum + parseInt(c.width),
+                                            0
+                                          )
+                                      : undefined,
+                                  background:
+                                    key === "slNo" || key === "jobId"
+                                      ? "#fff"
+                                      : undefined,
+                                  zIndex:
+                                    key === "slNo" || key === "jobId"
+                                      ? 11
+                                      : undefined,
+                                }}
+                              >
+                                {cellContent}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>

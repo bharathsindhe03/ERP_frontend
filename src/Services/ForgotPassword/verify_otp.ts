@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import api from "../../Utils/create_api";
+import api from "../Utils/create_api";
 
 export default async function handleVerifyOTP(otp: string, navigate: Function) {
   try {

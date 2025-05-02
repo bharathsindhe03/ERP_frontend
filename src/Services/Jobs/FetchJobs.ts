@@ -1,5 +1,5 @@
 import TableColumns from "../../Interface/TableColumns";
-import api from "../../Utils/create_api";
+import api from "../Utils/create_api";
 
 export default async function handleFetchJob(
   setJobs: (jobs: TableColumns[]) => void,

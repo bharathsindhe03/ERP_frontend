@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import api from "../../Utils/create_api";
+import api from "../Utils/create_api";
 import TableColumns from "../../Interface/TableColumns";
 
 export const updateJob = async (

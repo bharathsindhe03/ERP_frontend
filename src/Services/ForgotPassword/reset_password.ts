@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import api from "../../Utils/create_api";
+import api from "../Utils/create_api";
 
 export const handleUpdatePassword = async (
   newPassword: string,

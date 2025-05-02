@@ -41,7 +41,7 @@ export default function SetPassword() {
     }
   }, [location.search, navigate]);
 
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
     const { isValid, errorMessage } = validatePassword(newPassword);
@@ -55,7 +55,7 @@ export default function SetPassword() {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword); // Toggle password visibility
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isPasswordValid) return; // Ensure password is valid before submission
     await handleSetPassword(email, password, navigate); // Call API to set password

@@ -102,7 +102,7 @@ export default function ManageEmployee() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user: any, index: number) => (
+                  {users.map((user: User, index: number) => (
                     <TableRow key={index}>
                       <TableCell
                         sx={{

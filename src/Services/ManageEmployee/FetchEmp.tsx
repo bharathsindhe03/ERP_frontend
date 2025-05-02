@@ -1,4 +1,4 @@
-import api from "../../Utils/create_api";
+import api from "../Utils/create_api";
 import { toast } from "sonner";
 
 export const fetchUsers = async (
