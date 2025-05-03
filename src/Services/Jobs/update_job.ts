@@ -3,7 +3,7 @@ import api from "../Utils/create_api";
 import TableColumns from "../../Interface/TableColumns";
 
 export const updateJob = async (
-  updatedJob: TableColumns
+  updatedJob: Partial<TableColumns>
 ): Promise<TableColumns | undefined> => {
   try {
     console.log("Updating job ", updatedJob);

@@ -2,6 +2,7 @@ import TableColumns from "../../Interface/TableColumns";
 import { updateJob } from "../Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
 import {getRole} from "../../Services/Utils/LocalStorageUtils"
+
 export const formatDate = (
   dateString: string | null | undefined
 ): string | undefined => {
@@ -48,45 +49,23 @@ export const handleEdit = (
 };
 
 export const handleSave = async (
+  
   editedJob: Partial<TableColumns>,
   setIsEditing: Dispatch<SetStateAction<number | null>>,
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
 ) => {
   const role = getRole() || null;
-
   if (!role) return null;
-  
-  const updatedJob: TableColumns = {
-    slNo: Number(editedJob.slNo),
-    jobId: Number(editedJob.jobId) ,
-    jobDate: formatDate(editedJob.jobDate) ,
-    category: editedJob.category ,
-    customerName: editedJob.customerName ,
-    jobParticulars: "",
-    jobReference: "",
-    boeSbNo: "",
-    boeSbDate: "",
-    arrivalDate: "",
-    tentativeClosureDate: "",
-    closedDate: "",
-    sellingPrice: 0,
-    costPrice: 0,
-    billingStatus: "" ,
-    invoiceNo: "",
-    invoiceDate: "",
-    courierTrackingNo: "",
-    paymentStatus: null,
-    remarks: "",
-    apekshaInvoiceNo: "",
-    dateOfCourier: "",
-    action: null,
-    updatedBy: null,
-    updatedAt: null,
-  };
-  
-  // Now assign only the fields allowed by the role
+
+  let payload: Partial<TableColumns> = {};
+
   if (role === "ADMIN") {
-    Object.assign(updatedJob, {
+    payload = {
+      slNo: Number(editedJob.slNo),
+      jobId: Number(editedJob.jobId),
+      jobDate: formatDate(editedJob.jobDate),
+      category: editedJob.category,
+      customerName: editedJob.customerName,
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
       boeSbNo: editedJob.boeSbNo,
@@ -95,7 +74,7 @@ export const handleSave = async (
       tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
       closedDate: formatDate(editedJob.closedDate),
       sellingPrice: Number(editedJob.sellingPrice),
-      costPrice: Number(editedJob.costPrice),
+      costPrice: Number(editedJob.costPrice)||0,
       billingStatus: editedJob.billingStatus,
       invoiceNo: editedJob.invoiceNo,
       invoiceDate: formatDate(editedJob.invoiceDate),
@@ -104,17 +83,20 @@ export const handleSave = async (
       remarks: editedJob.remarks,
       apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
       dateOfCourier: formatDate(editedJob.dateOfCourier),
-    });
+    };
   } else if (role === "CRM") {
-    Object.assign(updatedJob, {
+    payload = {
+      slNo: Number(editedJob.slNo),
       jobId: Number(editedJob.jobId),
-      customerName: editedJob.customerName,
       jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
-      sellingPrice: editedJob.sellingPrice,
-    });
+      customerName: editedJob.customerName,
+      sellingPrice: Number(editedJob.sellingPrice),
+    };
   } else if (role === "OPERATIONS") {
-    Object.assign(updatedJob, {
+    payload = {
+      slNo: Number(editedJob.slNo),
+      jobId: Number(editedJob.jobId),
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
       boeSbNo: editedJob.boeSbNo,
@@ -130,30 +112,21 @@ export const handleSave = async (
       remarks: editedJob.remarks,
       apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
       dateOfCourier: formatDate(editedJob.dateOfCourier),
-    });
+    };
   } else if (role === "BILLING") {
-    Object.assign(updatedJob, {
-      paymentStatus: editedJob.paymentStatus,
+    
+    payload = {
+      slNo: Number(editedJob.slNo),
       remarks: editedJob.remarks,
-      sellingPrice: editedJob.sellingPrice,
-      costPrice: editedJob.costPrice,
+      sellingPrice: Number(editedJob.sellingPrice),
+      costPrice: Number(editedJob.costPrice),
       invoiceNo: editedJob.invoiceNo,
       invoiceDate: formatDate(editedJob.invoiceDate),
-    });
+    };
+    console.log("billing:",payload);
   }
-  
-
-  console.log("Calling updateJob with data:", updatedJob);
 
   try {
-    const payload = {
-      ...updatedJob,
-      payment_status: updatedJob.paymentStatus,
-      courier_tracking_no: updatedJob.courierTrackingNo,
-    };
-    // delete (payload as any).paymentStatus;
-    // delete (payload as any).courierTrackingNo;
-  
     await updateJob(payload);
     setIsEditing(null);
     setEditedJob({});
@@ -161,6 +134,7 @@ export const handleSave = async (
     console.error("Failed to update job", error);
   }
 };
+
 
 export const handleCancel = (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
