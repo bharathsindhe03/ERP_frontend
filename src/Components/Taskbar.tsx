@@ -20,7 +20,6 @@ interface TaskbarProps {
   onShowAllJobs: () => void;
   onShowCurrentJobs: () => void;
   onManageEmployeesClick: () => void;
-  onJobUpdate: () => void;
 }
 
 export default function Taskbar({
@@ -30,7 +29,6 @@ export default function Taskbar({
   onShowAllJobs,
   onShowCurrentJobs,
   onManageEmployeesClick,
-  onJobUpdate,
 }: TaskbarProps) {
   const [showModal, setShowModal] = useState(false);
 
@@ -109,7 +107,6 @@ export default function Taskbar({
         <AddJob
           setShowModal={setShowModal}
           onJobAdded={onJobAdded}
-          onJobUpdate={onJobUpdate}
         />
       )}
     </Box>

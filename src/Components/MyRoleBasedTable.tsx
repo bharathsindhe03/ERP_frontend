@@ -9,7 +9,6 @@ interface MyRoleBasedTableProps {
   isCollapsed: boolean;
   initialBillingFilter: string | null;
   userRole: string | null;
-  onJobUpdate: () => void;
 }
 
 interface ColumnConfig {
@@ -174,7 +173,6 @@ export default function MyRoleBasedTable({
   isCollapsed,
   initialBillingFilter,
   userRole,
-  onJobUpdate,
 }: MyRoleBasedTableProps) {
   const allowedFields =
     userRole && roleBasedFields[userRole] ? roleBasedFields[userRole] : [];
@@ -217,7 +215,6 @@ export default function MyRoleBasedTable({
       isCollapsed={isCollapsed}
       initialBillingFilter={initialBillingFilter}
       columnConfig={dynamicColumnConfig}
-      onJobUpdate={onJobUpdate}
     />
   );
 }

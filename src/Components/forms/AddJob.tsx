@@ -15,13 +15,11 @@ import { useState } from "react";
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
   onJobAdded?: () => void;
-  onJobUpdate: () => void;
 }
 
 export default function AddJob({
   setShowModal,
   onJobAdded,
-  onJobUpdate,
 }: AddJobProps) {
   const [customerName, setCustomerName] = useState("");
   const [date, setDate] = useState<string>(
@@ -54,7 +52,6 @@ export default function AddJob({
         if (onJobAdded) onJobAdded();
       }
     );
-    onJobUpdate();
   };
 
   return (

@@ -151,7 +151,6 @@ export default function Dashboard() {
         onShowAllJobs={handleShowAllJobs}
         onShowCurrentJobs={handleShowCurrentJobs}
         onManageEmployeesClick={handleManageEmployeesClick}
-        onJobUpdate={fetchJobs}
       />
       <Box
         sx={{
@@ -185,7 +184,6 @@ export default function Dashboard() {
                   isCollapsed={isCollapsed}
                   initialBillingFilter={billingFilter}
                   userRole={role}
-                  onJobUpdate={fetchJobs}
                 />
               </Box>
             </>

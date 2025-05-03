@@ -47,7 +47,6 @@ interface TableColumnProps {
     headerName: string;
     width: string;
   }[];
-  onJobUpdate: () => void;
 }
 
 export default function TableComponent({
@@ -57,7 +56,6 @@ export default function TableComponent({
   isCollapsed,
   initialBillingFilter,
   columnConfig,
-  onJobUpdate,
 }: TableColumnProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -376,7 +374,7 @@ export default function TableComponent({
                                           setEditedJob
                                         );
                                         setIsEditing(null);
-                                        onJobUpdate();
+                                        
                                       }}
                                     >
                                       Save

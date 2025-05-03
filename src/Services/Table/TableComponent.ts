@@ -1,7 +1,7 @@
 import TableColumns from "../../Interface/TableColumns";
 import { updateJob } from "../Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
-import {getRole} from "../../Services/Utils/LocalStorageUtils"
+import { getRole } from "../../Services/Utils/LocalStorageUtils";
 
 export const formatDate = (
   dateString: string | null | undefined
@@ -49,7 +49,6 @@ export const handleEdit = (
 };
 
 export const handleSave = async (
-  
   editedJob: Partial<TableColumns>,
   setIsEditing: Dispatch<SetStateAction<number | null>>,
   setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
@@ -74,7 +73,7 @@ export const handleSave = async (
       tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
       closedDate: formatDate(editedJob.closedDate),
       sellingPrice: Number(editedJob.sellingPrice),
-      costPrice: Number(editedJob.costPrice)||0,
+      costPrice: Number(editedJob.costPrice) || 0,
       billingStatus: editedJob.billingStatus,
       invoiceNo: editedJob.invoiceNo,
       invoiceDate: formatDate(editedJob.invoiceDate),
@@ -114,7 +113,6 @@ export const handleSave = async (
       dateOfCourier: formatDate(editedJob.dateOfCourier),
     };
   } else if (role === "BILLING") {
-    
     payload = {
       slNo: Number(editedJob.slNo),
       remarks: editedJob.remarks,
@@ -123,8 +121,8 @@ export const handleSave = async (
       invoiceNo: editedJob.invoiceNo,
       invoiceDate: formatDate(editedJob.invoiceDate),
     };
-    console.log("billing:",payload);
   }
+  console.log("playload value:", payload);
 
   try {
     await updateJob(payload);
@@ -134,7 +132,6 @@ export const handleSave = async (
     console.error("Failed to update job", error);
   }
 };
-
 
 export const handleCancel = (
   setIsEditing: Dispatch<SetStateAction<number | null>>,
@@ -262,50 +259,40 @@ export const getEditableColumns = (
       "dateOfCourier",
     ];
   } else if (userRole === "CRM") {
-    return ["jobId", "jobDate", "category", "customerName"];
+    return ["jobId", "jobDate", "category", "customerName", "sellingPrice"];
   } else if (userRole === "BILLING") {
     return [
-      // "jobParticulars",
-      // "jobReference",
-      // "boeSbNo",
-      // "boeSbDate",
-      // "arrivalDate",
-      // "tentativeClosureDate",
-      // "closedDate",
       "jobId",
       "sellingPrice",
       "costPrice",
       "billingStatus",
       "invoiceNo",
       "invoiceDate",
-
-      // "courierTrackingNo",
       "paymentStatus",
+      "apekshaInvoiceNo",
+      "dateOfCourier",
+      "paymentStatus",
+      "billingStatus",
+    ];
+  } else if (userRole === "OPERATIONS") {
+    return [
+      "jobParticulars",
+      "jobReference",
+      "boeSbNo",
+      "boeSbDate",
+      "arrivalDate",
+      "tentativeClosureDate",
+      "closedDate",
+      // "billingStatus",
+      // "invoiceNo",
+      // "invoiceDate", //
+      // "courierTrackingNo", //
+      // "paymentStatus", //
       // "remarks",
       // "apekshaInvoiceNo",
-      // "dateOfCourier",
+      // "action",
+      // "dateOfCourier", //  
     ];
-  }
-  else if(userRole==='OPERATIONS')
-  {return[
-    "jobParticulars",
-    "jobReference",
-    "boeSbNo",
-    "boeSbDate",
-    "arrivalDate",
-    "tentativeClosureDate",
-    "closedDate",
-    //cl
-    "billingStatus",//
-    "invoiceNo",//
-    "invoiceDate",//
-    "courierTrackingNo",//
-    "paymentStatus",//
-    "remarks",
-    "apekshaInvoiceNo",
-    "action",
-    "dateOfCourier"//
-  ]
   }
   return [];
 };
