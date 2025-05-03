@@ -265,24 +265,47 @@ export const getEditableColumns = (
     return ["jobId", "jobDate", "category", "customerName"];
   } else if (userRole === "BILLING") {
     return [
-      "jobParticulars",
-      "jobReference",
-      "boeSbNo",
-      "boeSbDate",
-      "arrivalDate",
-      "tentativeClosureDate",
-      "closedDate",
+      // "jobParticulars",
+      // "jobReference",
+      // "boeSbNo",
+      // "boeSbDate",
+      // "arrivalDate",
+      // "tentativeClosureDate",
+      // "closedDate",
+      "jobId",
       "sellingPrice",
       "costPrice",
       "billingStatus",
       "invoiceNo",
       "invoiceDate",
-      "courierTrackingNo",
+
+      // "courierTrackingNo",
       "paymentStatus",
-      "remarks",
-      "apekshaInvoiceNo",
-      "dateOfCourier",
+      // "remarks",
+      // "apekshaInvoiceNo",
+      // "dateOfCourier",
     ];
+  }
+  else if(userRole==='OPERATIONS')
+  {return[
+    "jobParticulars",
+    "jobReference",
+    "boeSbNo",
+    "boeSbDate",
+    "arrivalDate",
+    "tentativeClosureDate",
+    "closedDate",
+    //cl
+    "billingStatus",//
+    "invoiceNo",//
+    "invoiceDate",//
+    "courierTrackingNo",//
+    "paymentStatus",//
+    "remarks",
+    "apekshaInvoiceNo",
+    "action",
+    "dateOfCourier"//
+  ]
   }
   return [];
 };
