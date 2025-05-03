@@ -1,26 +1,62 @@
-export default function ForbiddenPage() {
-  return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
-      <h1 className="text-6xl font-bold text-red-500">403</h1>
-      <h2 className="text-2xl mt-2">Forbidden</h2>
-      <p className="text-gray-400 mt-2">
-        You don't have permission to access this page.
-      </p>
+import { Link } from "react-router-dom";
+import { Box } from "@mui/material";
+import { Typography } from "@mui/material";
+import { Button } from "@mui/material";
+import { Paper } from "@mui/material";
 
-      <div className="mt-6 flex space-x-4">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-gray-700 px-4 py-2 rounded-md hover:bg-gray-600"
+export default function ErrorPage() {
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      bgcolor="grey.900"
+      p={4}
+    >
+      <Paper
+        elevation={6}
+        sx={{
+          width: "100%",
+          maxWidth: { xs: 360, sm: 480 },
+          p: { xs: 3, sm: 4 },
+          textAlign: "center",
+          bgcolor: "grey.800",
+          borderRadius: 2,
+        }}
+      >
+        <Typography
+          variant="h1"
+          component="h1"
+          fontWeight="bold"
+          color="white"
+          fontSize={{ xs: "3rem", sm: "4rem" }}
         >
-          Go Back
-        </button>
-        <a
-          href="/"
-          className="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-500"
+          404
+        </Typography>
+        <Typography
+          variant="body1"
+          color="grey.300"
+          mt={2}
+          fontSize={{ xs: "0.875rem", sm: "1rem" }}
         >
-          Home
-        </a>
-      </div>
-    </div>
+          Oops! The page you are looking for does not exist.
+        </Typography>
+        <Button
+          component={Link}
+          to="/"
+          variant="contained"
+          color="primary"
+          sx={{
+            mt: 3,
+            py: { xs: 1, sm: 1.5 },
+            px: 3,
+            fontSize: { xs: "0.875rem", sm: "1rem" },
+          }}
+        >
+          Go Back Home
+        </Button>
+      </Paper>
+    </Box>
   );
 }

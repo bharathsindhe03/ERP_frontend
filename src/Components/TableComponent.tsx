@@ -19,6 +19,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TableColumns from "../Interface/TableColumns";
+
 import {
   handleEdit,
   handleSave,
@@ -214,6 +215,7 @@ export default function TableComponent({
                             </IconButton>
                           </Stack>
                         ) : [
+                            "slNo",
                             "jobId",
                             "jobDate",
                             "category",
@@ -301,8 +303,10 @@ export default function TableComponent({
                                             key as keyof TableColumns
                                           ] as string
                                         )
-                                          .toISOString()
-                                          .split("T")[0]
+                                          .toLocaleDateString("en-GB")
+                                          .split("/")
+                                          .reverse()
+                                          .join("-")
                                       : ""
                                   }
                                   onChange={(e) =>
@@ -343,6 +347,19 @@ export default function TableComponent({
                                   }
                                   fieldName="billingstatus"
                                 />
+                              ) : key === "paymentStatus" ? (
+                                <UniversalDropdown
+                                  label="Payment Status"
+                                  value={editedJob.paymentStatus || ""}
+                                  setValue={(val: string) =>
+                                    handleInputChange(
+                                      setEditedJob,
+                                      "paymentStatus",
+                                      val
+                                    )
+                                  }
+                                  fieldName="paymentstatus"
+                                />
                               ) : (
                                 <TextField
                                   value={
@@ -374,7 +391,6 @@ export default function TableComponent({
                                           setEditedJob
                                         );
                                         setIsEditing(null);
-                                        
                                       }}
                                     >
                                       Save

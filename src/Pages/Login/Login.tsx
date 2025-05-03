@@ -54,7 +54,12 @@ export default function Login() {
           component="img"
           src={logo}
           alt="Logo"
-          sx={{ width: 120, mx: "auto", mb: 2 }}
+          sx={{
+            width: 120,
+            mx: "auto",
+            mb: 2,
+            display: "block",
+          }}
         />
 
         <Typography variant="h4" align="center" color="#111928" gutterBottom>
