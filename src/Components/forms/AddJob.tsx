@@ -17,10 +17,7 @@ interface AddJobProps {
   onJobAdded?: () => void;
 }
 
-export default function AddJob({
-  setShowModal,
-  onJobAdded,
-}: AddJobProps) {
+export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
   const [customerName, setCustomerName] = useState("");
   const [date, setDate] = useState<string>(
     new Date().toISOString().split("T")[0]
@@ -131,19 +128,7 @@ export default function AddJob({
         </form>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleClose}
-          variant="contained"
-          sx={{
-            backgroundColor: "red",
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#fff",
-              color: "#111928",
-              border: "1px solid red",
-            },
-          }}
-        >
+        <Button onClick={handleClose} variant="contained" color="error">
           Cancel
         </Button>
         <Button
@@ -151,14 +136,8 @@ export default function AddJob({
           onClick={handleSubmit}
           disabled={loading}
           autoFocus
-          sx={{
-            backgroundColor: "#111928",
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#fff",
-              color: "#111928",
-            },
-          }}
+          variant="contained"
+          color="success"
         >
           {loading ? <CircularProgress size={24} /> : "Add Job"}
         </Button>

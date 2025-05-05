@@ -266,7 +266,6 @@ export const getEditableColumns = (
       "sellingPrice",
       "costPrice",
       "billingStatus",
-      // "invoiceNo", // was never there
       "invoiceDate",
       "courierTrackingNo",
       "paymentStatus",

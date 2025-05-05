@@ -259,32 +259,10 @@ export default function AdvanceFilter({
           </Box>
 
           <Stack direction="row" justifyContent="flex-end" spacing={1}>
-            <Button
-              onClick={onClose}
-              sx={{
-                backgroundColor: "red",
-                color: "#ffffff",
-                "&:hover": {
-                  backgroundColor: "#fff",
-                  color: "#111928",
-                  border: "1px solid red",
-                },
-              }}
-            >
+            <Button onClick={onClose} color="error" variant="contained">
               Cancel
             </Button>
-            <Button
-              variant="contained"
-              onClick={onApply}
-              sx={{
-                backgroundColor: "#111928",
-                color: "#ffffff",
-                "&:hover": {
-                  backgroundColor: "#fff",
-                  color: "#111928",
-                },
-              }}
-            >
+            <Button variant="contained" onClick={onApply} color="success">
               Apply Filters
             </Button>
           </Stack>

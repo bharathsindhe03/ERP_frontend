@@ -7,7 +7,9 @@ export const updateJob = async (
 ): Promise<TableColumns | undefined> => {
   try {
     console.log("Updating job ", updatedJob);
-    console.log("Date",updatedJob.billingStatus)
+    console.log("payment status", updatedJob.paymentStatus);
+    console.log("type", typeof updatedJob.paymentStatus);
+
     const response = await api.patch(
       "/job/update-job",
       JSON.stringify(updatedJob),

@@ -84,32 +84,14 @@ const AddUserDialog: React.FC<AddUserDialogProps> = ({ open, onClose }) => {
           gap: 2,
         }}
       >
-        <Button
-          sx={{
-            backgroundColor: "red",
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#fff",
-              color: "#111928",
-              border: "1px solid red",
-            },
-          }}
-          onClick={onClose}
-        >
+        <Button variant="contained" color="error" onClick={onClose}>
           Cancel
         </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"
-          color="primary"
-          sx={{
-            backgroundColor: "#111928",
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#fff",
-              color: "#111928",
-            },
-          }}
+          color="success"
+          disabled={!userName || !email || !role} // Disable if any field is empty
         >
           Submit
         </Button>
