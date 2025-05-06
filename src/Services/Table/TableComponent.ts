@@ -7,11 +7,19 @@ export const formatDate = (
   dateString: string | null | undefined
 ): string | undefined => {
   if (!dateString) return undefined;
+
+  // Check if the date is already in dd-mm-yyyy format
+  const ddMmYyyyRegex = /^\d{2}-\d{2}-\d{4}$/;
+  if (ddMmYyyyRegex.test(dateString)) {
+    return dateString; // Return as is if already in dd-mm-yyyy format
+  }
+
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
     console.error("Invalid date:", dateString);
     return undefined;
   }
+
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
@@ -266,7 +274,6 @@ export const getEditableColumns = (
       "paymentStatus",
       "apekshaInvoiceNo",
       "dateOfCourier",
-      
     ];
   } else if (userRole === "OPERATIONS") {
     return [

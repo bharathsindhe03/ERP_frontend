@@ -290,32 +290,15 @@ export default function TableComponent({
                                 "jobDate",
                               ].includes(key) ? (
                                 <TextField
-                                  type="date"
+                                  type="date" // Use text instead of date to display the raw value
                                   value={
-                                    editedJob[key as keyof TableColumns] &&
-                                    !isNaN(
-                                      new Date(
-                                        editedJob[
-                                          key as keyof TableColumns
-                                        ] as string
-                                      ).getTime()
-                                    )
-                                      ? new Date(
-                                          editedJob[
-                                            key as keyof TableColumns
-                                          ] as string
-                                        )
-                                          .toLocaleDateString("en-GB")
-                                          .split("/")
-                                          .reverse()
-                                          .join("-")
-                                      : ""
-                                  }
+                                    editedJob[key as keyof TableColumns] || ""
+                                  } // Display the date as it is
                                   onChange={(e) =>
                                     handleInputChange(
                                       setEditedJob,
                                       key as keyof TableColumns,
-                                      e.target.value
+                                      e.target.value // Store the raw value
                                     )
                                   }
                                   size="small"
