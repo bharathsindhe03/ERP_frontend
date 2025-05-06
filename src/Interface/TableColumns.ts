@@ -14,8 +14,8 @@ export default interface TableColumns {
   sellingPrice: number | null | undefined;
   costPrice?: number | null;
   billingStatus: string | null | undefined;
-  // Duty Paid Date : string | null | undefined;
-  // Clearence date : string | null | undefined;
+  dutyPaidDate: string | null | undefined;
+  clearanceDate: string | null | undefined;
   invoiceDate: string | null | undefined;
   courierTrackingNo: string | null | undefined;
   paymentStatus: string | null | undefined;

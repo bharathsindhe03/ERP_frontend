@@ -72,10 +72,11 @@ export const handleSave = async (
       arrivalDate: formatDate(editedJob.arrivalDate),
       tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
       closedDate: formatDate(editedJob.closedDate),
+      dutyPaidDate: formatDate(editedJob.dutyPaidDate),
+      clearanceDate: formatDate(editedJob.clearanceDate),
       sellingPrice: Number(editedJob.sellingPrice),
       costPrice: Number(editedJob.costPrice),
       billingStatus: editedJob.billingStatus,
-      // invoiceNo: editedJob.invoiceNo, // was never there
       invoiceDate: formatDate(editedJob.invoiceDate),
       courierTrackingNo: editedJob.courierTrackingNo,
       paymentStatus: editedJob.paymentStatus,
@@ -93,43 +94,21 @@ export const handleSave = async (
       sellingPrice: Number(editedJob.sellingPrice),
     };
   } else if (role === "OPERATIONS") {
-    // according to backend API
     payload = {
       slNo: Number(editedJob.slNo),
-      // jobId: Number(editedJob.jobId),
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
       boeSbNo: editedJob.boeSbNo,
       boeSbDate: formatDate(editedJob.boeSbDate),
       arrivalDate: formatDate(editedJob.arrivalDate),
+      dutyPaidDate: formatDate(editedJob.dutyPaidDate),
+      clearanceDate: formatDate(editedJob.clearanceDate),
       tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
       closedDate: formatDate(editedJob.closedDate),
-      billingStatus: editedJob.billingStatus,
-      invoiceDate: formatDate(editedJob.invoiceDate),
-      courierTrackingNo: editedJob.courierTrackingNo,
-      paymentStatus: editedJob.paymentStatus,
-      remarks: editedJob.remarks,
-      apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
-      action: editedJob.action,
-      dateOfCourier: formatDate(editedJob.dateOfCourier),
     };
-    // according to requirement
-    // payload = {
-    //   slNo: Number(editedJob.slNo),
-    //   jobParticulars: editedJob.jobParticulars,
-    //   jobReference: editedJob.jobReference,
-    //   boeSbNo: editedJob.boeSbNo,
-    //   boeSbDate: formatDate(editedJob.boeSbDate),
-    //   arrivalDate: formatDate(editedJob.arrivalDate),
-    //   // Duty Paid Date
-    //   // Clearence date
-    //   tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
-    //   closedDate: formatDate(editedJob.closedDate),
-    // };
   } else if (role === "BILLING") {
     payload = {
       slNo: Number(editedJob.slNo),
-      remarks: editedJob.remarks, // not in requirement
       sellingPrice: Number(editedJob.sellingPrice),
       costPrice: Number(editedJob.costPrice),
       invoiceDate: formatDate(editedJob.invoiceDate),
@@ -259,6 +238,8 @@ export const getEditableColumns = (
       "jobParticulars",
       "jobReference",
       "boeSbNo",
+      "clearanceDate",
+      "dutyPaidDate",
       "boeSbDate",
       "arrivalDate",
       "tentativeClosureDate",
@@ -294,6 +275,8 @@ export const getEditableColumns = (
       "boeSbNo", //
       "boeSbDate", //
       "arrivalDate", //
+      "clearanceDate",
+      "dutyPaidDate",
       "tentativeClosureDate", //
       "closedDate", //
       "billingStatus", //

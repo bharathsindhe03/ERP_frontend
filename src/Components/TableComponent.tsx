@@ -285,6 +285,8 @@ export default function TableComponent({
                                 "boeSbDate",
                                 "invoiceDate",
                                 "dateOfCourier",
+                                "clearanceDate",
+                                "dutyPaidDate",
                                 "jobDate",
                               ].includes(key) ? (
                                 <TextField
