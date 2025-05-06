@@ -115,6 +115,7 @@ export const handleSave = async (
       paymentStatus: editedJob.paymentStatus,
       apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
       billingStatus: editedJob.billingStatus,
+      dateOfCourier: formatDate(editedJob.dateOfCourier),
     };
   }
   console.log("playload value:", payload);
@@ -265,39 +266,20 @@ export const getEditableColumns = (
       "paymentStatus",
       "apekshaInvoiceNo",
       "dateOfCourier",
-      "remarks", // not in requirement
+      
     ];
   } else if (userRole === "OPERATIONS") {
     return [
-      // according backend API
+      // according requirement
       "jobParticulars", //
       "jobReference", //
       "boeSbNo", //
       "boeSbDate", //
       "arrivalDate", //
-      "clearanceDate",
-      "dutyPaidDate",
+      "dutyPaidDate", //
+      "clearanceDate", //
       "tentativeClosureDate", //
       "closedDate", //
-      "billingStatus", //
-      "invoiceDate", //
-      "courierTrackingNo", //
-      "paymentStatus", //
-      "remarks",
-      "apekshaInvoiceNo",
-      "action",
-      "dateOfCourier", //
-
-      // // according requirement
-      // "jobParticulars", //
-      // "jobReference", //
-      // "boeSbNo", //
-      // "boeSbDate", //
-      // "arrivalDate", //
-      // // Duty Paid Date
-      // // Clearence date
-      // "tentativeClosureDate", //
-      // "closedDate", //
     ];
   }
   return [];

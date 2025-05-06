@@ -429,6 +429,9 @@ export default function TableComponent({
                                 key={key}
                                 sx={{
                                   border: "1px solid rgba(224, 224, 224, 1)",
+                                  wordBreak: "break-word",
+                                  whiteSpace: "normal",
+                                  overflowWrap: "break-word",
                                   position:
                                     key === "slNo" || key === "jobId"
                                       ? "sticky"
