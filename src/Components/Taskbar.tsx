@@ -12,6 +12,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import AddJob from "./forms/AddJob";
 import Tooltip from "@mui/material/Tooltip";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import JobStatusDialog from "./forms/JobStatusDialogProps";
+
 interface TaskbarProps {
   isCollapsed: boolean;
   setIsCollapsed: (collapsed: boolean) => void;
@@ -31,7 +34,7 @@ export default function Taskbar({
   onManageEmployeesClick,
 }: TaskbarProps) {
   const [showModal, setShowModal] = useState(false);
-
+  const [isJobStatusDialogOpen, setIsJobStatusDialogOpen] = useState(false);
   const handleAddJobClick = () => {
     setShowModal(true);
   };
@@ -95,20 +98,32 @@ export default function Taskbar({
           </ListItemButton>
         </Tooltip>
         {canManageEmployees && (
-          <Tooltip title="Manage employees" arrow placement="right">
-            <ListItemButton component="li" onClick={onManageEmployeesClick}>
-              <ManageAccountsIcon sx={{ fontSize: 24 }} />
-              {!isCollapsed && <ListItemText primary="Manage Employees" />}
-            </ListItemButton>
-          </Tooltip>
+          <>
+            <Tooltip title="Manage employees" arrow placement="right">
+              <ListItemButton component="li" onClick={onManageEmployeesClick}>
+                <ManageAccountsIcon sx={{ fontSize: 24 }} />
+                {!isCollapsed && <ListItemText primary="Manage Employees" />}
+              </ListItemButton>
+            </Tooltip>
+            <Tooltip title="Status of Job" arrow placement="right">
+              <ListItemButton
+                component="li"
+                onClick={() => setIsJobStatusDialogOpen(true)}
+              >
+                <QuestionMarkIcon sx={{ fontSize: 24 }} />
+                {!isCollapsed && <ListItemText primary="Job Status" />}
+              </ListItemButton>
+            </Tooltip>
+          </>
         )}
       </List>
       {showModal && (
-        <AddJob
-          setShowModal={setShowModal}
-          onJobAdded={onJobAdded}
-        />
+        <AddJob setShowModal={setShowModal} onJobAdded={onJobAdded} />
       )}
+      <JobStatusDialog
+        open={isJobStatusDialogOpen}
+        onClose={() => setIsJobStatusDialogOpen(false)}
+      />
     </Box>
   );
 }
