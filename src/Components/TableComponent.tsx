@@ -44,7 +44,7 @@ interface TableColumnProps {
   isCollapsed: boolean;
   initialBillingFilter?: string | null;
   columnConfig: {
-    field: keyof TableColumns | "Action";
+    field: keyof TableColumns | "jobControls";
     headerName: string;
     width: string;
   }[];
@@ -60,7 +60,7 @@ export default function TableComponent({
 }: TableColumnProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [isEditing, setIsEditing] = useState<number | null>(null); // use index
+  const [isEditing, setIsEditing] = useState<number | null>(null);  
   const [editedJob, setEditedJob] = useState<Partial<TableColumns>>({});
   const [billingFilter, setBillingFilter] = useState<string>("All");
   const [sortConfig, setSortConfig] = useState<{
@@ -361,7 +361,7 @@ export default function TableComponent({
                                   fullWidth
                                 />
                               );
-                            } else if (key === "Action") {
+                            } else if (key === "jobControls") {
                               cellContent =
                                 isEditing === actualIndex ? (
                                   <Stack direction="row" spacing={1}>

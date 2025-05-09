@@ -262,9 +262,12 @@ export const getEditableColumns = (
       "remarks",
       "apekshaInvoiceNo",
       "dateOfCourier",
+      //"action",
     ];
   } else if (userRole === "CRM") {
-    return ["jobId", "jobDate", "category", "customerName", "sellingPrice"];
+    return ["jobId", "jobDate", "category", "customerName", "sellingPrice",
+      //"action"
+    ];
   } else if (userRole === "BILLING") {
     return [
       "sellingPrice",
@@ -274,6 +277,7 @@ export const getEditableColumns = (
       "paymentStatus",
       "apekshaInvoiceNo",
       "dateOfCourier",
+      //"action",
     ];
   } else if (userRole === "OPERATIONS") {
     return [
@@ -287,6 +291,7 @@ export const getEditableColumns = (
       "clearanceDate", //
       "tentativeClosureDate", //
       "closedDate", //
+      "action",
     ];
   }
   return [];

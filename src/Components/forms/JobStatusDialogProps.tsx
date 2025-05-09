@@ -29,7 +29,7 @@ const JobStatusDialog: React.FC<JobStatusDialogProps> = ({ open, onClose }) => {
     }
 
     try {
-      await getJobStatus(slNo, setJobStatus); // Fetch job status and store it
+      await getJobStatus(slNo, setJobStatus);
       toast.success("Job status fetched successfully!");
     } catch (error) {
       console.error("Error fetching job status:", error);

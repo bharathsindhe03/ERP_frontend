@@ -159,6 +159,7 @@ export default function Dashboard() {
           width: "100%",
           ml: isCollapsed ? "60px" : "200px",
           transition: "all 0.3s ease",
+          height: "100%",
         }}
       >
         <Navbar isCollapsed={isCollapsed} />
@@ -167,8 +168,8 @@ export default function Dashboard() {
             flexGrow: 1,
             overflow: "auto",
             backgroundColor: "#fff",
-            paddingX: { xs: 2, sm: 3 },
-            paddingTop: "72px",
+            padding: 2,
+            marginTop: "72px",
           }}
         >
           {activeContent === "jobs" && (

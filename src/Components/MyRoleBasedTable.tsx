@@ -12,7 +12,7 @@ interface MyRoleBasedTableProps {
 }
 
 interface ColumnConfig {
-  field: keyof TableColumns | "Action";
+  field: keyof TableColumns ;
   headerName: string;
   width: string;
 }
@@ -55,7 +55,8 @@ const fullColumnConfig: ColumnConfig[] = [
   { field: "dateOfCourier", headerName: "Date Of Courier", width: "200px" },
   { field: "updatedBy", headerName: "Updated By", width: "150px" },
   { field: "updatedAt", headerName: "Updated At", width: "200px" },
-  { field: "Action", headerName: "Action", width: "220px" },
+  { field: "action", headerName: "Actions", width: "150px" },
+  { field: "jobControls", headerName: "Job Controls", width: "220px" },
 ];
 
 const roleBasedFields: Record<string, string[]> = {
@@ -84,7 +85,8 @@ const roleBasedFields: Record<string, string[]> = {
     "dateOfCourier",
     "updatedBy",
     "updatedAt",
-    "Action",
+    "action",
+    "jobControls",
   ],
   ADMIN: [
     "slNo",
@@ -112,7 +114,8 @@ const roleBasedFields: Record<string, string[]> = {
     "dateOfCourier",
     "updatedBy",
     "updatedAt",
-    "Action",
+    "action",
+    "jobControls",
   ],
   OPERATIONS: [
     "slNo",
@@ -139,7 +142,8 @@ const roleBasedFields: Record<string, string[]> = {
     "dateOfCourier",
     "updatedBy",
     "updatedAt",
-    "Action",
+    "action",
+    "jobControls",
   ],
   BILLING: [
     "slNo",
@@ -167,7 +171,8 @@ const roleBasedFields: Record<string, string[]> = {
     "dateOfCourier",
     "updatedBy",
     "updatedAt",
-    "Action",
+    "action",
+    "jobControls",
   ],
 };
 

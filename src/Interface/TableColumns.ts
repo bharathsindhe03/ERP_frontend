@@ -22,8 +22,9 @@ export default interface TableColumns {
   remarks: string | null | undefined;
   apekshaInvoiceNo: string | null | undefined;
   dateOfCourier: string | null | undefined;
-  action: number | null;
+  action: string | null;
   updatedBy: string | null | undefined;
   updatedAt: string | null | undefined;
   version?: number | null;
+  jobControls?:  null | undefined;
 }

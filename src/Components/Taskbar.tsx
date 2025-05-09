@@ -83,7 +83,7 @@ export default function Taskbar({
               <AddIcon sx={{ fontSize: 24 }} />
               {!isCollapsed && <ListItemText primary="Add Jobs" />}
             </ListItemButton>
-          </Tooltip>
+          </Tooltip>  
         )}
         <Tooltip title="View all jobs" arrow placement="right">
           <ListItemButton component="li" onClick={onShowAllJobs}>
