@@ -1,10 +1,7 @@
 import { toast } from "sonner";
 import api from "../Utils/create_api";
 
-export const handleUpdatePassword = async (
-  newPassword: string,
-  navigate: Function
-) => {
+export const handleUpdatePassword = async (newPassword: string, navigate: Function) => {
   try {
     const email = localStorage.getItem("email");
 

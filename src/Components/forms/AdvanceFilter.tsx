@@ -68,10 +68,7 @@ export default function AdvanceFilter({
   };
 
   const handleCategoryMenuClose = (event: Event) => {
-    if (
-      categoryAnchorRef.current &&
-      categoryAnchorRef.current.contains(event.target as HTMLElement)
-    ) {
+    if (categoryAnchorRef.current && categoryAnchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
     setCategoryMenuOpen(false);
@@ -82,10 +79,7 @@ export default function AdvanceFilter({
   };
 
   const handleBillingStatusMenuClose = (event: Event) => {
-    if (
-      billingStatusAnchorRef.current &&
-      billingStatusAnchorRef.current.contains(event.target as HTMLElement)
-    ) {
+    if (billingStatusAnchorRef.current && billingStatusAnchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
     setBillingStatusMenuOpen(false);
@@ -118,22 +112,12 @@ export default function AdvanceFilter({
                 label="From"
                 type="date"
                 size="small"
-                value={
-                  jobDateFrom ? jobDateFrom.toISOString().split("T")[0] : ""
-                }
+                value={jobDateFrom ? jobDateFrom.toISOString().split("T")[0] : ""}
                 onChange={onDateFromChange}
                 fullWidth
                 InputLabelProps={{ shrink: true }}
               />
-              <TextField
-                label="To"
-                type="date"
-                size="small"
-                value={jobDateTo ? jobDateTo.toISOString().split("T")[0] : ""}
-                onChange={onDateToChange}
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-              />
+              <TextField label="To" type="date" size="small" value={jobDateTo ? jobDateTo.toISOString().split("T")[0] : ""} onChange={onDateToChange} fullWidth InputLabelProps={{ shrink: true }} />
             </Stack>
           </Box>
 
@@ -141,17 +125,8 @@ export default function AdvanceFilter({
           <Box>
             <FormLabel>Category</FormLabel>
             <div ref={categoryAnchorRef}>
-              <Button
-                fullWidth
-                variant="outlined"
-                size="small"
-                onClick={handleCategoryMenuToggle}
-                endIcon={<ArrowDropDownIcon />}
-                sx={{ justifyContent: "space-between", mt: 1 }}
-              >
-                {selectedCategories.length > 0
-                  ? `${selectedCategories.length} selected`
-                  : "Select categories"}
+              <Button fullWidth variant="outlined" size="small" onClick={handleCategoryMenuToggle} endIcon={<ArrowDropDownIcon />} sx={{ justifyContent: "space-between", mt: 1 }}>
+                {selectedCategories.length > 0 ? `${selectedCategories.length} selected` : "Select categories"}
               </Button>
               {categoryMenuOpen && (
                 <Paper sx={{ width: "100%", mt: 1, zIndex: 1 }}>
@@ -161,16 +136,9 @@ export default function AdvanceFilter({
                         Object.keys(categoryCounts).map((category) => (
                           <MenuItem key={category}>
                             <ListItemIcon>
-                              <Checkbox
-                                edge="start"
-                                checked={selectedCategories.includes(category)}
-                                onChange={onCategoryChange}
-                                value={category}
-                              />
+                              <Checkbox edge="start" checked={selectedCategories.includes(category)} onChange={onCategoryChange} value={category} />
                             </ListItemIcon>
-                            <ListItemText
-                              primary={`${category} (${categoryCounts[category]})`}
-                            />
+                            <ListItemText primary={`${category} (${categoryCounts[category]})`} />
                           </MenuItem>
                         ))
                       ) : (
@@ -189,22 +157,8 @@ export default function AdvanceFilter({
           <Box>
             <FormLabel>Selling Price</FormLabel>
             <Stack direction="row" spacing={2} mt={1}>
-              <TextField
-                label="From"
-                type="number"
-                size="small"
-                value={sellingPriceFrom ?? ""}
-                onChange={onSellingPriceFromChange}
-                fullWidth
-              />
-              <TextField
-                label="To"
-                type="number"
-                size="small"
-                value={sellingPriceTo ?? ""}
-                onChange={onSellingPriceToChange}
-                fullWidth
-              />
+              <TextField label="From" type="number" size="small" value={sellingPriceFrom ?? ""} onChange={onSellingPriceFromChange} fullWidth />
+              <TextField label="To" type="number" size="small" value={sellingPriceTo ?? ""} onChange={onSellingPriceToChange} fullWidth />
             </Stack>
           </Box>
 
@@ -212,17 +166,8 @@ export default function AdvanceFilter({
           <Box>
             <FormLabel>Billing Status</FormLabel>
             <div ref={billingStatusAnchorRef}>
-              <Button
-                fullWidth
-                variant="outlined"
-                size="small"
-                onClick={handleBillingStatusMenuToggle}
-                endIcon={<ArrowDropDownIcon />}
-                sx={{ justifyContent: "space-between", mt: 1 }}
-              >
-                {selectedBillingStatuses.length > 0
-                  ? `${selectedBillingStatuses.length} selected`
-                  : "Select billing statuses"}
+              <Button fullWidth variant="outlined" size="small" onClick={handleBillingStatusMenuToggle} endIcon={<ArrowDropDownIcon />} sx={{ justifyContent: "space-between", mt: 1 }}>
+                {selectedBillingStatuses.length > 0 ? `${selectedBillingStatuses.length} selected` : "Select billing statuses"}
               </Button>
               {billingStatusMenuOpen && (
                 <Paper sx={{ width: "100%", mt: 1, zIndex: 1 }}>
@@ -232,18 +177,9 @@ export default function AdvanceFilter({
                         Object.keys(billingStatusCounts).map((status) => (
                           <MenuItem key={status}>
                             <ListItemIcon>
-                              <Checkbox
-                                edge="start"
-                                checked={selectedBillingStatuses.includes(
-                                  status
-                                )}
-                                onChange={onBillingStatusChange}
-                                value={status}
-                              />
+                              <Checkbox edge="start" checked={selectedBillingStatuses.includes(status)} onChange={onBillingStatusChange} value={status} />
                             </ListItemIcon>
-                            <ListItemText
-                              primary={`${status} (${billingStatusCounts[status]})`}
-                            />
+                            <ListItemText primary={`${status} (${billingStatusCounts[status]})`} />
                           </MenuItem>
                         ))
                       ) : (

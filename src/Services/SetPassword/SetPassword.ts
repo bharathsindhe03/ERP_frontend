@@ -2,11 +2,7 @@ import { toast } from "sonner";
 import api from "../Utils/create_api";
 import { AxiosError } from "axios";
 
-export const handleSetPassword = async (
-  email: string,
-  password: string,
-  navigate: (path: string) => void
-) => {
+export const handleSetPassword = async (email: string, password: string, navigate: (path: string) => void) => {
   try {
     const response = await api.post("/auth/complete-register", {
       email,

@@ -8,11 +8,7 @@ import MenuList from "@mui/material/MenuList";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import {
-  getEmail,
-  getRole,
-  getUsername,
-} from "../Services/Utils/LocalStorageUtils";
+import { getEmail, getRole, getUsername } from "../Services/Utils/LocalStorageUtils";
 
 export default function Navbar({ isCollapsed }: { isCollapsed: boolean }) {
   const [, setIsOpen] = useState(false);
@@ -77,22 +73,14 @@ export default function Navbar({ isCollapsed }: { isCollapsed: boolean }) {
       </Box>
 
       <Box position="relative">
-        <Button
-          onClick={handleOpen}
-          color="inherit"
-          sx={{ textTransform: "none", padding: 1 }}
-        >
+        <Button onClick={handleOpen} color="inherit" sx={{ textTransform: "none", padding: 1 }}>
           <Box display="flex" alignItems="center" gap={1}>
             <AccountCircleIcon sx={{ fontSize: 30 }} />
             <Box display="flex" flexDirection="column" alignItems="flex-start">
               <Typography variant="body2" color="inherit">
                 {userName}
               </Typography>
-              <Typography
-                variant="caption"
-                color="inherit"
-                sx={{ fontSize: "0.75rem", lineHeight: 1 }}
-              >
+              <Typography variant="caption" color="inherit" sx={{ fontSize: "0.75rem", lineHeight: 1 }}>
                 {userEmail}
               </Typography>
             </Box>

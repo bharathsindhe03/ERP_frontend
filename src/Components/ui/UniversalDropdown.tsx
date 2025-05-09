@@ -24,12 +24,7 @@ interface UniversalDropdownProps {
   fieldName: string;
 }
 
-export default function UniversalDropdown({
-  label,
-  value,
-  setValue,
-  fieldName,
-}: UniversalDropdownProps) {
+export default function UniversalDropdown({ label, value, setValue, fieldName }: UniversalDropdownProps) {
   const [options, setOptions] = useState<string[]>([]);
   const [newOption, setNewOption] = useState<string>("");
   const [addingNew, setAddingNew] = useState<boolean>(false);
@@ -41,14 +36,7 @@ export default function UniversalDropdown({
 
   const handleAdd = async () => {
     if (newOption.trim() !== "") {
-      await handleAddNewCategory(
-        newOption,
-        options,
-        setOptions,
-        (val: string) => setValue(val),
-        setNewOption,
-        fieldName
-      );
+      await handleAddNewCategory(newOption, options, setOptions, (val: string) => setValue(val), setNewOption, fieldName);
       setNewOption("");
       setAddingNew(false);
       setAnchorEl(null);
@@ -73,21 +61,9 @@ export default function UniversalDropdown({
 
   return (
     <Box>
-      <TextField
-        fullWidth
-        label={label}
-        value={value}
-        onClick={handleOpen}
-        inputProps={{ readOnly: true }}
-        size="small"
-      />
+      <TextField fullWidth label={label} value={value} onClick={handleOpen} inputProps={{ readOnly: true }} size="small" />
 
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      >
+      <Popover open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
         <Box sx={{ width: 300, p: 1 }}>
           <List dense>
             {options.length === 0 ? (

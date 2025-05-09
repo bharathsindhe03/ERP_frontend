@@ -45,17 +45,9 @@ const JobStatusDialog: React.FC<JobStatusDialogProps> = ({ open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Enter Sl No</DialogTitle>
+      <DialogTitle>Job Status</DialogTitle>
       <DialogContent>
-      <TextField
-        autoFocus
-        margin="dense"
-        label="Sl No"
-        type="number"
-        fullWidth
-        value={slNo}
-        onChange={(e) => setSlNo(e.target.value)}
-      />
+        <TextField autoFocus margin="dense" label="Enter Sl No" type="number" fullWidth value={slNo} onChange={(e) => setSlNo(e.target.value)} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
@@ -66,7 +58,7 @@ const JobStatusDialog: React.FC<JobStatusDialogProps> = ({ open, onClose }) => {
         </Button>
       </DialogActions>
       {jobStatus && (
-        <Box sx={{ padding: 2}}>
+        <Box sx={{ padding: 2 }}>
           <h3>Job Status Details</h3>
           <ul>
             {Object.entries(jobStatus).map(([key, value]) => (

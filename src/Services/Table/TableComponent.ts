@@ -3,9 +3,7 @@ import { updateJob } from "../Jobs/update_job";
 import { Dispatch, SetStateAction } from "react";
 import { getRole } from "../../Services/Utils/LocalStorageUtils";
 
-export const formatDate = (
-  dateString: string | null | undefined
-): string | undefined => {
+export const formatDate = (dateString: string | null | undefined): string | undefined => {
   if (!dateString) return undefined;
 
   // Check if the date is already in dd-mm-yyyy format
@@ -25,11 +23,7 @@ export const formatDate = (
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 };
-export const handleEdit = (
-  job: TableColumns,
-  setIsEditing: Dispatch<SetStateAction<number | null>>,
-  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
-) => {
+export const handleEdit = (job: TableColumns, setIsEditing: Dispatch<SetStateAction<number | null>>, setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>) => {
   setIsEditing(job.jobId);
   setEditedJob({
     slNo: job.slNo,
@@ -56,11 +50,7 @@ export const handleEdit = (
   });
 };
 
-export const handleSave = async (
-  editedJob: Partial<TableColumns>,
-  setIsEditing: Dispatch<SetStateAction<number | null>>,
-  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
-) => {
+export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing: Dispatch<SetStateAction<number | null>>, setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>) => {
   const role = getRole() || null;
   if (!role) return null;
 
@@ -137,42 +127,25 @@ export const handleSave = async (
   }
 };
 
-export const handleCancel = (
-  setIsEditing: Dispatch<SetStateAction<number | null>>,
-  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>
-) => {
+export const handleCancel = (setIsEditing: Dispatch<SetStateAction<number | null>>, setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>) => {
   setIsEditing(null);
   setEditedJob({});
 };
 
-export const handleInputChange = (
-  setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>,
-  field: keyof TableColumns,
-  value: string
-) => {
+export const handleInputChange = (setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>, field: keyof TableColumns, value: string) => {
   setEditedJob((prev) => ({ ...prev, [field]: value }));
 };
 
 export const handleSort = {
-  sortString: (
-    a: string | undefined,
-    b: string | undefined,
-    direction: "ascending" | "descending"
-  ) => {
+  sortString: (a: string | undefined, b: string | undefined, direction: "ascending" | "descending") => {
     if (!a) return direction === "ascending" ? 1 : -1;
     if (!b) return direction === "ascending" ? -1 : 1;
     return direction === "ascending" ? a.localeCompare(b) : b.localeCompare(a);
   },
-  sortNumber: (
-    a: number | undefined,
-    b: number | undefined,
-    direction: "ascending" | "descending"
-  ) => {
+  sortNumber: (a: number | undefined, b: number | undefined, direction: "ascending" | "descending") => {
     if (a === undefined) return direction === "ascending" ? 1 : -1;
     if (b === undefined) return direction === "ascending" ? -1 : 1;
-    return direction === "ascending"
-      ? (a || 0) - (b || 0)
-      : (b || 0) - (a || 0);
+    return direction === "ascending" ? (a || 0) - (b || 0) : (b || 0) - (a || 0);
   },
   handleSort: (
     sortConfig: {
@@ -196,33 +169,20 @@ export const handleSort = {
   },
 };
 
-export const handleFilterClick = (
-  event: React.MouseEvent<HTMLButtonElement>,
-  setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>
-) => {
+export const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>, setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>) => {
   setAnchorEl(event.currentTarget);
 };
 
-export const handleFilterClose = (
-  setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>
-) => {
+export const handleFilterClose = (setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>) => {
   setAnchorEl(null);
 };
 
-export const handleFilterSelect = (
-  status: string,
-  setBillingFilter: Dispatch<SetStateAction<string>>,
-  setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>
-) => {
+export const handleFilterSelect = (status: string, setBillingFilter: Dispatch<SetStateAction<string>>, setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>) => {
   setBillingFilter(status);
   setAnchorEl(null);
 };
 
-export const handleChangePage = (
-  _event: unknown,
-  newPage: number,
-  setPage: Dispatch<SetStateAction<number>>
-) => {
+export const handleChangePage = (_event: unknown, newPage: number, setPage: Dispatch<SetStateAction<number>>) => {
   setPage(newPage);
 };
 
@@ -235,9 +195,7 @@ export const handleChangeRowsPerPage = (
   setPage(0);
 };
 
-export const getEditableColumns = (
-  userRole: string | null
-): (keyof TableColumns)[] => {
+export const getEditableColumns = (userRole: string | null): (keyof TableColumns)[] => {
   if (userRole === "ADMIN") {
     return [
       "jobId",
@@ -265,7 +223,12 @@ export const getEditableColumns = (
       //"action",
     ];
   } else if (userRole === "CRM") {
-    return ["jobId", "jobDate", "category", "customerName", "sellingPrice",
+    return [
+      "jobId",
+      "jobDate",
+      "category",
+      "customerName",
+      "sellingPrice",
       //"action"
     ];
   } else if (userRole === "BILLING") {

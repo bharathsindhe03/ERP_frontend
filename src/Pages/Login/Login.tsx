@@ -26,21 +26,12 @@ export default function Login() {
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      bgcolor="#F9FAFB"
-      px={2}
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#F9FAFB" px={2}>
       <Card
         sx={{
           p: 4,
@@ -66,22 +57,9 @@ export default function Login() {
           Login
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          display="flex"
-          flexDirection="column"
-          gap={2}
-        >
+        <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={2}>
           <FormControl>
-            <TextField
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              variant="outlined"
-              fullWidth
-              required
-            />
+            <TextField label="Username" value={username} onChange={(e) => setUsername(e.target.value)} variant="outlined" fullWidth required />
           </FormControl>
 
           <FormControl>
@@ -97,12 +75,7 @@ export default function Login() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      aria-label="toggle password visibility"
-                    >
+                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end" aria-label="toggle password visibility">
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -112,12 +85,7 @@ export default function Login() {
           </FormControl>
 
           <Box textAlign="right">
-            <Link
-              href="/forgotpassword"
-              underline="hover"
-              sx={{ color: "#111928" }}
-              fontSize="0.875rem"
-            >
+            <Link href="/forgotpassword" underline="hover" sx={{ color: "#111928" }} fontSize="0.875rem">
               Forgot Password?
             </Link>
           </Box>

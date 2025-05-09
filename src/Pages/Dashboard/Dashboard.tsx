@@ -19,9 +19,7 @@ export default function Dashboard() {
     return storedState ? JSON.parse(storedState) : false;
   });
   const [billingFilter, setBillingFilter] = useState<string | null>(null);
-  const [activeContent, setActiveContent] = useState<
-    "jobs" | "manageEmployees"
-  >("jobs");
+  const [activeContent, setActiveContent] = useState<"jobs" | "manageEmployees">("jobs");
 
   useEffect(() => {
     localStorage.setItem("isCollapsed", JSON.stringify(isCollapsed));
@@ -45,63 +43,35 @@ export default function Dashboard() {
   const handleSearch = (query: string, filters?: any) => {
     const lowered = query.toLowerCase();
     let filtered = jobs.filter((job) => {
-      return (
-        job.customerName?.toLowerCase().includes(lowered) ||
-        job.category?.toLowerCase().includes(lowered) ||
-        String(job.jobId)?.toLowerCase().includes(lowered)
-      );
+      return job.customerName?.toLowerCase().includes(lowered) || job.category?.toLowerCase().includes(lowered) || String(job.jobId)?.toLowerCase().includes(lowered);
     });
 
     if (filters) {
       if (filters.jobDateFrom) {
-        const jobDateFrom =
-          filters.jobDateFrom instanceof Date
-            ? filters.jobDateFrom
-            : new Date(filters.jobDateFrom.split("-").reverse().join("-"));
+        const jobDateFrom = filters.jobDateFrom instanceof Date ? filters.jobDateFrom : new Date(filters.jobDateFrom.split("-").reverse().join("-"));
         filtered = filtered.filter((job) => {
-          const jobDate = job.jobDate
-            ? new Date(job.jobDate.split("-").reverse().join("-"))
-            : null;
+          const jobDate = job.jobDate ? new Date(job.jobDate.split("-").reverse().join("-")) : null;
           return jobDate && jobDate >= jobDateFrom;
         });
       }
       if (filters.jobDateTo) {
-        const jobDateTo =
-          filters.jobDateTo instanceof Date
-            ? filters.jobDateTo
-            : new Date(filters.jobDateTo.split("-").reverse().join("-"));
+        const jobDateTo = filters.jobDateTo instanceof Date ? filters.jobDateTo : new Date(filters.jobDateTo.split("-").reverse().join("-"));
         filtered = filtered.filter((job) => {
-          const jobDate = job.jobDate
-            ? new Date(job.jobDate.split("-").reverse().join("-"))
-            : null;
+          const jobDate = job.jobDate ? new Date(job.jobDate.split("-").reverse().join("-")) : null;
           return jobDate && jobDate <= jobDateTo;
         });
       }
       if (filters.categories && filters.categories.length > 0) {
-        filtered = filtered.filter((job) =>
-          filters.categories.includes(job.category || "")
-        );
+        filtered = filtered.filter((job) => filters.categories.includes(job.category || ""));
       }
       if (filters.sellingPriceFrom !== null) {
-        filtered = filtered.filter(
-          (job) =>
-            job.sellingPrice !== undefined &&
-            job.sellingPrice !== null &&
-            job.sellingPrice >= filters.sellingPriceFrom
-        );
+        filtered = filtered.filter((job) => job.sellingPrice !== undefined && job.sellingPrice !== null && job.sellingPrice >= filters.sellingPriceFrom);
       }
       if (filters.sellingPriceTo !== null) {
-        filtered = filtered.filter(
-          (job) =>
-            job.sellingPrice !== undefined &&
-            job.sellingPrice !== null &&
-            job.sellingPrice <= filters.sellingPriceTo
-        );
+        filtered = filtered.filter((job) => job.sellingPrice !== undefined && job.sellingPrice !== null && job.sellingPrice <= filters.sellingPriceTo);
       }
       if (filters.billingStatuses && filters.billingStatuses.length > 0) {
-        filtered = filtered.filter((job) =>
-          filters.billingStatuses.includes(job.billingStatus || "")
-        );
+        filtered = filtered.filter((job) => filters.billingStatuses.includes(job.billingStatus || ""));
       }
     }
 
@@ -178,14 +148,7 @@ export default function Dashboard() {
                 <Searchbar onSearch={handleSearch} jobs={jobs} />
               </Box>
               <Box sx={{ overflowX: "auto" }}>
-                <MyRoleBasedTable
-                  jobs={filteredByBillingStatus}
-                  loading={loading}
-                  error={error}
-                  isCollapsed={isCollapsed}
-                  initialBillingFilter={billingFilter}
-                  userRole={role}
-                />
+                <MyRoleBasedTable jobs={filteredByBillingStatus} loading={loading} error={error} isCollapsed={isCollapsed} initialBillingFilter={billingFilter} userRole={role} />
               </Box>
             </>
           )}

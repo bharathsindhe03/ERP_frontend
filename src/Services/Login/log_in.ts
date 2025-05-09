@@ -1,11 +1,7 @@
 import { toast } from "sonner";
 import api from "../Utils/create_api";
 
-export default async function handleLogIn(
-  username: string,
-  password: string,
-  navigate: Function
-) {
+export default async function handleLogIn(username: string, password: string, navigate: Function) {
   try {
     const response = await api.post("/auth/login", { username, password });
     console.log(response);

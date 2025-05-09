@@ -12,7 +12,7 @@ interface MyRoleBasedTableProps {
 }
 
 interface ColumnConfig {
-  field: keyof TableColumns ;
+  field: keyof TableColumns;
   headerName: string;
   width: string;
 }
@@ -176,24 +176,12 @@ const roleBasedFields: Record<string, string[]> = {
   ],
 };
 
-export default function MyRoleBasedTable({
-  jobs,
-  loading,
-  error,
-  isCollapsed,
-  initialBillingFilter,
-  userRole,
-}: MyRoleBasedTableProps) {
-  const allowedFields =
-    userRole && roleBasedFields[userRole] ? roleBasedFields[userRole] : [];
+export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, initialBillingFilter, userRole }: MyRoleBasedTableProps) {
+  const allowedFields = userRole && roleBasedFields[userRole] ? roleBasedFields[userRole] : [];
 
   if (allowedFields.length === 0) {
     console.error("Invalid user role:", userRole);
-    return (
-      <Typography color="error">
-        Please contact admin to assign a role.
-      </Typography>
-    );
+    return <Typography color="error">Please contact admin to assign a role.</Typography>;
   }
 
   const modifiedJobs = jobs.map((job) => {
@@ -213,18 +201,9 @@ export default function MyRoleBasedTable({
     return filteredJob;
   });
 
-  const dynamicColumnConfig: ColumnConfig[] = fullColumnConfig.filter(
-    (config) => allowedFields.includes(config.field as string)
-  );
+  const dynamicColumnConfig: ColumnConfig[] = fullColumnConfig.filter((config) => allowedFields.includes(config.field as string));
 
   return (
-    <TableComponent
-      jobs={modifiedJobs as TableColumns[]}
-      loading={loading}
-      error={error}
-      isCollapsed={isCollapsed}
-      initialBillingFilter={initialBillingFilter}
-      columnConfig={dynamicColumnConfig}
-    />
+    <TableComponent jobs={modifiedJobs as TableColumns[]} loading={loading} error={error} isCollapsed={isCollapsed} initialBillingFilter={initialBillingFilter} columnConfig={dynamicColumnConfig} />
   );
 }

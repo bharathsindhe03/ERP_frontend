@@ -1,11 +1,7 @@
 import TableColumns from "../../Interface/TableColumns";
 import api from "../Utils/create_api";
 
-export default async function handleFetchJob(
-  setJobs: (jobs: TableColumns[]) => void,
-  setLoading: (loading: boolean) => void,
-  setError: (error: string | null) => void
-) {
+export default async function handleFetchJob(setJobs: (jobs: TableColumns[]) => void, setLoading: (loading: boolean) => void, setError: (error: string | null) => void) {
   setLoading(true);
   setError(null);
 

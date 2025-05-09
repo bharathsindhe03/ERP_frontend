@@ -28,9 +28,7 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sellingPriceFrom, setSellingPriceFrom] = useState<number | null>(null);
   const [sellingPriceTo, setSellingPriceTo] = useState<number | null>(null);
-  const [selectedBillingStatuses, setSelectedBillingStatuses] = useState<
-    string[]
-  >([]);
+  const [selectedBillingStatuses, setSelectedBillingStatuses] = useState<string[]>([]);
 
   const categoryCounts: CategoryCounts = jobs.reduce((acc, job) => {
     if (job.category) {
@@ -72,34 +70,22 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
     setJobDateTo(e.target.value ? new Date(e.target.value) : null);
   };
 
-  const handleCategoryCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleCategoryCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
-    setSelectedCategories((prev) =>
-      checked ? [...prev, value] : prev.filter((cat) => cat !== value)
-    );
+    setSelectedCategories((prev) => (checked ? [...prev, value] : prev.filter((cat) => cat !== value)));
   };
 
-  const handleSellingPriceFromChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSellingPriceFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSellingPriceFrom(e.target.value ? Number(e.target.value) : null);
   };
 
-  const handleSellingPriceToChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSellingPriceToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSellingPriceTo(e.target.value ? Number(e.target.value) : null);
   };
 
-  const handleBillingStatusCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleBillingStatusCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
-    setSelectedBillingStatuses((prev) =>
-      checked ? [...prev, value] : prev.filter((status) => status !== value)
-    );
+    setSelectedBillingStatuses((prev) => (checked ? [...prev, value] : prev.filter((status) => status !== value)));
   };
 
   const applyFilters = () => {

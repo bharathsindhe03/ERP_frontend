@@ -57,14 +57,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      bgcolor="#F9FAFB"
-      px={2}
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#F9FAFB" px={2}>
       <Card
         sx={{
           p: 4,
@@ -78,14 +71,7 @@ export default function ResetPassword() {
           Update Password
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          display="flex"
-          flexDirection="column"
-          gap={2}
-          mt={2}
-        >
+        <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={2} mt={2}>
           <FormControl>
             <TextField
               label="New Password"
@@ -100,10 +86,7 @@ export default function ResetPassword() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -124,12 +107,7 @@ export default function ResetPassword() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      edge="end"
-                    >
+                    <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -152,12 +130,7 @@ export default function ResetPassword() {
               },
             }}
             fullWidth
-            disabled={
-              !newPassword ||
-              !newConfirmPassword ||
-              !!passwordError ||
-              newPassword !== newConfirmPassword
-            }
+            disabled={!newPassword || !newConfirmPassword || !!passwordError || newPassword !== newConfirmPassword}
           >
             Update Password
           </Button>

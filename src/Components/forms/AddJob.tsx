@@ -19,9 +19,7 @@ interface AddJobProps {
 
 export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
   const [customerName, setCustomerName] = useState("");
-  const [date, setDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [date, setDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [category, setCategory] = useState("");
   const [sellingPrice, setSellingPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -37,27 +35,14 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
     e.preventDefault();
     const formattedDate = date.split("-").reverse().join("-");
 
-    await handleAddJob(
-      customerName,
-      formattedDate,
-      category,
-      Number(sellingPrice),
-      setLoading,
-      setError,
-      () => {
-        setShowModal(false);
-        if (onJobAdded) onJobAdded();
-      }
-    );
+    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), setLoading, setError, () => {
+      setShowModal(false);
+      if (onJobAdded) onJobAdded();
+    });
   };
 
   return (
-    <Dialog
-      fullScreen={fullScreen}
-      open={true}
-      onClose={handleClose}
-      aria-labelledby="add-job-dialog-title"
-    >
+    <Dialog fullScreen={fullScreen} open={true} onClose={handleClose} aria-labelledby="add-job-dialog-title">
       <DialogTitle
         id="add-job-dialog-title"
         sx={{
@@ -103,12 +88,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
               shrink: true,
             }}
           />
-          <UniversalDropdown
-            label="Category"
-            value={category}
-            setValue={setCategory}
-            fieldName="category"
-          />
+          <UniversalDropdown label="Category" value={category} setValue={setCategory} fieldName="category" />
 
           <TextField
             margin="dense"
@@ -131,14 +111,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
         <Button onClick={handleClose} variant="contained" color="error">
           Cancel
         </Button>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={loading}
-          autoFocus
-          variant="contained"
-          color="success"
-        >
+        <Button type="submit" onClick={handleSubmit} disabled={loading} autoFocus variant="contained" color="success">
           {loading ? <CircularProgress size={24} /> : "Add Job"}
         </Button>
       </DialogActions>

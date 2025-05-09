@@ -3,10 +3,7 @@ import { toast } from "sonner";
 
 export const deleteUser = async (
   userName: string,
-  fetchUsers: (
-    setUsers: React.Dispatch<React.SetStateAction<any[]>>,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
-  ) => void,
+  fetchUsers: (setUsers: React.Dispatch<React.SetStateAction<any[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void,
   setUsers: React.Dispatch<React.SetStateAction<any[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {

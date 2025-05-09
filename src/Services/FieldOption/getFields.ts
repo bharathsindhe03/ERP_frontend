@@ -15,5 +15,5 @@ export const fetchCategories = async (
     console.error("Error fetching categories:", error);
 
     toast.error("Error fetching categories. Please try again later.");
-  } 
+  }
 };

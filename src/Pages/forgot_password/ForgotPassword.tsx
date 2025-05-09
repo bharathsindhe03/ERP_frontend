@@ -20,14 +20,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      bgcolor="#F9FAFB"
-      px={2}
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#F9FAFB" px={2}>
       <Card
         sx={{
           p: 4,
@@ -41,32 +34,13 @@ export default function ForgotPassword() {
           Forgot Password
         </Typography>
 
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          textAlign="center"
-          mb={3}
-        >
+        <Typography variant="body2" color="text.secondary" textAlign="center" mb={3}>
           Enter your email and we'll send you a link to reset your password.
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          display="flex"
-          flexDirection="column"
-          gap={2}
-        >
+        <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={2}>
           <FormControl>
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              fullWidth
-            />
+            <TextField label="Email" type="email" variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} required fullWidth />
           </FormControl>
 
           <Button
@@ -87,12 +61,7 @@ export default function ForgotPassword() {
 
           <Typography align="center" variant="body2">
             Remembered your password?
-            <Link
-              href="/"
-              underline="hover"
-              sx={{ color: "#111928" }}
-              fontWeight={500}
-            >
+            <Link href="/" underline="hover" sx={{ color: "#111928" }} fontWeight={500}>
               Log in
             </Link>
           </Typography>

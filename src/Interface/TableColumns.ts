@@ -26,5 +26,5 @@ export default interface TableColumns {
   updatedBy: string | null | undefined;
   updatedAt: string | null | undefined;
   version?: number | null;
-  jobControls?:  null | undefined;
+  jobControls?: null | undefined;
 }

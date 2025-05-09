@@ -6,12 +6,8 @@ import PageLoader from "./Components/PageLoader";
 
 const Login = lazy(() => import("./Pages/Login/Login"));
 const Dashboard = lazy(() => import("./Pages/Dashboard/Dashboard"));
-const ResetPassword = lazy(
-  () => import("./Pages/forgot_password/ResetPassword")
-);
-const ForgotPassword = lazy(
-  () => import("./Pages/forgot_password/ForgotPassword")
-);
+const ResetPassword = lazy(() => import("./Pages/forgot_password/ResetPassword"));
+const ForgotPassword = lazy(() => import("./Pages/forgot_password/ForgotPassword"));
 const SetPassword = lazy(() => import("./Pages/SetPassword/SetPassword"));
 const VerifyOTP = lazy(() => import("./Pages/forgot_password/VerifyOTP"));
 const ErrorPage = lazy(() => import("./Pages/Utils/ErrorPage"));

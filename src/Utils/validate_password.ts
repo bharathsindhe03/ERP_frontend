@@ -1,7 +1,5 @@
-export const validatePassword = (
-  password: string
-): { isValid: boolean; errorMessage: string } => {
-  let errors = [];
+export const validatePassword = (password: string): { isValid: boolean; errorMessage: string } => {
+  const errors = [];
   if (password.length < 8) errors.push("At least 8 characters");
   if (!/[A-Z]/.test(password)) errors.push("One uppercase letter");
   if (!/[a-z]/.test(password)) errors.push("One lowercase letter");

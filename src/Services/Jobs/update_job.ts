@@ -2,23 +2,17 @@ import { toast } from "sonner";
 import api from "../Utils/create_api";
 import TableColumns from "../../Interface/TableColumns";
 
-export const updateJob = async (
-  updatedJob: Partial<TableColumns>
-): Promise<TableColumns | undefined> => {
+export const updateJob = async (updatedJob: Partial<TableColumns>): Promise<TableColumns | undefined> => {
   try {
     console.log("Updating job ", updatedJob);
     console.log("payment status", updatedJob.paymentStatus);
     console.log("type", typeof updatedJob.paymentStatus);
 
-    const response = await api.patch(
-      "/job/update-job",
-      JSON.stringify(updatedJob),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await api.patch("/job/update-job", JSON.stringify(updatedJob), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (response.status === 200) {
       toast.success("Job updated successfully");

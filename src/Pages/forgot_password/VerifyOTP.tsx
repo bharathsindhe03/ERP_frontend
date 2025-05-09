@@ -28,14 +28,7 @@ export default function VerifyOTP() {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      bgcolor="#F9FAFB"
-      px={2}
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#F9FAFB" px={2}>
       <Card
         sx={{
           p: 4,
@@ -49,25 +42,10 @@ export default function VerifyOTP() {
           Verify OTP
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          display="flex"
-          flexDirection="column"
-          gap={2}
-          mt={2}
-        >
+        <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={2} mt={2}>
           Please enter the OTP sent to your registered email.
           <FormControl>
-            <TextField
-              label="OTP"
-              type="text"
-              variant="outlined"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-              fullWidth
-            />
+            <TextField label="OTP" type="text" variant="outlined" value={otp} onChange={(e) => setOtp(e.target.value)} required fullWidth />
           </FormControl>
           {error && <Alert severity="error">{error}</Alert>}
           <Button

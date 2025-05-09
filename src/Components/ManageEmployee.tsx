@@ -57,12 +57,7 @@ export default function ManageEmployee() {
 
       <AddUserDialog open={open} onClose={() => setOpen(false)} />
 
-      <DeleteConfirmationDialog
-        open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
-        onConfirm={handleConfirmDelete}
-        user={selectedUser}
-      />
+      <DeleteConfirmationDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} onConfirm={handleConfirmDelete} user={selectedUser} />
     </>
   );
 }
