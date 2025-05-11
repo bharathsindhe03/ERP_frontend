@@ -46,8 +46,20 @@ const JobStatusDialog: React.FC<JobStatusDialogProps> = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Job Status</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField autoFocus margin="dense" label="Enter Sl No" type="number" fullWidth value={slNo} onChange={(e) => setSlNo(e.target.value)} />
+        {jobStatus && (
+          <Box sx={{ padding: 2 }}>
+            <h3>Job Status Details</h3>
+            <ul>
+              {Object.entries(jobStatus).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key}:</strong> {value}
+                </li>
+              ))}
+            </ul>
+          </Box>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
@@ -57,18 +69,6 @@ const JobStatusDialog: React.FC<JobStatusDialogProps> = ({ open, onClose }) => {
           Submit
         </Button>
       </DialogActions>
-      {jobStatus && (
-        <Box sx={{ padding: 2 }}>
-          <h3>Job Status Details</h3>
-          <ul>
-            {Object.entries(jobStatus).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-        </Box>
-      )}
     </Dialog>
   );
 };

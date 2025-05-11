@@ -32,12 +32,14 @@ import {
   handleChangePage,
   handleChangeRowsPerPage,
   getEditableColumns,
+  handleInputBooleanChange,
 } from "../Services/Table/TableComponent";
 import CircularProgress from "@mui/material/CircularProgress";
 import UniversalDropdown from "./ui/UniversalDropdown";
 import { fetchCategories } from "../Services/FieldOption/getFields";
 import handleExcelDownload from "../Services/Table/ExcelDownload";
 import { toast } from "sonner";
+import { Checkbox, Tooltip } from "@mui/material";
 
 interface TableColumnProps {
   jobs: TableColumns[];
@@ -164,10 +166,10 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
                         sx={{
                           width: col.width,
                           border: "1px solid rgba(224, 224, 224, 1)",
-                          position: ["slNo", "jobId"].includes(col.field) ? "sticky" : "static",
-                          left: col.field === "slNo" ? 0 : col.field === "jobId" ? columnConfig.filter((c) => c.field === "slNo").reduce((sum, c) => sum + parseInt(c.width), 0) : undefined,
-                          background: ["slNo", "jobId"].includes(col.field) ? "#fff" : undefined,
-                          zIndex: ["slNo", "jobId"].includes(col.field) ? 11 : undefined,
+                          position: ["slNo", "customerName"].includes(col.field) ? "sticky" : "static",
+                          left: col.field === "slNo" ? 0 : col.field === "customerName" ? columnConfig.filter((c) => c.field === "slNo").reduce((sum, c) => sum + parseInt(c.width), 0) : undefined,
+                          background: ["slNo", "customerName"].includes(col.field) ? "#fff" : undefined,
+                          zIndex: ["slNo", "customerName"].includes(col.field) ? 11 : undefined,
                         }}
                       >
                         {col.field === "billingStatus" ? (
@@ -229,6 +231,23 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
                               />
                             ) : key === "category" ? (
                               <UniversalDropdown label="Category" value={editedJob.category || ""} setValue={(val: string) => handleInputChange(setEditedJob, "category", val)} fieldName="category" />
+                            ) : key === "jobId" ? (
+                              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                <TextField
+                                  value={editedJob[key as keyof TableColumns] || ""}
+                                  onChange={(e) => handleInputChange(setEditedJob, key as keyof TableColumns, e.target.value)}
+                                  size="small"
+                                  fullWidth
+                                />
+                                <Tooltip title="Mark as Temporary ID" arrow>
+                                  <Checkbox
+                                    checked={editedJob.isTempID || false}
+                                    onChange={(e) => handleInputBooleanChange(setEditedJob, "isTempID", e.target.checked)}
+                                    color="primary"
+                                    inputProps={{ "aria-label": "controlled" }}
+                                  />
+                                </Tooltip>
+                              </Box>
                             ) : key === "billingStatus" ? (
                               <UniversalDropdown
                                 label="Billing Status"
@@ -291,10 +310,10 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
                                 wordBreak: "break-word",
                                 whiteSpace: "normal",
                                 overflowWrap: "break-word",
-                                position: key === "slNo" || key === "jobId" ? "sticky" : "static",
-                                left: key === "slNo" ? 0 : key === "jobId" ? columnConfig.filter((c) => c.field === "slNo").reduce((sum, c) => sum + parseInt(c.width), 0) : undefined,
-                                background: key === "slNo" || key === "jobId" ? "#fff" : undefined,
-                                zIndex: key === "slNo" || key === "jobId" ? 11 : undefined,
+                                position: key === "slNo" || key === "customerName" ? "sticky" : "static",
+                                left: key === "slNo" ? 0 : key === "customerName" ? columnConfig.filter((c) => c.field === "slNo").reduce((sum, c) => sum + parseInt(c.width), 0) : undefined,
+                                background: key === "slNo" || key === "customerName" ? "#fff" : undefined,
+                                zIndex: key === "slNo" || key === "customerName" ? 11 : undefined,
                               }}
                             >
                               {cellContent}

@@ -30,7 +30,7 @@ const AddUserDialog: React.FC<AddUserDialogProps> = ({ open, onClose }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: 1,
+          gap: 2,
           paddingBottom: "16px", // Ensure there's some bottom padding for the button
           overflowX: "hidden", // Prevent horizontal scrolling
           width: "100%", // Ensure the content fills the dialog and prevents overflow

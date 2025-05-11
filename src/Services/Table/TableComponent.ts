@@ -60,6 +60,7 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
     payload = {
       slNo: Number(editedJob.slNo),
       jobId: Number(editedJob.jobId),
+      isTempID: editedJob.isTempID,
       jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
       customerName: editedJob.customerName,
@@ -86,6 +87,7 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
     payload = {
       slNo: Number(editedJob.slNo),
       jobId: Number(editedJob.jobId),
+      isTempID: editedJob.isTempID,
       jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
       customerName: editedJob.customerName,
@@ -135,7 +137,9 @@ export const handleCancel = (setIsEditing: Dispatch<SetStateAction<number | null
 export const handleInputChange = (setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>, field: keyof TableColumns, value: string) => {
   setEditedJob((prev) => ({ ...prev, [field]: value }));
 };
-
+export const handleInputBooleanChange = (setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>, field: keyof TableColumns, value: boolean) => {
+  setEditedJob((prev) => ({ ...prev, [field]: value }));
+};
 export const handleSort = {
   sortString: (a: string | undefined, b: string | undefined, direction: "ascending" | "descending") => {
     if (!a) return direction === "ascending" ? 1 : -1;

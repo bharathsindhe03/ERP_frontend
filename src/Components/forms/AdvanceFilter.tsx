@@ -65,7 +65,7 @@ export default function AdvanceFilter({
         </IconButton>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Stack spacing={3} mt={1}>
           {/* Job Date Filter */}
           <Box>

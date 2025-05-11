@@ -19,7 +19,7 @@ interface ColumnConfig {
 
 const fullColumnConfig: ColumnConfig[] = [
   { field: "slNo", headerName: "Sl No", width: "100px" },
-  { field: "jobId", headerName: "Job ID", width: "150px" },
+  { field: "jobId", headerName: "Job ID", width: "200px" },
   { field: "jobDate", headerName: "Job Date", width: "200px" },
   { field: "category", headerName: "Category", width: "200px" },
   { field: "customerName", headerName: "Customer Name", width: "200px" },
@@ -76,6 +76,7 @@ const roleBasedFields: Record<string, string[]> = {
     "tentativeClosureDate",
     "closedDate",
     "sellingPrice",
+    "costPrice",
     "billingStatus",
     "invoiceDate",
     "courierTrackingNo",
@@ -132,7 +133,6 @@ const roleBasedFields: Record<string, string[]> = {
     "arrivalDate",
     "tentativeClosureDate",
     "closedDate",
-    "sellingPrice",
     "billingStatus",
     "invoiceDate",
     "courierTrackingNo",
@@ -160,8 +160,6 @@ const roleBasedFields: Record<string, string[]> = {
     "arrivalDate",
     "tentativeClosureDate",
     "closedDate",
-    "sellingPrice",
-    "costPrice",
     "billingStatus",
     "invoiceDate",
     "courierTrackingNo",
@@ -178,7 +176,35 @@ const roleBasedFields: Record<string, string[]> = {
 
 export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, initialBillingFilter, userRole }: MyRoleBasedTableProps) {
   const allowedFields = userRole && roleBasedFields[userRole] ? roleBasedFields[userRole] : [];
-
+  const columnOrder = [
+    "slNo",
+    "customerName",
+    "jobId",
+    "sellingPrice",
+    "costPrice",
+    "jobDate",
+    "category",
+    "jobParticulars",
+    "jobReference",
+    "boeSbNo",
+    "boeSbDate",
+    "arrivalDate",
+    "dutyPaidDate",
+    "clearanceDate",
+    "action",
+    "tentativeClosureDate",
+    "closedDate",
+    "remarks",
+    "billingStatus",
+    "apekshaInvoiceNo",
+    "invoiceDate",
+    "dateOfCourier",
+    "courierTrackingNo",
+    "paymentStatus",
+    "updatedBy",
+    "updatedAt",
+    "jobControls",
+  ];
   if (allowedFields.length === 0) {
     console.error("Invalid user role:", userRole);
     return <Typography color="error">Please contact admin to assign a role.</Typography>;
@@ -187,7 +213,7 @@ export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, in
   const modifiedJobs = jobs.map((job) => {
     const filteredJob: Partial<Record<keyof TableColumns, unknown>> = {};
     for (const field of allowedFields) {
-      if (field === "Action") {
+      if (field === "Job Controls") {
         continue; // Skip "Action", it's not part of TableColumns
       }
       if (field in job) {
@@ -201,7 +227,9 @@ export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, in
     return filteredJob;
   });
 
-  const dynamicColumnConfig: ColumnConfig[] = fullColumnConfig.filter((config) => allowedFields.includes(config.field as string));
+  const dynamicColumnConfig: ColumnConfig[] = fullColumnConfig
+    .filter((config) => allowedFields.includes(config.field as string))
+    .sort((a, b) => columnOrder.indexOf(a.field as string) - columnOrder.indexOf(b.field as string));
 
   return (
     <TableComponent jobs={modifiedJobs as TableColumns[]} loading={loading} error={error} isCollapsed={isCollapsed} initialBillingFilter={initialBillingFilter} columnConfig={dynamicColumnConfig} />

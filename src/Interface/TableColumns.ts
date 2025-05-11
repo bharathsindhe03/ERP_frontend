@@ -1,6 +1,7 @@
 export default interface TableColumns {
   slNo: number;
   jobId: number | null;
+  isTempID: boolean | null;
   jobDate: string | null | undefined;
   category: string | null | undefined;
   customerName: string | null | undefined;

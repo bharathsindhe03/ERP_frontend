@@ -16,7 +16,7 @@ export default function DeleteConfirmationDialog({ open, onClose, onConfirm, use
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm Delete</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <DialogContentText>
           Are you sure you want to delete <strong>{user?.userName}</strong>? This action cannot be undone.
         </DialogContentText>

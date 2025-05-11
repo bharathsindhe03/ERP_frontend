@@ -5,13 +5,12 @@ export default async function handleAddJob(
   customerName: string,
   date: string,
   category: string,
-  sellingPrice: Number,
+  sellingPrice: number,
+  isTempID: boolean,
   setLoading: (loading: boolean) => void,
-  setError: (error: string | null) => void,
   setShowModal: (show: boolean) => void
 ) {
   setLoading(true);
-  setError(null);
 
   try {
     const response = await api.post("/crm/create-job", {
@@ -19,17 +18,20 @@ export default async function handleAddJob(
       date,
       category,
       sellingPrice,
+      isTempID,
     });
 
     if (response.status === 200) {
       toast.success(response.data);
+    } else {
+      toast.error("Failed to add job. Please try again.");
     }
 
     console.log("CRM ADD JOB", response);
     setShowModal(false);
   } catch (err) {
     console.error("Error adding job:", err);
-    setError("Failed to add job. Please try again.");
+    toast.error("Failed to add job. Please try again.");
   } finally {
     setLoading(false);
   }

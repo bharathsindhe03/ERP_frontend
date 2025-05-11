@@ -8,9 +8,11 @@ import handleAddJob from "../../Services/Jobs/AddJobs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
 import UniversalDropdown from "../ui/UniversalDropdown";
 import { useState } from "react";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { toast } from "sonner";
 
 interface AddJobProps {
   setShowModal: (show: boolean) => void;
@@ -22,22 +24,36 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
   const [date, setDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [category, setCategory] = useState("");
   const [sellingPrice, setSellingPrice] = useState<number | null>(null);
+  const [isTempID, setIsTempID] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClose = () => {
-    setShowModal(false);
+    if (!loading) setShowModal(false);
+  };
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!customerName.trim()) newErrors.customerName = "Customer Name is required.";
+    if (!category.trim()) newErrors.category = "Category is required.";
+    if (sellingPrice === null || sellingPrice <= 0) newErrors.sellingPrice = "Selling Price must be greater than 0.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formattedDate = date.split("-").reverse().join("-");
+    if (!validateForm()) return;
 
-    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), setLoading, setError, () => {
+    const formattedDate = date.split("-").reverse().join("-");
+    setLoading(true);
+
+    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), isTempID, setLoading, () => {
       setShowModal(false);
       if (onJobAdded) onJobAdded();
+      toast.success("Job added successfully!");
     });
   };
 
@@ -53,12 +69,13 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
       >
         Add New Job
       </DialogTitle>
-      <DialogContent>
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
+      <DialogContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2, // Adds spacing between form fields
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <TextField
             autoFocus
@@ -70,7 +87,9 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
             variant="outlined"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
-            required
+            error={!!errors.customerName}
+            helperText={errors.customerName}
+            disabled={loading}
             sx={{ mb: 2 }}
           />
           <TextField
@@ -82,18 +101,19 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
             variant="outlined"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            required
-            sx={{ mb: 2 }}
             InputLabelProps={{
               shrink: true,
             }}
+            disabled={loading}
+            sx={{ mb: 2 }}
           />
           <UniversalDropdown label="Category" value={category} setValue={setCategory} fieldName="category" />
+          {errors.category && <p style={{ color: "red", fontSize: "0.8rem" }}>{errors.category}</p>}
 
           <TextField
             margin="dense"
             id="sellingPrice"
-            label="Selling"
+            label="Selling Price"
             type="number"
             fullWidth
             variant="outlined"
@@ -102,13 +122,17 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
               const value = e.target.value;
               setSellingPrice(value === "" ? null : Number(value));
             }}
-            required
+            error={!!errors.sellingPrice}
+            helperText={errors.sellingPrice}
+            disabled={loading}
             sx={{ mb: 2 }}
           />
+
+          <FormControlLabel control={<Checkbox id="isTempID" checked={isTempID} onChange={(e) => setIsTempID(e.target.checked)} disabled={loading} />} label="Temporary ID" />
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="contained" color="error">
+        <Button onClick={handleClose} variant="contained" color="error" disabled={loading}>
           Cancel
         </Button>
         <Button type="submit" onClick={handleSubmit} disabled={loading} autoFocus variant="contained" color="success">
