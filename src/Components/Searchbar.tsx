@@ -8,7 +8,7 @@ import TableColumns from "../Interface/TableColumns";
 import AdvanceFilter from "./forms/AdvanceFilter";
 
 interface SearchbarProps {
-  onSearch: (query: string, filters?: any) => void;
+  onSearch: (query: string, filters?: Record<string, unknown>) => void; // Replace `any` with a specific type
   jobs: TableColumns[];
 }
 
@@ -17,6 +17,10 @@ interface CategoryCounts {
 }
 
 interface BillingStatusCounts {
+  [status: string]: number;
+}
+
+interface PaymentStatusCounts {
   [status: string]: number;
 }
 
@@ -29,22 +33,28 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
   const [sellingPriceFrom, setSellingPriceFrom] = useState<number | null>(null);
   const [sellingPriceTo, setSellingPriceTo] = useState<number | null>(null);
   const [selectedBillingStatuses, setSelectedBillingStatuses] = useState<string[]>([]);
+  const [selectedPaymentStatuses, setSelectedPaymentStatuses] = useState<string[]>([]); // New state
 
   const categoryCounts: CategoryCounts = jobs.reduce((acc, job) => {
     if (job.category) {
       acc[job.category] = (acc[job.category] || 0) + 1;
     }
     return acc;
-  }, {} as CategoryCounts); // Explicitly cast to CategoryCounts
+  }, {} as CategoryCounts);
 
-  const billingStatusCounts: BillingStatusCounts = Array.isArray(jobs)
-    ? jobs.reduce((acc, job) => {
-        if (job.billingStatus) {
-          acc[job.billingStatus] = (acc[job.billingStatus] || 0) + 1;
-        }
-        return acc;
-      }, {} as BillingStatusCounts)
-    : {};
+  const billingStatusCounts: BillingStatusCounts = jobs.reduce((acc, job) => {
+    if (job.billingStatus) {
+      acc[job.billingStatus] = (acc[job.billingStatus] || 0) + 1;
+    }
+    return acc;
+  }, {} as BillingStatusCounts);
+
+  const paymentStatusCounts: PaymentStatusCounts = jobs.reduce((acc, job) => {
+    if (job.paymentStatus) {
+      acc[job.paymentStatus] = (acc[job.paymentStatus] || 0) + 1;
+    }
+    return acc;
+  }, {} as PaymentStatusCounts); // New counts for payment statuses
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -59,7 +69,7 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
   const handleFilterDialogClose = () => {
     setFilterDialogOpen(false);
     resetFilters();
-    onSearch(searchTerm); // Apply search term even if filters are closed
+    onSearch(searchTerm);
   };
 
   const handleJobDateFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,6 +98,11 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
     setSelectedBillingStatuses((prev) => (checked ? [...prev, value] : prev.filter((status) => status !== value)));
   };
 
+  const handlePaymentStatusCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    setSelectedPaymentStatuses((prev) => (checked ? [...prev, value] : prev.filter((status) => status !== value)));
+  }; // New handler for payment statuses
+
   const applyFilters = () => {
     onSearch(searchTerm, getFilters());
     setFilterDialogOpen(false);
@@ -100,6 +115,7 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
     setSellingPriceFrom(null);
     setSellingPriceTo(null);
     setSelectedBillingStatuses([]);
+    setSelectedPaymentStatuses([]); // Reset payment statuses
   };
 
   const getFilters = () => ({
@@ -109,6 +125,7 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
     sellingPriceFrom,
     sellingPriceTo,
     billingStatuses: selectedBillingStatuses,
+    paymentStatuses: selectedPaymentStatuses, // Include payment statuses in filters
   });
 
   return (
@@ -151,14 +168,17 @@ export default function Searchbar({ onSearch, jobs }: SearchbarProps) {
           sellingPriceTo={sellingPriceTo}
           selectedCategories={selectedCategories}
           selectedBillingStatuses={selectedBillingStatuses}
+          selectedPaymentStatuses={selectedPaymentStatuses} // New prop
           categoryCounts={categoryCounts}
           billingStatusCounts={billingStatusCounts}
+          paymentStatusCounts={paymentStatusCounts} // New prop
           onDateFromChange={handleJobDateFromChange}
           onDateToChange={handleJobDateToChange}
           onSellingPriceFromChange={handleSellingPriceFromChange}
           onSellingPriceToChange={handleSellingPriceToChange}
           onCategoryChange={handleCategoryCheckboxChange}
           onBillingStatusChange={handleBillingStatusCheckboxChange}
+          onPaymentStatusChange={handlePaymentStatusCheckboxChange} // New handler
         />
       </Dialog>
     </Box>

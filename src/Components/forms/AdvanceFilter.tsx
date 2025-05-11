@@ -29,14 +29,17 @@ interface AdvanceFilterProps {
   sellingPriceTo: number | null;
   selectedCategories: string[];
   selectedBillingStatuses: string[];
+  selectedPaymentStatuses: string[]; // New prop for Payment Status
   categoryCounts: Record<string, number>;
   billingStatusCounts: Record<string, number>;
+  paymentStatusCounts: Record<string, number>; // New prop for Payment Status counts
   onDateFromChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDateToChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSellingPriceFromChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSellingPriceToChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCategoryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBillingStatusChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onPaymentStatusChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // New handler for Payment Status
 }
 
 export default function AdvanceFilter({
@@ -49,19 +52,24 @@ export default function AdvanceFilter({
   sellingPriceTo,
   selectedCategories,
   selectedBillingStatuses,
+  selectedPaymentStatuses, // New prop
   categoryCounts,
   billingStatusCounts,
+  paymentStatusCounts, // New prop
   onDateFromChange,
   onDateToChange,
   onSellingPriceFromChange,
   onSellingPriceToChange,
   onCategoryChange,
   onBillingStatusChange,
+  onPaymentStatusChange, // New handler
 }: AdvanceFilterProps) {
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [billingStatusMenuOpen, setBillingStatusMenuOpen] = useState(false);
+  const [paymentStatusMenuOpen, setPaymentStatusMenuOpen] = useState(false); // New state for Payment Status menu
   const categoryAnchorRef = useRef<HTMLDivElement>(null);
   const billingStatusAnchorRef = useRef<HTMLDivElement>(null);
+  const paymentStatusAnchorRef = useRef<HTMLDivElement>(null); // New ref for Payment Status menu
 
   const handleCategoryMenuToggle = () => {
     setCategoryMenuOpen((prevOpen) => !prevOpen);
@@ -83,6 +91,17 @@ export default function AdvanceFilter({
       return;
     }
     setBillingStatusMenuOpen(false);
+  };
+
+  const handlePaymentStatusMenuToggle = () => {
+    setPaymentStatusMenuOpen((prevOpen) => !prevOpen);
+  };
+
+  const handlePaymentStatusMenuClose = (event: Event) => {
+    if (paymentStatusAnchorRef.current && paymentStatusAnchorRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+    setPaymentStatusMenuOpen(false);
   };
 
   return (
@@ -121,7 +140,7 @@ export default function AdvanceFilter({
             </Stack>
           </Box>
 
-          {/* Category Filter as MenuList */}
+          {/* Category Filter */}
           <Box>
             <FormLabel>Category</FormLabel>
             <div ref={categoryAnchorRef}>
@@ -162,7 +181,7 @@ export default function AdvanceFilter({
             </Stack>
           </Box>
 
-          {/* Billing Status Filter as MenuList */}
+          {/* Billing Status Filter */}
           <Box>
             <FormLabel>Billing Status</FormLabel>
             <div ref={billingStatusAnchorRef}>
@@ -180,6 +199,38 @@ export default function AdvanceFilter({
                               <Checkbox edge="start" checked={selectedBillingStatuses.includes(status)} onChange={onBillingStatusChange} value={status} />
                             </ListItemIcon>
                             <ListItemText primary={`${status} (${billingStatusCounts[status]})`} />
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>
+                          <ListItemText primary="No options available" />
+                        </MenuItem>
+                      )}
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              )}
+            </div>
+          </Box>
+
+          {/* Payment Status Filter */}
+          <Box>
+            <FormLabel>Payment Status</FormLabel>
+            <div ref={paymentStatusAnchorRef}>
+              <Button fullWidth variant="outlined" size="small" onClick={handlePaymentStatusMenuToggle} endIcon={<ArrowDropDownIcon />} sx={{ justifyContent: "space-between", mt: 1 }}>
+                {selectedPaymentStatuses.length > 0 ? `${selectedPaymentStatuses.length} selected` : "Select payment statuses"}
+              </Button>
+              {paymentStatusMenuOpen && (
+                <Paper sx={{ width: "100%", mt: 1, zIndex: 1 }}>
+                  <ClickAwayListener onClickAway={handlePaymentStatusMenuClose}>
+                    <MenuList autoFocusItem={paymentStatusMenuOpen}>
+                      {Object.keys(paymentStatusCounts).length > 0 ? (
+                        Object.keys(paymentStatusCounts).map((status) => (
+                          <MenuItem key={status}>
+                            <ListItemIcon>
+                              <Checkbox edge="start" checked={selectedPaymentStatuses.includes(status)} onChange={onPaymentStatusChange} value={status} />
+                            </ListItemIcon>
+                            <ListItemText primary={`${status} (${paymentStatusCounts[status]})`} />
                           </MenuItem>
                         ))
                       ) : (

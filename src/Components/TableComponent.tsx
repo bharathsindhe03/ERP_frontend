@@ -19,7 +19,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TableColumns from "../Interface/TableColumns";
-
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import {
   handleEdit,
   handleSave,
@@ -36,6 +36,8 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 import UniversalDropdown from "./ui/UniversalDropdown";
 import { fetchCategories } from "../Services/FieldOption/getFields";
+import handleExcelDownload from "../Services/Table/ExcelDownload";
+import { toast } from "sonner";
 
 interface TableColumnProps {
   jobs: TableColumns[];
@@ -81,7 +83,14 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
   useEffect(() => {
     fetchCategories(setBillingFilterOptions, "billingstatus");
   }, []);
-
+  const downloadExcel = (data: TableColumns[]) => {
+    if (!data || data.length === 0) {
+      console.error("No data available for download.");
+      toast.error("No data available for download.");
+      return;
+    }
+    handleExcelDownload(data);
+  };
   const sortedJobs = useMemo(() => {
     if (sortConfig.key) {
       return [...filteredJobs].sort((a, b) => {
@@ -299,19 +308,32 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
               </Table>
             </TableContainer>
           </Box>
-          <TablePagination
+          <Box
             sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               borderTop: "1px solid rgba(224, 224, 224, 1)",
               backgroundColor: "#fff",
+              padding: "8px 16px",
             }}
-            rowsPerPageOptions={[10, 25, 50]}
-            component="div"
-            count={jobs.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={(event, newPage) => handleChangePage(event, newPage, setPage)}
-            onRowsPerPageChange={(event) => handleChangeRowsPerPage(event, setRowsPerPage, setPage)}
-          />
+          >
+            <IconButton
+              onClick={() => downloadExcel(jobs)} // Call the simplified function
+              sx={{ padding: "8px" }} // Optional: Adjust padding for better spacing
+            >
+              <FileDownloadIcon />
+            </IconButton>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 50]}
+              component="div"
+              count={jobs.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={(event, newPage) => handleChangePage(event, newPage, setPage)}
+              onRowsPerPageChange={(event) => handleChangeRowsPerPage(event, setRowsPerPage, setPage)}
+            />
+          </Box>
         </Box>
       )}
       <Popover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={() => handleBillingFilterClose(setAnchorEl)} anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
