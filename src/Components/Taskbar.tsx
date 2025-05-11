@@ -36,7 +36,7 @@ export default function Taskbar({ isCollapsed, setIsCollapsed, onJobAdded, onSho
   };
 
   const userRole = localStorage.getItem("role");
-  const canAddJob = userRole === "ADMIN" || userRole === "CRM";
+  const canAddJob = userRole === "ADMIN" || userRole === "CRM" || userRole === "OPERATIONS";
   const canManageEmployees = userRole === "ADMIN";
   const canUpdateJobStatus = userRole === "CRM" || userRole === "BILLING" || userRole === "OPERATIONS";
   return (

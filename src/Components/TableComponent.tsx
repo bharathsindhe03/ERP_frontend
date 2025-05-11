@@ -137,11 +137,18 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
             },
           }}
         >
-          <Box sx={{ overflow: "auto", maxHeight: "65vh", overflowX: "auto" }}>
-            <TableContainer sx={{ minWidth: "100%" }}>
+          <Box sx={{ overflow: "auto", maxHeight: "65vh", flexGrow: 1 }}>
+            <TableContainer component={Box} sx={{ minWidth: "100%", maxHeight: "65vh", overflow: "auto" }}>
               <Table stickyHeader aria-label="CRM Table" sx={{ tableLayout: "fixed" }}>
                 <TableHead>
-                  <TableRow>
+                  <TableRow
+                    sx={{
+                      position: "sticky",
+                      top: 0,
+                      background: "#fff",
+                      zIndex: 12,
+                    }}
+                  >
                     {columnConfig.map((col, index) => (
                       <TableCell
                         key={index}
