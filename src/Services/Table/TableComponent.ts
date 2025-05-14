@@ -104,6 +104,7 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
       boeSbNo: editedJob.boeSbNo,
+      action: editedJob.action,
       boeSbDate: formatDate(editedJob.boeSbDate),
       arrivalDate: formatDate(editedJob.arrivalDate),
       dutyPaidDate: formatDate(editedJob.dutyPaidDate),
@@ -114,8 +115,6 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
   } else if (role === "BILLING") {
     payload = {
       slNo: Number(editedJob.slNo),
-      sellingPrice: Number(editedJob.sellingPrice),
-      costPrice: Number(editedJob.costPrice),
       invoiceDate: formatDate(editedJob.invoiceDate),
       paymentStatus: editedJob.paymentStatus,
       apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
