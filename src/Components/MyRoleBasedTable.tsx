@@ -20,6 +20,7 @@ interface ColumnConfig {
 const fullColumnConfig: ColumnConfig[] = [
   { field: "slNo", headerName: "Sl No", width: "100px" },
   { field: "jobId", headerName: "Job ID", width: "200px" },
+  { field: "isTemp", headerName: "Is Temp", width: "" },
   { field: "jobDate", headerName: "Job Date", width: "200px" },
   { field: "category", headerName: "Category", width: "200px" },
   { field: "customerName", headerName: "Customer Name", width: "200px" },
@@ -56,13 +57,15 @@ const fullColumnConfig: ColumnConfig[] = [
   { field: "updatedBy", headerName: "Updated By", width: "150px" },
   { field: "updatedAt", headerName: "Updated At", width: "200px" },
   { field: "action", headerName: "Actions", width: "150px" },
-  { field: "jobControls", headerName: "Job Controls", width: "220px" },
+  { field: "jobControls", headerName: "Job Controls", width: "320px" },
+  { field: "tat", headerName: "TAT", width: "100px" },
 ];
 
 const roleBasedFields: Record<string, string[]> = {
   CRM: [
     "slNo",
     "jobId",
+    "isTemp",
     "jobDate",
     "category",
     "customerName",
@@ -75,6 +78,7 @@ const roleBasedFields: Record<string, string[]> = {
     "dutyPaidDate",
     "tentativeClosureDate",
     "closedDate",
+    "tat",
     "sellingPrice",
     "costPrice",
     "billingStatus",
@@ -92,6 +96,7 @@ const roleBasedFields: Record<string, string[]> = {
   ADMIN: [
     "slNo",
     "jobId",
+    "isTemp",
     "jobDate",
     "category",
     "customerName",
@@ -104,6 +109,7 @@ const roleBasedFields: Record<string, string[]> = {
     "dutyPaidDate",
     "tentativeClosureDate",
     "closedDate",
+    "tat",
     "sellingPrice",
     "costPrice",
     "billingStatus",
@@ -121,6 +127,7 @@ const roleBasedFields: Record<string, string[]> = {
   OPERATIONS: [
     "slNo",
     "jobId",
+    "isTemp",
     "jobDate",
     "category",
     "customerName",
@@ -133,6 +140,7 @@ const roleBasedFields: Record<string, string[]> = {
     "arrivalDate",
     "tentativeClosureDate",
     "closedDate",
+    "tat",
     "billingStatus",
     "invoiceDate",
     "courierTrackingNo",
@@ -148,6 +156,7 @@ const roleBasedFields: Record<string, string[]> = {
   BILLING: [
     "slNo",
     "jobId",
+    "isTemp",
     "jobDate",
     "category",
     "customerName",
@@ -160,6 +169,7 @@ const roleBasedFields: Record<string, string[]> = {
     "arrivalDate",
     "tentativeClosureDate",
     "closedDate",
+    "tat",
     "billingStatus",
     "invoiceDate",
     "courierTrackingNo",
@@ -194,6 +204,7 @@ export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, in
     "action",
     "tentativeClosureDate",
     "closedDate",
+    "tat",
     "remarks",
     "billingStatus",
     "apekshaInvoiceNo",

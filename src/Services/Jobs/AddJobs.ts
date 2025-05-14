@@ -6,19 +6,21 @@ export default async function handleAddJob(
   date: string,
   category: string,
   sellingPrice: number,
-  isTempID: boolean,
+  isTemp: boolean,
   setLoading: (loading: boolean) => void,
   setShowModal: (show: boolean) => void
 ) {
   setLoading(true);
 
-  try {
+  try { 
+    console.log("CRM ADD JOB", customerName, date, category, sellingPrice, isTemp);
+    
     const response = await api.post("/crm/create-job", {
       customerName,
       date,
       category,
       sellingPrice,
-      isTempID,
+      isTemp,
     });
 
     if (response.status === 200) {

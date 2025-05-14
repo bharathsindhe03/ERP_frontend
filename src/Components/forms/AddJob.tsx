@@ -24,7 +24,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
   const [date, setDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [category, setCategory] = useState("");
   const [sellingPrice, setSellingPrice] = useState<number | null>(null);
-  const [isTempID, setIsTempID] = useState(false);
+  const [isTemp, setisTemp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const theme = useTheme();
@@ -50,7 +50,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
     const formattedDate = date.split("-").reverse().join("-");
     setLoading(true);
 
-    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), isTempID, setLoading, () => {
+    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), isTemp, setLoading, () => {
       setShowModal(false);
       if (onJobAdded) onJobAdded();
       toast.success("Job added successfully!");
@@ -128,7 +128,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
             sx={{ mb: 2 }}
           />
 
-          <FormControlLabel control={<Checkbox id="isTempID" checked={isTempID} onChange={(e) => setIsTempID(e.target.checked)} disabled={loading} />} label="Temporary ID" />
+          <FormControlLabel control={<Checkbox id="isTemp" checked={isTemp} onChange={() => setisTemp(!isTemp)} disabled={loading} />} label="Temporary ID" />
         </form>
       </DialogContent>
       <DialogActions>

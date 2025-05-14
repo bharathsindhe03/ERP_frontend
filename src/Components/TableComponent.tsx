@@ -1,4 +1,4 @@
-import { useState, useMemo, ReactNode, useEffect } from "react";
+import { useState, useMemo, ReactNode, useEffect, useCallback } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -40,6 +40,7 @@ import { fetchCategories } from "../Services/FieldOption/getFields";
 import handleExcelDownload from "../Services/Table/ExcelDownload";
 import { toast } from "sonner";
 import { Checkbox, Tooltip } from "@mui/material";
+import handleDeleteJobs from "../Services/Jobs/DeleteJobs";
 
 interface TableColumnProps {
   jobs: TableColumns[];
@@ -79,20 +80,24 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
     [billingFilter, jobs]
   );
 
+  useEffect(() => {
+    console.log("Jobs data -- :", jobs); // Debugging the jobs array
+  }, [jobs]);
+
   const role = useMemo(() => localStorage.getItem("role"), []);
   const editableColumns = useMemo(() => getEditableColumns(role), [role]);
   const [billingFilterOptions, setBillingFilterOptions] = useState<string[]>([]);
   useEffect(() => {
     fetchCategories(setBillingFilterOptions, "billingstatus");
   }, []);
-  const downloadExcel = (data: TableColumns[]) => {
+  const downloadExcel = useCallback((data: TableColumns[]) => {
     if (!data || data.length === 0) {
       console.error("No data available for download.");
       toast.error("No data available for download.");
       return;
     }
     handleExcelDownload(data);
-  };
+  }, []);
   const sortedJobs = useMemo(() => {
     if (sortConfig.key) {
       return [...filteredJobs].sort((a, b) => {
@@ -196,13 +201,27 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
                 <TableBody>
                   {sortedJobs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((job, rowIndex) => {
                     const actualIndex = page * rowsPerPage + rowIndex;
+
                     return (
-                      <TableRow hover key={actualIndex}>
+                      <TableRow
+                        hover
+                        key={job.slNo || actualIndex}
+                        sx={{
+                          color: job.isTemp ? "red" : "inherit", // Apply red color if isTemp is true
+                          "& td": {
+                            color: job.isTemp ? "red" : "inherit", // Ensure all cells in the row are red
+                          },
+                        }}
+                      >
                         {columnConfig.map((col) => {
                           const key = col.field;
+                          // console.log("key", key);
+
                           let cellContent: ReactNode = job[key as keyof TableColumns];
 
-                          if (key === "updatedAt" && job.updatedAt) {
+                          if (key === "tat" && job.tat) {
+                            cellContent = <Typography>{job.tat} days</Typography>;
+                          } else if (key === "updatedAt" && job.updatedAt) {
                             const [date, time] = job.updatedAt.split("T");
                             cellContent = (
                               <Stack spacing={0.5}>
@@ -241,8 +260,8 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
                                 />
                                 <Tooltip title="Mark as Temporary ID" arrow>
                                   <Checkbox
-                                    checked={editedJob.isTempID || false}
-                                    onChange={(e) => handleInputBooleanChange(setEditedJob, "isTempID", e.target.checked)}
+                                    checked={Boolean(editedJob.isTemp)}
+                                    onChange={(e) => handleInputBooleanChange(setEditedJob, "isTemp", e.target.checked)}
                                     color="primary"
                                     inputProps={{ "aria-label": "controlled" }}
                                   />
@@ -287,6 +306,17 @@ export default function TableComponent({ jobs, loading, error, isCollapsed, init
                                   </Button>
                                   <Button variant="outlined" color="error" onClick={() => handleCancel(setIsEditing, setEditedJob)}>
                                     Cancel
+                                  </Button>
+                                  <Button
+                                    variant="outlined"
+                                    color="error"
+                                    onClick={() => {
+                                      console.log("Delete job with ID:", job.slNo);
+                                      handleDeleteJobs(job.slNo);
+                                      setIsEditing(null);
+                                    }}
+                                  >
+                                    Delete
                                   </Button>
                                 </Stack>
                               ) : (

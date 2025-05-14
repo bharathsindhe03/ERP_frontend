@@ -1,7 +1,7 @@
 export default interface TableColumns {
   slNo: number;
   jobId: number | null;
-  isTempID: boolean | null;
+  isTemp: boolean;
   jobDate: string | null | undefined;
   category: string | null | undefined;
   customerName: string | null | undefined;
@@ -24,6 +24,7 @@ export default interface TableColumns {
   apekshaInvoiceNo: string | null | undefined;
   dateOfCourier: string | null | undefined;
   action: string | null;
+  tat: number | null | undefined;
   updatedBy: string | null | undefined;
   updatedAt: string | null | undefined;
   version?: number | null;

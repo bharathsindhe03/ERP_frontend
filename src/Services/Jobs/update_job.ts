@@ -5,8 +5,8 @@ import TableColumns from "../../Interface/TableColumns";
 export const updateJob = async (updatedJob: Partial<TableColumns>): Promise<TableColumns | undefined> => {
   try {
     console.log("Updating job ", updatedJob);
-    console.log("payment status", updatedJob.paymentStatus);
-    console.log("type", typeof updatedJob.paymentStatus);
+    console.log(updatedJob.isTemp);
+    console.log(typeof updatedJob.isTemp);
 
     const response = await api.patch("/job/update-job", JSON.stringify(updatedJob), {
       headers: {

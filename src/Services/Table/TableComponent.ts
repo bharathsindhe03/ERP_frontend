@@ -25,9 +25,12 @@ export const formatDate = (dateString: string | null | undefined): string | unde
 };
 export const handleEdit = (job: TableColumns, setIsEditing: Dispatch<SetStateAction<number | null>>, setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>) => {
   setIsEditing(job.jobId);
+  console.log("jobId:", job);
+
   setEditedJob({
     slNo: job.slNo,
     jobId: job.jobId,
+    isTemp: job.isTemp,
     jobDate: job.jobDate,
     category: job.category,
     customerName: job.customerName,
@@ -60,7 +63,7 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
     payload = {
       slNo: Number(editedJob.slNo),
       jobId: Number(editedJob.jobId),
-      isTempID: editedJob.isTempID,
+      isTemp: Boolean(editedJob.isTemp),
       jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
       customerName: editedJob.customerName,
@@ -87,7 +90,7 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
     payload = {
       slNo: Number(editedJob.slNo),
       jobId: Number(editedJob.jobId),
-      isTempID: editedJob.isTempID,
+      isTemp: Boolean(editedJob.isTemp),
       jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
       customerName: editedJob.customerName,
@@ -96,6 +99,8 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
   } else if (role === "OPERATIONS") {
     payload = {
       slNo: Number(editedJob.slNo),
+      jobId: Number(editedJob.jobId),
+      isTemp: Boolean(editedJob.isTemp),
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
       boeSbNo: editedJob.boeSbNo,
@@ -203,6 +208,7 @@ export const getEditableColumns = (userRole: string | null): (keyof TableColumns
   if (userRole === "ADMIN") {
     return [
       "jobId",
+      "isTemp",
       "jobDate",
       "category",
       "customerName",
@@ -229,6 +235,7 @@ export const getEditableColumns = (userRole: string | null): (keyof TableColumns
   } else if (userRole === "CRM") {
     return [
       "jobId",
+      "isTemp",
       "jobDate",
       "category",
       "customerName",
@@ -249,6 +256,8 @@ export const getEditableColumns = (userRole: string | null): (keyof TableColumns
   } else if (userRole === "OPERATIONS") {
     return [
       // according requirement
+      "jobId",
+      "isTemp",
       "jobParticulars", //
       "jobReference", //
       "boeSbNo", //
