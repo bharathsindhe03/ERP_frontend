@@ -1,9 +1,9 @@
-import axios from "axios";
 import { toast } from "sonner";
+import api from "../Utils/create_api";
 
 export const handleForgotPassword = async (email: string, navigate: Function) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BASE_SERVER_URL}/auth/reset-password`, {
+    const response = await api.post(`${import.meta.env.VITE_BASE_SERVER_URL}/auth/reset-password`, {
       email,
     });
     console.log(response);
