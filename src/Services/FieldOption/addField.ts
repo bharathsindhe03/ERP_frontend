@@ -15,7 +15,7 @@ export const handleAddNewCategory = async (
   try {
     await api.post("/fieldOption/add", {
       fieldName,
-      fieldValue: trimmedCategory,
+      fieldValue: trimmedCategory.toLowerCase(),
     });
 
     if (!categoryOptions.includes(trimmedCategory)) {

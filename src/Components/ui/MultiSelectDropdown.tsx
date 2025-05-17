@@ -22,12 +22,16 @@ export default function MultiSelectDropdown({ options, selectedValues, onChange 
     <FormControl fullWidth size="small" sx={{ mt: 1 }}>
       <InputLabel>Select</InputLabel>
       <Select multiple value={selectedValues} onChange={onChange} input={<OutlinedInput label="Select" />} renderValue={(selected) => selected.join(", ")} MenuProps={MenuProps}>
-        {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            <Checkbox checked={selectedValues.includes(option)} />
-            <ListItemText primary={option} />
-          </MenuItem>
-        ))}
+        {options.length === 0 ? (
+          <MenuItem disabled>No options</MenuItem>
+        ) : (
+          options.map((option) => (
+            <MenuItem key={option} value={option}>
+              <Checkbox checked={selectedValues.includes(option)} />
+              <ListItemText primary={option} />
+            </MenuItem>
+          ))
+        )}
       </Select>
     </FormControl>
   );

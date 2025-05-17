@@ -89,8 +89,8 @@ export default function Dashboard() {
   };
 
   const handleShowCurrentJobs = () => {
-    setBillingFilter("Open");
-    setFilteredJobs(jobs.filter((job) => job.billingStatus === "Open"));
+    setBillingFilter("open");
+    setFilteredJobs(jobs.filter((job) => job.billingStatus === "open"));
     setActiveContent("jobs");
   };
 
@@ -111,8 +111,7 @@ export default function Dashboard() {
         display: "flex",
         height: "100vh",
         overflow: "hidden",
-      }}
-    >
+      }}>
       <Taskbar
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
@@ -130,8 +129,7 @@ export default function Dashboard() {
           ml: isCollapsed ? "60px" : "200px",
           transition: "all 0.3s ease",
           height: "100%",
-        }}
-      >
+        }}>
         <Navbar isCollapsed={isCollapsed} />
         <Box
           sx={{
@@ -140,8 +138,7 @@ export default function Dashboard() {
             backgroundColor: "#fff",
             padding: 2,
             marginTop: "72px",
-          }}
-        >
+          }}>
           {activeContent === "jobs" && (
             <>
               <Box sx={{ marginTop: 2, marginBottom: 2 }}>
