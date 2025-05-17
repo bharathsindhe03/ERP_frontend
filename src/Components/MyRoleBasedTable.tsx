@@ -1,221 +1,15 @@
 import { Typography } from "@mui/material";
 import TableColumns from "../Interface/TableColumns";
 import TableComponent from "./TableComponent";
-
-interface MyRoleBasedTableProps {
-  jobs: TableColumns[];
-  loading: boolean;
-  error: string | null;
-  isCollapsed: boolean;
-  initialBillingFilter: string | null;
-  userRole: string | null;
-}
-
-interface ColumnConfig {
-  field: keyof TableColumns;
-  headerName: string;
-  width: string;
-}
-
-const fullColumnConfig: ColumnConfig[] = [
-  { field: "slNo", headerName: "Sl No", width: "100px" },
-  { field: "jobId", headerName: "Job ID", width: "200px" },
-  { field: "isTemp", headerName: "Is Temp", width: "" },
-  { field: "jobDate", headerName: "Job Date", width: "200px" },
-  { field: "category", headerName: "Category", width: "200px" },
-  { field: "customerName", headerName: "Customer Name", width: "200px" },
-  { field: "jobParticulars", headerName: "Job Particulars", width: "300px" },
-  { field: "jobReference", headerName: "Job Reference", width: "200px" },
-  { field: "boeSbNo", headerName: "BOE/SB No", width: "150px" },
-  { field: "boeSbDate", headerName: "BOE/SB Date", width: "200px" },
-  { field: "arrivalDate", headerName: "Arrival Date", width: "200px" },
-  {
-    field: "tentativeClosureDate",
-    headerName: "Tentative Closure Date",
-    width: "200px",
-  },
-  { field: "closedDate", headerName: "Closed Date", width: "200px" },
-  { field: "sellingPrice", headerName: "Selling Price", width: "150px" },
-  { field: "costPrice", headerName: "Cost Price", width: "150px" },
-  { field: "billingStatus", headerName: "Billing Status", width: "200px" },
-  { field: "invoiceDate", headerName: "Invoice Date", width: "200px" },
-  {
-    field: "courierTrackingNo",
-    headerName: "Courier Tracking No",
-    width: "200px",
-  },
-  { field: "dutyPaidDate", headerName: "Duty Paid Date", width: "200px" },
-  { field: "clearanceDate", headerName: "Clearance Date", width: "200px" },
-  { field: "paymentStatus", headerName: "Payment Status", width: "150px" },
-  { field: "remarks", headerName: "Remarks", width: "300px" },
-  {
-    field: "apekshaInvoiceNo",
-    headerName: "Apeksha Invoice No",
-    width: "200px",
-  },
-  { field: "dateOfCourier", headerName: "Date Of Courier", width: "200px" },
-  { field: "updatedBy", headerName: "Updated By", width: "150px" },
-  { field: "updatedAt", headerName: "Updated At", width: "200px" },
-  { field: "action", headerName: "Actions", width: "150px" },
-  { field: "jobControls", headerName: "Job Controls", width: "320px" },
-  { field: "tat", headerName: "TAT", width: "100px" },
-];
-
-const roleBasedFields: Record<string, string[]> = {
-  CRM: [
-    "slNo",
-    "jobId",
-    "isTemp",
-    "jobDate",
-    "category",
-    "customerName",
-    "jobParticulars",
-    "jobReference",
-    "boeSbNo",
-    "boeSbDate",
-    "arrivalDate",
-    "clearanceDate",
-    "dutyPaidDate",
-    "tentativeClosureDate",
-    "closedDate",
-    "tat",
-    "sellingPrice",
-    "costPrice",
-    "billingStatus",
-    "invoiceDate",
-    "courierTrackingNo",
-    "paymentStatus",
-    "remarks",
-    "apekshaInvoiceNo",
-    "dateOfCourier",
-    "updatedBy",
-    "updatedAt",
-    "action",
-    "jobControls",
-  ],
-  ADMIN: [
-    "slNo",
-    "jobId",
-    "isTemp",
-    "jobDate",
-    "category",
-    "customerName",
-    "jobParticulars",
-    "jobReference",
-    "boeSbNo",
-    "boeSbDate",
-    "arrivalDate",
-    "clearanceDate",
-    "dutyPaidDate",
-    "tentativeClosureDate",
-    "closedDate",
-    "tat",
-    "sellingPrice",
-    "costPrice",
-    "billingStatus",
-    "invoiceDate",
-    "courierTrackingNo",
-    "paymentStatus",
-    "remarks",
-    "apekshaInvoiceNo",
-    "dateOfCourier",
-    "updatedBy",
-    "updatedAt",
-    "action",
-    "jobControls",
-  ],
-  OPERATIONS: [
-    "slNo",
-    "jobId",
-    "isTemp",
-    "jobDate",
-    "category",
-    "customerName",
-    "jobParticulars",
-    "jobReference",
-    "boeSbNo",
-    "clearanceDate",
-    "dutyPaidDate",
-    "boeSbDate",
-    "arrivalDate",
-    "tentativeClosureDate",
-    "closedDate",
-    "tat",
-    "billingStatus",
-    "invoiceDate",
-    "courierTrackingNo",
-    "paymentStatus",
-    "remarks",
-    "apekshaInvoiceNo",
-    "dateOfCourier",
-    "updatedBy",
-    "updatedAt",
-    "action",
-    "jobControls",
-  ],
-  BILLING: [
-    "slNo",
-    "jobId",
-    "isTemp",
-    "jobDate",
-    "category",
-    "customerName",
-    "jobParticulars",
-    "jobReference",
-    "boeSbNo",
-    "boeSbDate",
-    "clearanceDate",
-    "dutyPaidDate",
-    "arrivalDate",
-    "tentativeClosureDate",
-    "closedDate",
-    "tat",
-    "billingStatus",
-    "invoiceDate",
-    "courierTrackingNo",
-    "paymentStatus",
-    "remarks",
-    "apekshaInvoiceNo",
-    "dateOfCourier",
-    "updatedBy",
-    "updatedAt",
-    "action",
-    "jobControls",
-  ],
-};
+import MyRoleBasedTableProps from "../Interface/MyRoleBasedTableProps";
+import ColumnConfig from "../Interface/ColumnConfig";
+import fullColumnConfig from "../Helpers/ColumnMapping";
+import columnOrder from "../Helpers/ColumnOdering";
+import roleBasedFields from "../Helpers/RoleBasedFields";
 
 export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, initialBillingFilter, userRole }: MyRoleBasedTableProps) {
   const allowedFields = userRole && roleBasedFields[userRole] ? roleBasedFields[userRole] : [];
-  const columnOrder = [
-    "slNo",
-    "customerName",
-    "jobId",
-    "sellingPrice",
-    "costPrice",
-    "jobDate",
-    "category",
-    "jobParticulars",
-    "jobReference",
-    "boeSbNo",
-    "boeSbDate",
-    "arrivalDate",
-    "dutyPaidDate",
-    "clearanceDate",
-    "action",
-    "tentativeClosureDate",
-    "closedDate",
-    "tat",
-    "remarks",
-    "billingStatus",
-    "apekshaInvoiceNo",
-    "invoiceDate",
-    "dateOfCourier",
-    "courierTrackingNo",
-    "paymentStatus",
-    "updatedBy",
-    "updatedAt",
-    "jobControls",
-  ];
+
   if (allowedFields.length === 0) {
     console.error("Invalid user role:", userRole);
     return <Typography color="error">Please contact admin to assign a role.</Typography>;
@@ -239,8 +33,8 @@ export default function MyRoleBasedTable({ jobs, loading, error, isCollapsed, in
   });
 
   const dynamicColumnConfig: ColumnConfig[] = fullColumnConfig
-    .filter((config) => allowedFields.includes(config.field as string))
-    .sort((a, b) => columnOrder.indexOf(a.field as string) - columnOrder.indexOf(b.field as string));
+    .filter((config: ColumnConfig) => allowedFields.includes(config.field as string))
+    .sort((a: ColumnConfig, b: ColumnConfig) => columnOrder.indexOf(a.field as string) - columnOrder.indexOf(b.field as string));
 
   return (
     <TableComponent jobs={modifiedJobs as TableColumns[]} loading={loading} error={error} isCollapsed={isCollapsed} initialBillingFilter={initialBillingFilter} columnConfig={dynamicColumnConfig} />

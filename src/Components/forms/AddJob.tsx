@@ -25,6 +25,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
   const [category, setCategory] = useState("");
   const [sellingPrice, setSellingPrice] = useState<number | null>(null);
   const [isTemp, setisTemp] = useState(false);
+  const [costPrice, setCostPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const theme = useTheme();
@@ -50,7 +51,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
     const formattedDate = date.split("-").reverse().join("-");
     setLoading(true);
 
-    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), isTemp, setLoading, () => {
+    await handleAddJob(customerName, formattedDate, category, Number(sellingPrice), Number(costPrice), isTemp, setLoading, () => {
       setShowModal(false);
       if (onJobAdded) onJobAdded();
       toast.success("Job added successfully!");
@@ -65,8 +66,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-        }}
-      >
+        }}>
         Add New Job
       </DialogTitle>
       <DialogContent
@@ -74,8 +74,7 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
           display: "flex",
           flexDirection: "column",
           gap: 2, // Adds spacing between form fields
-        }}
-      >
+        }}>
         <form onSubmit={handleSubmit}>
           <TextField
             autoFocus
@@ -124,6 +123,22 @@ export default function AddJob({ setShowModal, onJobAdded }: AddJobProps) {
             }}
             error={!!errors.sellingPrice}
             helperText={errors.sellingPrice}
+            disabled={loading}
+            sx={{ mb: 2 }}
+          />
+
+          <TextField
+            margin="dense"
+            id="costPrice"
+            label="Cost Price"
+            type="number"
+            fullWidth
+            variant="outlined"
+            value={costPrice === null ? "" : costPrice}
+            onChange={(e) => {
+              const value = e.target.value;
+              setCostPrice(value === "" ? null : Number(value));
+            }}
             disabled={loading}
             sx={{ mb: 2 }}
           />

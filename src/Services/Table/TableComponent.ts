@@ -25,31 +25,32 @@ export const formatDate = (dateString: string | null | undefined): string | unde
 };
 export const handleEdit = (job: TableColumns, setIsEditing: Dispatch<SetStateAction<number | null>>, setEditedJob: Dispatch<SetStateAction<Partial<TableColumns>>>) => {
   setIsEditing(job.jobId);
-  console.log("jobId:", job);
-
   setEditedJob({
-    slNo: job.slNo,
-    jobId: job.jobId,
+    action: job.action,
+    apekshaInvoiceNo: job.apekshaInvoiceNo,
+    arrivalDate: job.arrivalDate,
+    billingStatus: job.billingStatus,
+    boeSbDate: job.boeSbDate,
+    boeSbNo: job.boeSbNo,
+    category: job.category,
+    clearanceDate: job.clearanceDate,
+    closedDate: job.closedDate,
+    costPrice: job.costPrice,
+    courierTrackingNo: job.courierTrackingNo,
+    customerName: job.customerName,
+    dateOfCourier: job.dateOfCourier,
+    dutyPaidDate: job.dutyPaidDate,
+    invoiceDate: job.invoiceDate,
     isTemp: job.isTemp,
     jobDate: job.jobDate,
-    category: job.category,
-    customerName: job.customerName,
+    jobId: job.jobId,
     jobParticulars: job.jobParticulars,
     jobReference: job.jobReference,
-    boeSbNo: job.boeSbNo,
-    boeSbDate: job.boeSbDate,
-    arrivalDate: job.arrivalDate,
-    tentativeClosureDate: job.tentativeClosureDate,
-    closedDate: job.closedDate,
-    sellingPrice: job.sellingPrice,
-    costPrice: job.costPrice,
-    billingStatus: job.billingStatus,
-    invoiceDate: job.invoiceDate,
-    courierTrackingNo: job.courierTrackingNo,
     paymentStatus: job.paymentStatus,
     remarks: job.remarks,
-    apekshaInvoiceNo: job.apekshaInvoiceNo,
-    dateOfCourier: job.dateOfCourier,
+    sellingPrice: job.sellingPrice,
+    slNo: job.slNo,
+    tentativeClosureDate: job.tentativeClosureDate,
   });
 };
 
@@ -90,36 +91,49 @@ export const handleSave = async (editedJob: Partial<TableColumns>, setIsEditing:
     payload = {
       slNo: Number(editedJob.slNo),
       jobId: Number(editedJob.jobId),
-      isTemp: Boolean(editedJob.isTemp),
+      customerName: editedJob.customerName,
       jobDate: formatDate(editedJob.jobDate),
       category: editedJob.category,
-      customerName: editedJob.customerName,
       sellingPrice: Number(editedJob.sellingPrice),
+      costPrice: Number(editedJob.costPrice),
+      remarks: editedJob.remarks,
+      isTemp: Boolean(editedJob.isTemp),
     };
   } else if (role === "OPERATIONS") {
     payload = {
       slNo: Number(editedJob.slNo),
-      jobId: Number(editedJob.jobId),
-      isTemp: Boolean(editedJob.isTemp),
       jobParticulars: editedJob.jobParticulars,
       jobReference: editedJob.jobReference,
       boeSbNo: editedJob.boeSbNo,
-      action: editedJob.action,
       boeSbDate: formatDate(editedJob.boeSbDate),
       arrivalDate: formatDate(editedJob.arrivalDate),
-      dutyPaidDate: formatDate(editedJob.dutyPaidDate),
-      clearanceDate: formatDate(editedJob.clearanceDate),
       tentativeClosureDate: formatDate(editedJob.tentativeClosureDate),
       closedDate: formatDate(editedJob.closedDate),
+      billingStatus: editedJob.billingStatus,
+      invoiceDate: formatDate(editedJob.invoiceDate),
+      courierTrackingNo: editedJob.courierTrackingNo,
+      paymentStatus: editedJob.paymentStatus,
+      remarks: editedJob.remarks,
+      apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
+      action: editedJob.action,
+      dateOfCourier: formatDate(editedJob.dateOfCourier),
+      dutyPaidDate: formatDate(editedJob.dutyPaidDate),
+      clearanceDate: formatDate(editedJob.clearanceDate),
+      jobId: Number(editedJob.jobId),
+      isTemp: Boolean(editedJob.isTemp),
+      customerName: editedJob.customerName,
+      jobDate: formatDate(editedJob.jobDate),
+      category: editedJob.category,
     };
   } else if (role === "BILLING") {
     payload = {
       slNo: Number(editedJob.slNo),
-      invoiceDate: formatDate(editedJob.invoiceDate),
       paymentStatus: editedJob.paymentStatus,
-      apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
-      billingStatus: editedJob.billingStatus,
       dateOfCourier: formatDate(editedJob.dateOfCourier),
+      remarks: editedJob.remarks,
+      apekshaInvoiceNo: editedJob.apekshaInvoiceNo,
+      invoiceDate: formatDate(editedJob.invoiceDate),
+      billingStatus: editedJob.billingStatus,
     };
   }
   console.log("playload value:", payload);
@@ -229,44 +243,36 @@ export const getEditableColumns = (userRole: string | null): (keyof TableColumns
       "remarks",
       "apekshaInvoiceNo",
       "dateOfCourier",
-      //"action",
+      "action",
     ];
   } else if (userRole === "CRM") {
-    return [
-      "jobId",
-      "isTemp",
-      "jobDate",
-      "category",
-      "customerName",
-      "sellingPrice",
-      //"action"
-    ];
+    return ["jobId", "customerName", "jobDate", "category", "sellingPrice", "costPrice", "remarks", "isTemp"];
   } else if (userRole === "BILLING") {
-    return [
-      "sellingPrice",
-      "costPrice",
-      "billingStatus",
-      "invoiceDate",
-      "paymentStatus",
-      "apekshaInvoiceNo",
-      "dateOfCourier",
-      //"action",
-    ];
+    return ["paymentStatus", "dateOfCourier", "remarks", "apekshaInvoiceNo", "invoiceDate", "billingStatus"];
   } else if (userRole === "OPERATIONS") {
     return [
-      // according requirement
+      "jobParticulars",
+      "jobReference",
+      "boeSbNo",
+      "boeSbDate",
+      "arrivalDate",
+      "tentativeClosureDate",
+      "closedDate",
+      "billingStatus",
+      "invoiceDate",
+      "courierTrackingNo",
+      "paymentStatus",
+      "remarks",
+      "apekshaInvoiceNo",
+      "action",
+      "dateOfCourier",
+      "dutyPaidDate",
+      "clearanceDate",
       "jobId",
       "isTemp",
-      "jobParticulars", //
-      "jobReference", //
-      "boeSbNo", //
-      "boeSbDate", //
-      "arrivalDate", //
-      "dutyPaidDate", //
-      "clearanceDate", //
-      "tentativeClosureDate", //
-      "closedDate", //
-      "action",
+      "customerName",
+      "jobDate",
+      "category",
     ];
   }
   return [];
